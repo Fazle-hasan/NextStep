@@ -8,19 +8,28 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { signInWithGoogle } from "../actions";
+import type { AuthProviders } from "../providers";
 import { authStrings } from "../strings";
 
 import { OtpRequestForm, type OtpMethod } from "./OtpRequestForm";
 import { OtpVerifyForm } from "./OtpVerifyForm";
+import { PasswordSignInForm } from "./PasswordSignInForm";
 
 type Props = {
   next?: string;
   errorMessage?: string;
+  // Methods switched on in Supabase Auth; disabled ones are not shown.
+  providers: AuthProviders;
 };
 
-export function SignInCard({ next, errorMessage }: Props) {
-  const [method, setMethod] = useState<OtpMethod>("phone");
+type Tab = OtpMethod | "password";
+
+// Email code is the default. Password sign-in works for members who set one in Settings → Password.
+export function SignInCard({ next, errorMessage, providers }: Props) {
+  const [tab, setTab] = useState<Tab>("email");
   const [sentTo, setSentTo] = useState<string | null>(null);
+  const method: OtpMethod = tab === "phone" ? "phone" : "email";
+  const tabs: Tab[] = providers.phone ? ["email", "password", "phone"] : ["email", "password"];
 
   return (
     <Card className="w-full max-w-md">
@@ -40,21 +49,27 @@ export function SignInCard({ next, errorMessage }: Props) {
         {sentTo ? (
           <OtpVerifyForm method={method} sentTo={sentTo} next={next} onChangeContact={() => setSentTo(null)} />
         ) : (
-          <Tabs value={method} onValueChange={(v) => setMethod(v as OtpMethod)}>
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="phone">{authStrings.phoneTab}</TabsTrigger>
+          <Tabs value={tab} onValueChange={(v) => setTab(v as Tab)}>
+            <TabsList className={tabs.length === 3 ? "grid w-full grid-cols-3" : "grid w-full grid-cols-2"}>
               <TabsTrigger value="email">{authStrings.emailTab}</TabsTrigger>
+              <TabsTrigger value="password">{authStrings.passwordTab}</TabsTrigger>
+              {providers.phone && <TabsTrigger value="phone">{authStrings.phoneTab}</TabsTrigger>}
             </TabsList>
-            <TabsContent value="phone" className="pt-4">
-              <OtpRequestForm method="phone" next={next} onSent={setSentTo} />
-            </TabsContent>
             <TabsContent value="email" className="pt-4">
               <OtpRequestForm method="email" next={next} onSent={setSentTo} />
             </TabsContent>
+            <TabsContent value="password" className="pt-4">
+              <PasswordSignInForm next={next} />
+            </TabsContent>
+            {providers.phone && (
+              <TabsContent value="phone" className="pt-4">
+                <OtpRequestForm method="phone" next={next} onSent={setSentTo} />
+              </TabsContent>
+            )}
           </Tabs>
         )}
 
-        {!sentTo && (
+        {!sentTo && providers.google && (
           <>
             <div className="flex items-center gap-3 text-xs uppercase text-muted-foreground">
               <span className="h-px flex-1 bg-border" />

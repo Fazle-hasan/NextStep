@@ -6,10 +6,11 @@ test("landing page shows the brand and tagline", async ({ page }) => {
   await expect(page.getByText(/Learn\. Earn\. Grow\./).first()).toBeVisible();
 });
 
-test("sign-in page offers phone and Google", async ({ page }) => {
+test("sign-in page opens on email and offers a password sign-in", async ({ page }) => {
   await page.goto("/sign-in");
-  await expect(page.getByRole("tab", { name: "Phone" })).toBeVisible();
-  await expect(page.getByRole("button", { name: /Continue with Google/ })).toBeVisible();
+  await expect(page.getByRole("tab", { name: "Email code" })).toHaveAttribute("aria-selected", "true");
+  await page.getByRole("tab", { name: "Password" }).click();
+  await expect(page.locator("input#password-input")).toBeVisible();
 });
 
 test("private pages redirect signed-out visitors to sign-in", async ({ page }) => {

@@ -150,3 +150,24 @@ passwords (sign-in is a one-time code by phone or email, or Google). To make som
 
 Hosted dev project: the account `fazlehasan110@gmail.com` was made admin on 2026-10-04 at the project owner's request.
 
+## Turning on Google sign-in
+
+Google is switched off on the hosted project, so the sign-in page hides the Google button (D-043). To turn it on:
+
+1. Google Cloud Console → APIs & Services → Credentials → Create credentials → OAuth client ID → Web application.
+   - Authorised JavaScript origins: `http://localhost:3000` (and your live site later).
+   - Authorised redirect URI: `https://zmvdkzphpjjcwwrnniuu.supabase.co/auth/v1/callback`
+   - If asked, set up the OAuth consent screen first (External, app name NextStep, your email).
+2. Supabase dashboard → Authentication → Sign In / Providers → Google → enable, paste the Client ID and Client secret, save.
+3. Supabase dashboard → Authentication → URL Configuration: Site URL `http://localhost:3000` (your live URL later) and add
+   `http://localhost:3000/auth/callback` to the Redirect URLs.
+4. Reload `/sign-in` after a few minutes: "Continue with Google" appears.
+
+Phone sign-in is also off. It needs an SMS provider (for example Twilio) under Authentication → Sign In / Providers → Phone.
+
+## Password sign-in
+
+Members can add a password in **Settings → Password** after signing in once with an email code, then use the
+**Password** tab on the sign-in page. In the dashboard (Authentication → Policies / Settings) set the minimum password
+length to 8 and turn on **Leaked password protection**, so the server enforces the same rules as the app.
+

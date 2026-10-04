@@ -2,6 +2,14 @@ import { authStrings } from "./strings";
 
 type AuthErrorLike = { code?: string; status?: number; message?: string } | null | undefined;
 
+// Password sign-in: a wrong email/password pair must not reveal which part was wrong.
+export function passwordSignInErrorMessage(error: AuthErrorLike): string {
+  const code = error?.code ?? "";
+  if (code === "invalid_credentials") return authStrings.errors.wrongPassword;
+  if (code === "email_not_confirmed") return authStrings.errors.emailNotConfirmed;
+  return authErrorMessage(error);
+}
+
 // Maps Supabase Auth errors to safe user-facing messages.
 export function authErrorMessage(error: AuthErrorLike): string {
   if (!error) return authStrings.errors.generic;

@@ -7,15 +7,18 @@ import { fail, ok, type ActionResult } from "@/lib/result";
 import { createClient } from "@/lib/supabase/server";
 import { safeNextPath } from "@/lib/utils/redirect";
 
-import { authErrorMessage } from "./errors";
+import { authErrorMessage, passwordSignInErrorMessage } from "./errors";
 import { postSignInPath } from "./queries";
 import {
   emailOtpRequestSchema,
   emailOtpVerifySchema,
   oauthSchema,
+  passwordSignInSchema,
   phoneOtpRequestSchema,
   phoneOtpVerifySchema,
+  setPasswordSchema,
 } from "./schemas";
+import { passwordStrings } from "./strings";
 
 function firstIssue(error: { issues: { message: string }[] }): string {
   return error.issues[0]?.message ?? "Invalid input.";
@@ -76,6 +79,19 @@ export async function verifyEmailOtp(input: unknown, next?: string): Promise<Act
   return ok({ redirectTo: await postSignInPath(data.user.id, safeNextPath(next)) });
 }
 
+export async function signInWithPassword(input: unknown): Promise<ActionResult<{ redirectTo: string }>> {
+  const parsed = passwordSignInSchema.safeParse(input);
+  if (!parsed.success) return fail(firstIssue(parsed.error));
+
+  const supabase = await createClient();
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email: parsed.data.email,
+    password: parsed.data.password,
+  });
+  if (error || !data.user) return fail(passwordSignInErrorMessage(error));
+  return ok({ redirectTo: await postSignInPath(data.user.id, safeNextPath(parsed.data.next)) });
+}
+
 export async function signInWithGoogle(formData: FormData): Promise<void> {
   const parsed = oauthSchema.safeParse({ next: formData.get("next") ?? undefined });
   const next = parsed.success ? parsed.data.next : undefined;
@@ -95,4 +111,25 @@ export async function signOut(): Promise<void> {
   const supabase = await createClient();
   await supabase.auth.signOut();
   redirect("/");
+}
+
+// Settings → Password: the signed-in user sets or changes the password used for email sign-in.
+export async function setPassword(input: unknown): Promise<ActionResult> {
+  const parsed = setPasswordSchema.safeParse(input);
+  if (!parsed.success) return fail(firstIssue(parsed.error));
+
+  const supabase = await createClient();
+  const { data: userData } = await supabase.auth.getUser();
+  if (!userData.user) return fail(passwordStrings.errors.signedOut);
+  if (!userData.user.email) return fail(passwordStrings.needsEmail);
+
+  const { error } = await supabase.auth.updateUser({ password: parsed.data.password });
+  if (error) {
+    const code = error.code ?? "";
+    if (code === "weak_password") return fail(passwordStrings.errors.weak);
+    if (code === "same_password") return fail(passwordStrings.errors.same);
+    if (code === "reauthentication_needed") return fail(passwordStrings.errors.reauth);
+    return fail(passwordStrings.errors.generic);
+  }
+  return ok();
 }
