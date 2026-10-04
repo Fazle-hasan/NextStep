@@ -12,6 +12,8 @@ export type PendingVerification = {
   createdAt: string;
   requesterName: string;
   company: { name: string; slug: string; industry: string | null; website: string | null; description: string | null } | null;
+  // Set for mentor requests once the applicant has created a mentor profile.
+  mentor: { headline: string; yearsExperience: number; industries: string[]; sessionTypes: Enums<"session_type">[] } | null;
 };
 
 export async function getPendingVerifications(): Promise<PendingVerification[]> {
@@ -25,15 +27,20 @@ export async function getPendingVerifications(): Promise<PendingVerification[]> 
   if (requests.length === 0) return [];
 
   const companyIds = requests.flatMap((r) => (r.kind === "company" && r.subject_id ? [r.subject_id] : []));
-  const [{ data: people }, { data: companies }] = await Promise.all([
+  const mentorIds = [...new Set(requests.flatMap((r) => (r.kind === "mentor" ? [r.user_id] : [])))];
+  const [{ data: people }, { data: companies }, { data: mentors }] = await Promise.all([
     supabase.from("profiles").select("id, full_name").in("id", [...new Set(requests.map((r) => r.user_id))]),
     companyIds.length
       ? supabase.from("companies").select("id, name, slug, industry, website, description").in("id", companyIds)
+      : Promise.resolve({ data: [] }),
+    mentorIds.length
+      ? supabase.from("mentor_profiles").select("user_id, headline, years_experience, industries, session_types").in("user_id", mentorIds)
       : Promise.resolve({ data: [] }),
   ]);
 
   return requests.map((r) => {
     const company = companies?.find((c) => c.id === r.subject_id);
+    const mentor = r.kind === "mentor" ? mentors?.find((m) => m.user_id === r.user_id) : undefined;
     return {
       id: r.id,
       kind: r.kind,
@@ -42,6 +49,14 @@ export async function getPendingVerifications(): Promise<PendingVerification[]> 
       requesterName: people?.find((p) => p.id === r.user_id)?.full_name ?? "Unnamed user",
       company: company
         ? { name: company.name, slug: company.slug, industry: company.industry, website: company.website, description: company.description }
+        : null,
+      mentor: mentor
+        ? {
+            headline: mentor.headline,
+            yearsExperience: mentor.years_experience,
+            industries: mentor.industries,
+            sessionTypes: mentor.session_types,
+          }
         : null,
     };
   });

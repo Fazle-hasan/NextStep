@@ -11,6 +11,11 @@ export const adminStrings = {
     note: "Note from the applicant",
     noNote: "No note given.",
     viewCompany: "Open company page",
+    mentorProfile: "Mentor profile",
+    noMentorProfile: "No mentor profile yet.",
+    mentorYears: (years: number) => `${years} ${years === 1 ? "year" : "years"} of experience`,
+    mentorIndustries: "Industries",
+    mentorSessionTypes: "Session types",
   },
   jobs: {
     title: "Jobs waiting for review",

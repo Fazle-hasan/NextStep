@@ -7,6 +7,7 @@ import { reviewVerification } from "@/features/admin/actions";
 import { ReviewButtons } from "@/features/admin/components/ReviewButtons";
 import { getPendingVerifications } from "@/features/admin/queries";
 import { adminStrings as s } from "@/features/admin/strings";
+import { SESSION_TYPE_LABELS } from "@/features/mentorship/labels";
 import { formatDate } from "@/lib/utils/dates";
 
 export const metadata: Metadata = { title: s.verification.title };
@@ -47,6 +48,28 @@ export default async function AdminVerificationPage() {
                       {request.company.website && <p className="break-all text-muted-foreground">{request.company.website}</p>}
                       {request.company.description && (
                         <p className="whitespace-pre-line text-muted-foreground">{request.company.description}</p>
+                      )}
+                    </div>
+                  )}
+                  {request.kind === "mentor" && (
+                    <div className="space-y-1 text-sm">
+                      <p className="font-medium">{s.verification.mentorProfile}</p>
+                      {request.mentor ? (
+                        <>
+                          <p>{request.mentor.headline}</p>
+                          <p className="text-muted-foreground">{s.verification.mentorYears(request.mentor.yearsExperience)}</p>
+                          {request.mentor.industries.length > 0 && (
+                            <p className="text-muted-foreground">
+                              {s.verification.mentorIndustries}: {request.mentor.industries.join(", ")}
+                            </p>
+                          )}
+                          <p className="text-muted-foreground">
+                            {s.verification.mentorSessionTypes}:{" "}
+                            {request.mentor.sessionTypes.map((type) => SESSION_TYPE_LABELS[type]).join(", ")}
+                          </p>
+                        </>
+                      ) : (
+                        <p className="text-muted-foreground">{s.verification.noMentorProfile}</p>
                       )}
                     </div>
                   )}

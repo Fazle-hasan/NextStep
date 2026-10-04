@@ -65,7 +65,7 @@ A user signs up once and can hold **multiple roles**. Role-specific features unl
 
 ## 5. Module 2 — LEAP integration
 
-> **Status (2026-10-04, D-031): future scope.** LEAP will be integrated with the LEAP team's own platform later. Nothing in this section is built in the UI yet.
+> **Status (2026-10-04, D-031): future scope.** LEAP will be integrated with the LEAP team's own platform later. The `/leap` page announces this; nothing else in this section is built in the UI yet.
 
 LEAP is an existing community career initiative. For now, LEAP content is **admin-managed** inside NextStep. Wrap all LEAP access in a service layer (`features/leap/service.ts`) so it can later be swapped for an external LEAP API.
 

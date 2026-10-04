@@ -47,10 +47,10 @@ export const SECTIONS: Section[] = [
     description: "Join LEAP programs, earn badges, and book sessions with experienced mentors.",
     modules: ["leap", "mentorship"],
     items: [
-      { label: "LEAP programs", href: "/leap", available: false },
-      { label: "Find a mentor", href: "/mentors", available: false },
-      { label: "My sessions", href: "/sessions", available: false },
-      { label: "Mentor dashboard", href: "/mentor", roles: ["mentor"], available: false },
+      { label: "LEAP programs", href: "/leap", available: true },
+      { label: "Find a mentor", href: "/mentors", available: true },
+      { label: "My sessions", href: "/sessions", available: true },
+      { label: "Mentor dashboard", href: "/mentor", roles: ["mentor"], available: true },
     ],
   },
   {

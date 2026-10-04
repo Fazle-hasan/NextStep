@@ -231,7 +231,7 @@ Format:
 - Date: 2026-10-04
 - Status: accepted (narrows D-005 and D-009 for now)
 - Context: The LEAP team runs its own four-stage journey (Learn → Engage → Apply → Progress, PRODUCT_SPEC §5). The project owner decided NextStep should connect to their platform later instead of managing LEAP content itself.
-- Decision: No LEAP screens are built now. The "LEAP programs" nav entry stays marked "Soon". The `leap` migration (`leap_programs`, `leap_enrollments`, `leap_badges`, enrollment RPCs, `leap-assets` bucket) was already applied before this decision; it stays in place as unused, empty, RLS-protected groundwork with passing tests (`005_leap.sql`). When the integration is designed, `features/leap/service.ts` (D-005) is still the single access point, and these tables are either used as a local cache or dropped in a new migration.
+- Decision: No LEAP features are built now. The "LEAP programs" nav entry opens `/leap`, a public page that says NextStep will integrate with the LEAP program and outlines the four stages (strings in `features/leap/strings.ts`). The `leap` migration (`leap_programs`, `leap_enrollments`, `leap_badges`, enrollment RPCs, `leap-assets` bucket) was already applied before this decision; it stays in place as unused, empty, RLS-protected groundwork with passing tests (`005_leap.sql`). When the integration is designed, `features/leap/service.ts` (D-005) is still the single access point, and these tables are either used as a local cache or dropped in a new migration.
 - Consequences: The employer "LEAP certified" applicant filter and LEAP badges on profiles are deferred with it. `companies.leap_friendly` remains as a plain flag. Removing the tables needs the owner's explicit approval.
 
 ## D-032: Mentorship booking rules
@@ -239,7 +239,7 @@ Format:
 - Status: accepted
 - Context: PRODUCT_SPEC §6 leaves notice periods and cancellation open.
 - Decision: Slots come from `get_mentor_slots()`: weekly rules plus exceptions in the mentor's time zone, cut into the mentor's default duration (30 or 60 minutes), bookable from 12 hours to 30 days ahead. `book_session()` re-checks the slot; an exclusion constraint stops a mentor's requested/confirmed sessions overlapping; a trigger caps a mentee at 2 upcoming requested/confirmed sessions. A request whose start time has passed no longer counts. Either side can cancel any time before the start. Accepting needs an `https://` meeting link. Feedback opens when a confirmed session has ended; the first feedback marks it completed. Mentors pause with `is_accepting` rather than deleting their profile. `admin_review_verification()` now also sets `mentor_profiles.verification_status`.
-- Consequences: Only the database (migration `mentorship`, tests `006_mentorship.sql`) exists so far; the mentorship screens are still to be built. Auto-completing past sessions and notifications come in Phase 6.
+- Consequences: Screens: `/mentors`, `/mentors/[id]` (booking), `/sessions`, `/sessions/[id]` for mentees (`features/mentorship/booking`) and `/mentor`, `/mentor/profile`, `/mentor/availability`, `/mentor/sessions/[id]` for mentors (`features/mentorship/mentor`). Slot times are shown in the viewer's browser time zone. The admin verification queue shows a mentor profile summary. Auto-completing past sessions and notifications come in Phase 6.
 
 ## D-033: Chat is opened only by accept-RPCs; messages are insert-only
 - Date: 2026-10-04
