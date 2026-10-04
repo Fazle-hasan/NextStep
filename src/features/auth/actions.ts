@@ -20,7 +20,7 @@ import {
   setPasswordSchema,
   signUpSchema,
 } from "./schemas";
-import { authStrings, passwordStrings } from "./strings";
+import { passwordStrings } from "./strings";
 
 function firstIssue(error: { issues: { message: string }[] }): string {
   return error.issues[0]?.message ?? "Invalid input.";
