@@ -143,6 +143,153 @@ export type Database = {
           },
         ]
       }
+      area_guides: {
+        Row: {
+          commute_notes: string | null
+          created_at: string
+          halal_food_notes: string | null
+          id: string
+          is_published: boolean
+          neighbourhood_id: string
+          rent_ranges: Json
+          safety_notes: string | null
+          summary: string
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          commute_notes?: string | null
+          created_at?: string
+          halal_food_notes?: string | null
+          id?: string
+          is_published?: boolean
+          neighbourhood_id: string
+          rent_ranges?: Json
+          safety_notes?: string | null
+          summary: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          commute_notes?: string | null
+          created_at?: string
+          halal_food_notes?: string | null
+          id?: string
+          is_published?: boolean
+          neighbourhood_id?: string
+          rent_ranges?: Json
+          safety_notes?: string | null
+          summary?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "area_guides_neighbourhood_id_fkey"
+            columns: ["neighbourhood_id"]
+            isOneToOne: true
+            referencedRelation: "neighbourhoods"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "area_guides_updated_by_fkey"
+            columns: ["updated_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      area_tip_votes: {
+        Row: {
+          created_at: string
+          id: string
+          tip_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          tip_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          tip_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "area_tip_votes_tip_id_fkey"
+            columns: ["tip_id"]
+            isOneToOne: false
+            referencedRelation: "area_tips"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "area_tip_votes_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      area_tips: {
+        Row: {
+          author_id: string
+          body: string
+          created_at: string
+          deleted_at: string | null
+          hidden_at: string | null
+          id: string
+          neighbourhood_id: string
+          updated_at: string
+          upvote_count: number
+        }
+        Insert: {
+          author_id: string
+          body: string
+          created_at?: string
+          deleted_at?: string | null
+          hidden_at?: string | null
+          id?: string
+          neighbourhood_id: string
+          updated_at?: string
+          upvote_count?: number
+        }
+        Update: {
+          author_id?: string
+          body?: string
+          created_at?: string
+          deleted_at?: string | null
+          hidden_at?: string | null
+          id?: string
+          neighbourhood_id?: string
+          updated_at?: string
+          upvote_count?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "area_tips_author_id_fkey"
+            columns: ["author_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "area_tips_neighbourhood_id_fkey"
+            columns: ["neighbourhood_id"]
+            isOneToOne: false
+            referencedRelation: "neighbourhoods"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       audit_log: {
         Row: {
           action: string
@@ -2072,6 +2219,184 @@ export type Database = {
           },
         ]
       }
+      place_photos: {
+        Row: {
+          created_at: string
+          id: string
+          place_id: string
+          position: number
+          storage_path: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          place_id: string
+          position?: number
+          storage_path: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          place_id?: string
+          position?: number
+          storage_path?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "place_photos_place_id_fkey"
+            columns: ["place_id"]
+            isOneToOne: false
+            referencedRelation: "places"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      place_suggestions: {
+        Row: {
+          created_at: string
+          id: string
+          note: string | null
+          payload: Json
+          place_id: string | null
+          review_note: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: Database["public"]["Enums"]["verification_status"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          note?: string | null
+          payload: Json
+          place_id?: string | null
+          review_note?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: Database["public"]["Enums"]["verification_status"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          note?: string | null
+          payload?: Json
+          place_id?: string | null
+          review_note?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: Database["public"]["Enums"]["verification_status"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "place_suggestions_place_id_fkey"
+            columns: ["place_id"]
+            isOneToOne: false
+            referencedRelation: "places"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "place_suggestions_reviewed_by_fkey"
+            columns: ["reviewed_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "place_suggestions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      places: {
+        Row: {
+          address: string | null
+          city_id: string
+          created_at: string
+          created_by: string | null
+          hidden_at: string | null
+          id: string
+          is_verified: boolean
+          location: unknown
+          name: string
+          neighbourhood_id: string | null
+          notes: string | null
+          phone: string | null
+          place_type: Database["public"]["Enums"]["place_type"]
+          timings: string | null
+          updated_at: string
+          website: string | null
+        }
+        Insert: {
+          address?: string | null
+          city_id: string
+          created_at?: string
+          created_by?: string | null
+          hidden_at?: string | null
+          id?: string
+          is_verified?: boolean
+          location: unknown
+          name: string
+          neighbourhood_id?: string | null
+          notes?: string | null
+          phone?: string | null
+          place_type: Database["public"]["Enums"]["place_type"]
+          timings?: string | null
+          updated_at?: string
+          website?: string | null
+        }
+        Update: {
+          address?: string | null
+          city_id?: string
+          created_at?: string
+          created_by?: string | null
+          hidden_at?: string | null
+          id?: string
+          is_verified?: boolean
+          location?: unknown
+          name?: string
+          neighbourhood_id?: string | null
+          notes?: string | null
+          phone?: string | null
+          place_type?: Database["public"]["Enums"]["place_type"]
+          timings?: string | null
+          updated_at?: string
+          website?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "places_city_id_fkey"
+            columns: ["city_id"]
+            isOneToOne: false
+            referencedRelation: "cities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "places_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "places_neighbourhood_id_fkey"
+            columns: ["neighbourhood_id"]
+            isOneToOne: false
+            referencedRelation: "neighbourhoods"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profile_private: {
         Row: {
           created_at: string
@@ -2855,6 +3180,7 @@ export type Database = {
         }
         Returns: string
       }
+      can_post_area_tip: { Args: never; Returns: boolean }
       cancel_enrollment: {
         Args: { p_enrollment_id: string }
         Returns: undefined
@@ -2900,6 +3226,7 @@ export type Database = {
         }
         Returns: string
       }
+      delete_area_tip: { Args: { p_tip_id: string }; Returns: undefined }
       delete_listing: { Args: { p_listing_id: string }; Returns: undefined }
       delete_message: { Args: { p_message_id: string }; Returns: undefined }
       enroll_in_program: {
@@ -2980,11 +3307,50 @@ export type Database = {
         Args: { p_conversation_id: string }
         Returns: undefined
       }
+      nearby_places: {
+        Args: {
+          p_lat: number
+          p_limit?: number
+          p_lng: number
+          p_radius_km?: number
+          p_types?: Database["public"]["Enums"]["place_type"][]
+        }
+        Returns: {
+          address: string
+          distance_m: number
+          id: string
+          lat: number
+          lng: number
+          name: string
+          place_type: Database["public"]["Enums"]["place_type"]
+          timings: string
+        }[]
+      }
       offer_help: {
         Args: { p_message?: string; p_request_id: string }
         Returns: string
       }
       pick_interview_slot: { Args: { p_slot_id: string }; Returns: undefined }
+      places_in_view: {
+        Args: {
+          p_limit?: number
+          p_max_lat: number
+          p_max_lng: number
+          p_min_lat: number
+          p_min_lng: number
+          p_types?: Database["public"]["Enums"]["place_type"][]
+        }
+        Returns: {
+          address: string
+          city_id: string
+          id: string
+          lat: number
+          lng: number
+          name: string
+          neighbourhood_id: string
+          place_type: Database["public"]["Enums"]["place_type"]
+        }[]
+      }
       rate_buddy: {
         Args: {
           p_buddy_id: string
@@ -3095,6 +3461,48 @@ export type Database = {
           tenant_gender_pref: Database["public"]["Enums"]["tenant_gender_pref"]
           title: string
           total_count: number
+        }[]
+      }
+      search_flats_near: {
+        Args: {
+          p_city_id?: string
+          p_limit?: number
+          p_listing_types?: Database["public"]["Enums"]["listing_type"][]
+          p_masjid_radius_km?: number
+          p_max_lat?: number
+          p_max_lng?: number
+          p_min_lat?: number
+          p_min_lng?: number
+          p_offset?: number
+          p_rent_max?: number
+          p_rent_min?: number
+          p_workplace_lat?: number
+          p_workplace_lng?: number
+          p_workplace_radius_km?: number
+        }
+        Returns: {
+          approx_lat: number
+          approx_lng: number
+          available_from: string
+          bedrooms: number
+          city_id: string
+          cover_photo_path: string
+          currency: string
+          deposit: number
+          furnishing: Database["public"]["Enums"]["furnishing"]
+          id: string
+          lister_id: string
+          listing_type: Database["public"]["Enums"]["listing_type"]
+          nearest_masjid_distance_m: number
+          nearest_masjid_id: string
+          nearest_masjid_name: string
+          nearest_masjid_type: Database["public"]["Enums"]["place_type"]
+          neighbourhood_id: string
+          rent: number
+          tenant_gender_pref: Database["public"]["Enums"]["tenant_gender_pref"]
+          title: string
+          total_count: number
+          workplace_distance_m: number
         }[]
       }
       search_jobs: {
@@ -3251,6 +3659,15 @@ export type Database = {
         | "relocate"
         | "help_newcomers"
         | "list_flat"
+      place_type:
+        | "shia_masjid"
+        | "imambargah"
+        | "community_center"
+        | "islamic_school"
+        | "halal_restaurant"
+        | "halal_grocery"
+        | "hospital_clinic"
+        | "transit_station"
       program_mode: "online" | "in_person"
       relocation_need:
         | "flat"
@@ -3500,6 +3917,16 @@ export const Constants = {
         "relocate",
         "help_newcomers",
         "list_flat",
+      ],
+      place_type: [
+        "shia_masjid",
+        "imambargah",
+        "community_center",
+        "islamic_school",
+        "halal_restaurant",
+        "halal_grocery",
+        "hospital_clinic",
+        "transit_station",
       ],
       program_mode: ["online", "in_person"],
       relocation_need: [

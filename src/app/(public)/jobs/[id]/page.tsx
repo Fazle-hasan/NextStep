@@ -12,6 +12,7 @@ import { PageFrame } from "@/features/jobs/search/components/PageFrame";
 import { getJobDetail, getSavedJobIds, hasAppliedToJob } from "@/features/jobs/search/queries";
 import { searchStrings as s } from "@/features/jobs/search/strings";
 import { getPublicPageViewer } from "@/features/jobs/search/viewer";
+import { isMapConfigured, MapView, parseEwkbPoint } from "@/lib/maps";
 import { companyLogoUrl } from "@/lib/supabase/storage";
 import { formatDate, timeAgo } from "@/lib/utils/dates";
 import { formatAnnualSalary } from "@/lib/utils/money";
@@ -41,6 +42,8 @@ export default async function JobPage({ params, searchParams }: PageProps<"/jobs
   const logo = companyLogoUrl(job.company.logo_path);
   const salary = job.salary ? formatAnnualSalary(job.salary.min, job.salary.max) : null;
   const place = [job.address_text, job.neighbourhoodName, job.cityName].filter(Boolean).join(", ");
+  // Remote jobs have no place to show; other jobs carry a pin or the centre of their neighbourhood or city.
+  const point = job.work_mode !== "remote" && isMapConfigured() ? parseEwkbPoint(job.location) : null;
 
   return (
     <PageFrame inShell={inShell} className="max-w-3xl space-y-6">
@@ -147,7 +150,15 @@ export default async function JobPage({ params, searchParams }: PageProps<"/jobs
           <MapPin className="mt-0.5 size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
           {place || (job.work_mode === "remote" ? s.detail.remote : "—")}
         </p>
-        {place && <p className="text-sm text-muted-foreground">{s.detail.mapNote}</p>}
+        {point && (
+          <MapView
+            markers={[{ id: job.id, kind: "job", lat: point.lat, lng: point.lng, label: s.detail.mapMarker }]}
+            center={point}
+            zoom={13}
+            ariaLabel={s.detail.mapLabel(job.title)}
+            className="h-56"
+          />
+        )}
         <p>
           <Link href="/location-gathering" className="inline-flex min-h-11 items-center font-medium text-primary hover:underline">
             {s.detail.relocate}

@@ -16,6 +16,7 @@ import { PhotoGallery } from "@/features/settle-in/flats/components/PhotoGallery
 import { LISTING_STATUS_LABELS, LISTING_TYPE_LABELS } from "@/features/settle-in/flats/labels";
 import { getFlatDetail } from "@/features/settle-in/flats/queries";
 import { flatsStrings } from "@/features/settle-in/flats/strings";
+import { isMapConfigured, MapView, parseEwkbPoint } from "@/lib/maps";
 import { formatMonthlyRent } from "@/lib/utils/money";
 
 const s = flatsStrings.detail;
@@ -33,6 +34,10 @@ export default async function FlatPage({ params }: PageProps<"/flats/[id]">) {
 
   const place = [detail.neighbourhoodName, detail.cityName].filter(Boolean).join(", ");
   const isLive = listing.status === "active" && new Date(listing.expires_at) > new Date();
+  // The exact pin only for viewers who already get the exact address (the lister or an accepted requester);
+  // everyone else sees the approximate public point (D-004).
+  const approxPoint = typeof listing.approx_location === "string" ? parseEwkbPoint(listing.approx_location) : null;
+  const mapPoint = isMapConfigured() ? (address ? { lat: address.lat, lng: address.lng } : approxPoint) : null;
   const statusNote = isLive ? "" : s.statusNote[listing.status === "active" ? "expired" : listing.status];
 
   return (
@@ -110,6 +115,26 @@ export default async function FlatPage({ params }: PageProps<"/flats/[id]">) {
             <>
               {place && <p className="font-medium">{place}</p>}
               <p className="text-sm text-muted-foreground">{s.areaBody}</p>
+            </>
+          )}
+          {mapPoint && (
+            <>
+              <MapView
+                markers={[
+                  {
+                    id: listing.id,
+                    kind: "flat",
+                    lat: mapPoint.lat,
+                    lng: mapPoint.lng,
+                    label: address ? s.mapExact : s.mapApprox,
+                  },
+                ]}
+                center={mapPoint}
+                zoom={address ? 15 : 13}
+                ariaLabel={address ? s.mapExact : s.mapApprox}
+                className="h-56"
+              />
+              {!address && <p className="text-sm text-muted-foreground">{s.mapApproxNote}</p>}
             </>
           )}
         </CardContent>

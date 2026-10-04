@@ -7,6 +7,7 @@ Fake data for trying the app. Nothing here is real: emails end in `example.test`
 |---|---|
 | `01_sample_companies_and_jobs.sql` | 3 sample employer accounts, 6 verified companies, 16 live jobs (Mumbai, Bengaluru, Hyderabad) with salaries, skills and a few screening questions |
 | `02_sample_settle_in.sql` | 6 sample members, 2 verified Settle-In Buddies, 7 live flat listings (fake addresses at the neighbourhood centre) and 4 flatmate profiles in Mumbai and Bengaluru. **Not loaded into the hosted dev project yet** |
+| `03_sample_places_and_guides.sql` | About 6 sample places around every seeded neighbourhood (a Shia masjid or imambargah, halal food, grocery, clinic, station), a community centre per city, published guides for the Mumbai and Bengaluru neighbourhoods and 5 community tips. **Not loaded into the hosted dev project yet** |
 | `remove_sample_data.sql.txt` | Removes all of the above. Not run automatically |
 
 ## Local database

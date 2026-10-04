@@ -126,8 +126,10 @@ export const employerStrings = {
     neighbourhoodPlaceholder: "Any / not sure",
     noNeighbourhood: "Any / not sure",
     address: "Address (optional)",
-    locationNote:
-      "A map pin picker arrives with the maps module. For now the job is placed at the neighbourhood or city you choose.",
+    locationNote: "Shown on the job page. Without a map pin, the job is placed at the neighbourhood or city you choose.",
+    pinTitle: "Map pin (optional)",
+    pinLabel: "Place the workplace on the map",
+    pinHint: "Helps seekers search by distance. Changing the city or neighbourhood clears the pin.",
     openings: "Number of openings",
     deadline: "Application deadline (optional)",
     skills: "Skills (up to 10)",

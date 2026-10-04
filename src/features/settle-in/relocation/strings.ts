@@ -35,6 +35,7 @@ export const relocationStrings = {
     workplaceAddress: "Workplace address (optional)",
     workplaceHint: "Helps buddies suggest areas with a short commute.",
     useLocation: "Use my current location",
+    pickerLabel: "Place your workplace on the map",
     locating: "Finding your location…",
     pinSet: "Location pin added. It is saved when you submit.",
     pinSaved: "A location pin is saved for this request.",

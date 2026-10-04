@@ -80,6 +80,9 @@ export default async function EditFlatPage({ params }: PageProps<"/flats/[id]/ed
             listingId={listing.id}
             defaults={{ addressLine: address?.addressLine ?? "", landmark: address?.landmark ?? "" }}
             hasSavedPin={Boolean(address)}
+            savedPoint={address ? { lat: address.lat, lng: address.lng } : null}
+            cityId={listing.city_id}
+            neighbourhoodId={listing.neighbourhood_id}
           />
         </CardContent>
       </Card>

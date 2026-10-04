@@ -8,7 +8,9 @@ import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useAreaCentre } from "@/features/places/map/useAreaCentre";
 import { Field } from "@/features/profiles/components/Field";
+import { isMapConfigured, PinPicker, type MapPoint } from "@/lib/maps";
 
 import { saveListingAddress } from "../actions";
 import type { AddressFormInput } from "../schemas";
@@ -21,11 +23,16 @@ type Props = {
   defaults: AddressFormInput;
   // True when a location pin is already saved for this listing.
   hasSavedPin: boolean;
+  // The pin saved earlier (only the lister ever gets this), shown on the map picker.
+  savedPoint?: MapPoint | null;
+  // The listing's area, so the map picker opens there when no pin is saved yet.
+  cityId?: string | null;
+  neighbourhoodId?: string | null;
 };
 
-// The private exact address. "Use my current location" captures the pin; without it the server
-// falls back to the neighbourhood (or city) centre. The map pin picker arrives with the maps module.
-export function AddressForm({ listingId, defaults, hasSavedPin }: Props) {
+// The private exact address. The lister places the pin on the map or taps "Use my current location";
+// without a pin the server falls back to the neighbourhood (or city) centre.
+export function AddressForm({ listingId, defaults, hasSavedPin, savedPoint = null, cityId, neighbourhoodId }: Props) {
   const router = useRouter();
   const [point, setPoint] = useState<{ lat: number; lng: number } | null>(null);
   const [locating, setLocating] = useState(false);
@@ -33,6 +40,8 @@ export function AddressForm({ listingId, defaults, hasSavedPin }: Props) {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
   const form = useForm<AddressFormInput>({ defaultValues: defaults });
+  const areaCentre = useAreaCentre(cityId, neighbourhoodId);
+  const mapAvailable = isMapConfigured();
 
   function locate() {
     setLocationError(null);
@@ -88,6 +97,9 @@ export function AddressForm({ listingId, defaults, hasSavedPin }: Props) {
 
       <fieldset className="space-y-2">
         <legend className="text-sm font-medium">{s.locationTitle}</legend>
+        {mapAvailable && (
+          <PinPicker value={point ?? savedPoint} onChange={setPoint} initialCenter={areaCentre} ariaLabel={s.pickerLabel} />
+        )}
         <div className="flex flex-wrap gap-2">
           <Button type="button" variant="outline" className="h-11" disabled={locating} onClick={locate}>
             <LocateFixed aria-hidden="true" />
@@ -102,7 +114,7 @@ export function AddressForm({ listingId, defaults, hasSavedPin }: Props) {
         <p role="status" className="text-sm font-medium">
           {point ? s.locationSet : hasSavedPin ? s.locationSaved : ""}
         </p>
-        <p className="text-sm text-muted-foreground">{s.locationHint}</p>
+        <p className="text-sm text-muted-foreground">{mapAvailable ? s.locationHintMap : s.locationHint}</p>
         {locationError && (
           <p role="alert" className="text-sm text-destructive">
             {locationError}

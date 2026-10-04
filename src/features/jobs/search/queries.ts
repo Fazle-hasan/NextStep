@@ -154,6 +154,8 @@ export type JobDetail = {
   published_at: string | null;
   created_at: string;
   expires_at: string | null;
+  // Hex EWKB point as returned by the REST API (parse with parseEwkbPoint).
+  location: string | null;
   cityName: string | null;
   neighbourhoodName: string | null;
   company: {
@@ -186,7 +188,7 @@ export async function getJobDetail(id: string): Promise<JobDetail | null> {
     .from("jobs")
     .select(
       `id, title, description, requirements, job_type, work_mode, experience_level, status, address_text, openings,
-       application_deadline, published_at, created_at, expires_at,
+       application_deadline, published_at, created_at, expires_at, location,
        cities ( name ),
        neighbourhoods ( name ),
        companies!inner ( id, name, slug, logo_path, description, is_community_owned, leap_friendly ),

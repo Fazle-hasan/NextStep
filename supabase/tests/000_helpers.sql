@@ -94,6 +94,9 @@ begin
   delete from auth.users;
   -- Enrollments and badges go with the users; programs are restricted until then.
   delete from public.leap_programs;
+  -- Sample places and guides are not owned by a user.
+  delete from public.places;
+  delete from public.area_guides;
 end;
 $$;
 

@@ -90,6 +90,9 @@ export const jobFormSchema = z
     cityId: optionalUuid,
     neighbourhoodId: optionalUuid,
     addressText: optionalText(300),
+    // Optional map pin. Without it the database places the job at the neighbourhood or city centre (D-029).
+    locationLat: z.number().min(-90).max(90).nullish(),
+    locationLng: z.number().min(-180).max(180).nullish(),
     openings: z.number({ error: errors.openings }).int(errors.openings).min(1, errors.openings).max(1000, errors.openings),
     applicationDeadline: z
       .string()

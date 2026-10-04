@@ -11,6 +11,7 @@ import { lakhToPaise } from "@/lib/utils/money";
 import { jobIdSchema, jobStatusSchema, saveJobSchema, type JobFormValues } from "./schemas";
 import { employerStrings } from "./strings";
 import type { JobStatusResult } from "./types";
+import { toEwktPoint } from "@/lib/maps/geo";
 
 // Job posting server actions. Status rules are enforced by the database trigger (jobs_enforce_status).
 
@@ -115,12 +116,18 @@ export async function saveJob(input: unknown): Promise<ActionResult<JobStatusRes
     application_deadline: v.applicationDeadline ?? null,
   };
 
+  // A pin the employer placed. Without one, location: null makes the trigger place the job from the
+  // neighbourhood or city centre.
+  const pin =
+    v.cityId && v.locationLat != null && v.locationLng != null
+      ? toEwktPoint({ lat: v.locationLat, lng: v.locationLng })
+      : null;
+
   let saved: { id: string; status: JobStatusResult["status"] } | null;
   if (parsed.data.jobId) {
-    // location: null makes the trigger place the job again from the neighbourhood or city.
     const { data, error } = await supabase
       .from("jobs")
-      .update({ ...fields, location: null })
+      .update({ ...fields, location: pin })
       .eq("id", parsed.data.jobId)
       .select("id, status")
       .maybeSingle();
@@ -129,7 +136,7 @@ export async function saveJob(input: unknown): Promise<ActionResult<JobStatusRes
   } else {
     const { data, error } = await supabase
       .from("jobs")
-      .insert({ ...fields, company_id: companyId, posted_by: viewer.id })
+      .insert({ ...fields, location: pin, company_id: companyId, posted_by: viewer.id })
       .select("id, status")
       .maybeSingle();
     if (error) return fail(error.code === "42501" ? dbErrors.not_company_member : dbErrorMessage(error, dbErrors, errors.generic));

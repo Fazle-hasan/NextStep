@@ -58,6 +58,9 @@ export const flatsStrings = {
     areaBody:
       "For the lister's safety, only the area is shown. The exact address is shared with you after the lister accepts your contact request.",
     addressTitle: "Exact address",
+    mapApprox: "Approximate location of the flat (within about 500 m)",
+    mapApproxNote: "The pin shows the approximate area, not the exact building.",
+    mapExact: "Exact location of the flat",
     addressShared: "The lister accepted your request, so the address is shared with you. Please keep it private.",
     addressOwn: "Only you and people whose request you accept can see this.",
     landmark: "Landmark",
@@ -132,12 +135,15 @@ export const flatsStrings = {
     locationTitle: "Location pin",
     useLocation: "Use my current location",
     locating: "Finding your location…",
-    locationSet: "Location captured. Save to keep it.",
+    locationSet: "Location set. Save to keep it.",
+    pickerLabel: "Place the flat on the map",
+    locationHintMap:
+      "Tap the map or drag the pin to the flat, or use your current location while you are there. If you skip it, we use the centre of the neighbourhood (or the city) instead, so the approximate area shown to others will be less accurate.",
     locationSaved: "A location pin is saved for this listing.",
     locationHint:
       "Tap this while you are at the flat. If you skip it, we use the centre of the neighbourhood (or the city) instead, so the approximate area shown to others will be less accurate.",
     locationDenied: "We could not read your location. You can still save; the neighbourhood centre will be used.",
-    clearLocation: "Don't use my location",
+    clearLocation: "Undo pin change",
     save: "Save address",
     saving: "Saving…",
     saved: "Address saved.",

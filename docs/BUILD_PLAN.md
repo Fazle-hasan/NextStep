@@ -397,7 +397,7 @@ Phases are labelled with the user-facing section they deliver (D-021): **Communi
 4. M015 flatmate profiles, `get_flatmate_matches`, connections.
 5. Critical pgTAP tests: a non-accepted user can never read `flat_listing_private`; non-participants can never read messages; gender filters hold in both directions; blocked users are fully hidden; rate limits fire. Commit.
 
-**Phase 5: Location Gathering, part 2 (places, area guides and map)**
+**Phase 5: Location Gathering, part 2 (places, area guides and map)** — done 2026-10-04 (migrations `20261004073038_places`, `20261004073109_area_guides`, `20261004073137_geo_search`; see D-036, D-037). Deferred to Phase 6: admin management of places, suggestions, guides and tip moderation.
 1. M017 places plus `place-photos`, the public directory, and suggestions.
 2. M018 area guides and tips with votes.
 3. `src/lib/maps` wrapper (Mapbox). `search_flats`, `places_in_view`, `nearby_places`. `/map` page with layers, workplace pin, the masjid-radius and workplace-radius filters, and a synced list.

@@ -5,6 +5,7 @@ import type { Tables } from "@/types/database";
 
 import type { CompanyFormInput, JobFormInput } from "./schemas";
 import type { JobForEdit } from "./types";
+import { parseEwkbPoint } from "@/lib/maps/geo";
 
 // Form default values built from database rows (the forms keep "" for "nothing entered").
 
@@ -39,6 +40,8 @@ export const NEW_JOB_DEFAULTS: DefaultValues<JobFormInput> = {
   cityId: "",
   neighbourhoodId: "",
   addressText: "",
+  locationLat: null,
+  locationLng: null,
   openings: 1,
   applicationDeadline: "",
   skillIds: [],
@@ -53,6 +56,8 @@ function lakhInput(paise: number | null | undefined): string {
 }
 
 export function jobDefaults({ job, salary, skillIds, questions }: JobForEdit): DefaultValues<JobFormInput> {
+  // The saved point (a pin the employer placed, or the area centre the database chose).
+  const pin = typeof job.location === "string" ? parseEwkbPoint(job.location) : null;
   return {
     title: job.title,
     description: job.description,
@@ -63,6 +68,8 @@ export function jobDefaults({ job, salary, skillIds, questions }: JobForEdit): D
     cityId: job.city_id ?? "",
     neighbourhoodId: job.neighbourhood_id ?? "",
     addressText: job.address_text ?? "",
+    locationLat: pin?.lat ?? null,
+    locationLng: pin?.lng ?? null,
     openings: job.openings,
     applicationDeadline: job.application_deadline ?? "",
     skillIds,
