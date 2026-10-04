@@ -1,6 +1,8 @@
 import Link from "next/link";
+import { Suspense } from "react";
 
 import type { Viewer } from "@/features/auth/queries";
+import { NotificationBellSlot } from "@/features/notifications/components/NotificationBellSlot";
 
 import { BottomNav } from "./BottomNav";
 import { SideNav } from "./SideNav";
@@ -17,7 +19,12 @@ export function AppShell({ viewer, children }: { viewer: Viewer; children: React
         <Link href="/home" className="text-lg font-semibold tracking-tight text-primary">
           {shellStrings.brand}
         </Link>
-        <UserMenu name={name} roles={viewer.roles} />
+        <div className="flex items-center gap-1">
+          <Suspense fallback={null}>
+            <NotificationBellSlot viewerId={viewer.id} />
+          </Suspense>
+          <UserMenu name={name} roles={viewer.roles} />
+        </div>
       </header>
       <div className="flex flex-1">
         <aside className="hidden w-64 shrink-0 border-r md:block">

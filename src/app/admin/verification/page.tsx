@@ -8,6 +8,7 @@ import { ReviewButtons } from "@/features/admin/components/ReviewButtons";
 import { getPendingVerifications } from "@/features/admin/queries";
 import { adminStrings as s } from "@/features/admin/strings";
 import { SESSION_TYPE_LABELS } from "@/features/mentorship/labels";
+import { NEED_LABELS } from "@/features/settle-in/relocation/labels";
 import { formatDate } from "@/lib/utils/dates";
 
 export const metadata: Metadata = { title: s.verification.title };
@@ -71,6 +72,34 @@ export default async function AdminVerificationPage() {
                       ) : (
                         <p className="text-muted-foreground">{s.verification.noMentorProfile}</p>
                       )}
+                    </div>
+                  )}
+                  {request.kind === "buddy" && (
+                    <div className="space-y-1 text-sm">
+                      <p className="font-medium">{s.verification.buddyProfile}</p>
+                      {request.buddy ? (
+                        <>
+                          {request.buddy.cityName && (
+                            <p className="text-muted-foreground">
+                              {s.verification.buddyCity}: {request.buddy.cityName}
+                            </p>
+                          )}
+                          <p className="text-muted-foreground">
+                            {s.verification.buddyHelp}: {request.buddy.helpTypes.map((type) => NEED_LABELS[type]).join(", ")}
+                          </p>
+                          {request.buddy.bio && <p className="whitespace-pre-line text-muted-foreground">{request.buddy.bio}</p>}
+                        </>
+                      ) : (
+                        <p className="text-muted-foreground">{s.verification.noBuddyProfile}</p>
+                      )}
+                    </div>
+                  )}
+                  {request.lister && (
+                    <div className="space-y-1 text-sm">
+                      <p className="font-medium">{s.verification.listerProfile}</p>
+                      <p className="text-muted-foreground">
+                        {request.requesterName} · {s.verification.listerListings(request.lister.listingCount)}
+                      </p>
                     </div>
                   )}
                   <div className="text-sm">

@@ -1,12 +1,21 @@
 // User-facing strings for the admin area.
 export const adminStrings = {
   title: "Admin",
-  intro: "Review verification requests and first job posts. Moderation, places and analytics arrive in a later phase.",
+  intro: "Verify members, moderate reports, manage places and guides, and see how the platform is doing.",
+  home: {
+    moderation: { title: "Moderation", description: "Reports on users, jobs, listings, tips and messages." },
+    users: { title: "Users", description: "Find a member, suspend or restore an account." },
+    places: { title: "Places", description: "Manage the directory and review suggestions from members." },
+    areas: { title: "Area guides", description: "Write neighbourhood guides and moderate community tips." },
+    analytics: { title: "Analytics", description: "Signups, jobs, applications, sessions and listings." },
+    audit: { title: "Audit log", description: "Every admin action, newest first." },
+    open: "Open",
+  },
   verification: {
     title: "Verification requests",
-    description: "Companies, mentors and buddies waiting to be verified.",
+    description: "Companies, mentors, buddies and flat listers waiting to be verified.",
     empty: "No requests are waiting.",
-    kind: { company: "Company", mentor: "Mentor", buddy: "Settle-In Buddy", flat_lister_id: "Flat lister ID" },
+    kind: { company: "Company", mentor: "Mentor", buddy: "Settle-In Buddy", flat_lister_id: "Flat lister ID badge" },
     requestedBy: "Requested by",
     note: "Note from the applicant",
     noNote: "No note given.",
@@ -16,6 +25,12 @@ export const adminStrings = {
     mentorYears: (years: number) => `${years} ${years === 1 ? "year" : "years"} of experience`,
     mentorIndustries: "Industries",
     mentorSessionTypes: "Session types",
+    buddyProfile: "Buddy profile",
+    noBuddyProfile: "No buddy profile yet.",
+    buddyCity: "City",
+    buddyHelp: "Can help with",
+    listerProfile: "Flat lister",
+    listerListings: (count: number) => (count === 1 ? "1 listing" : `${count} listings`),
   },
   jobs: {
     title: "Jobs waiting for review",
@@ -33,6 +48,7 @@ export const adminStrings = {
   working: "Saving…",
   done: "Saved.",
   waiting: (count: number) => `${count} waiting`,
+  unnamed: "Unnamed user",
   errors: {
     admin_only: "Only admins can do this.",
     request_not_found: "That request no longer exists.",

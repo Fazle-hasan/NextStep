@@ -2219,6 +2219,94 @@ export type Database = {
           },
         ]
       }
+      notification_preferences: {
+        Row: {
+          created_at: string
+          email_enabled: boolean
+          email_muted_types: string[]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          email_enabled?: boolean
+          email_muted_types?: string[]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          email_enabled?: boolean
+          email_muted_types?: string[]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notification_preferences_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      notifications: {
+        Row: {
+          body: string | null
+          created_at: string
+          data: Json
+          email_attempts: number
+          email_status: Database["public"]["Enums"]["notification_email_status"]
+          emailed_at: string | null
+          id: string
+          link: string | null
+          read_at: string | null
+          title: string
+          type: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          body?: string | null
+          created_at?: string
+          data?: Json
+          email_attempts?: number
+          email_status?: Database["public"]["Enums"]["notification_email_status"]
+          emailed_at?: string | null
+          id?: string
+          link?: string | null
+          read_at?: string | null
+          title: string
+          type: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          body?: string | null
+          created_at?: string
+          data?: Json
+          email_attempts?: number
+          email_status?: Database["public"]["Enums"]["notification_email_status"]
+          emailed_at?: string | null
+          id?: string
+          link?: string | null
+          read_at?: string | null
+          title?: string
+          type?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notifications_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       place_photos: {
         Row: {
           created_at: string
@@ -2478,6 +2566,7 @@ export type Database = {
           gender: Database["public"]["Enums"]["gender"] | null
           id: string
           intents: Database["public"]["Enums"]["onboarding_intent"][]
+          lister_verified_at: string | null
           onboarding_completed_at: string | null
           suspended_at: string | null
           updated_at: string
@@ -2491,6 +2580,7 @@ export type Database = {
           gender?: Database["public"]["Enums"]["gender"] | null
           id: string
           intents?: Database["public"]["Enums"]["onboarding_intent"][]
+          lister_verified_at?: string | null
           onboarding_completed_at?: string | null
           suspended_at?: string | null
           updated_at?: string
@@ -2504,6 +2594,7 @@ export type Database = {
           gender?: Database["public"]["Enums"]["gender"] | null
           id?: string
           intents?: Database["public"]["Enums"]["onboarding_intent"][]
+          lister_verified_at?: string | null
           onboarding_completed_at?: string | null
           suspended_at?: string | null
           updated_at?: string
@@ -3145,6 +3236,10 @@ export type Database = {
     }
     Functions: {
       add_skill: { Args: { p_name: string }; Returns: string }
+      admin_analytics: {
+        Args: { p_city_id?: string; p_from?: string; p_to?: string }
+        Returns: Json
+      }
       admin_complete_enrollment: {
         Args: { p_enrollment_id: string }
         Returns: undefined
@@ -3153,12 +3248,32 @@ export type Database = {
         Args: { p_approve: boolean; p_enrollment_id: string; p_reason?: string }
         Returns: Database["public"]["Enums"]["enrollment_status"]
       }
+      admin_resolve_report: {
+        Args: { p_action: string; p_note?: string; p_report_id: string }
+        Returns: undefined
+      }
       admin_review_job: {
         Args: { p_approve: boolean; p_job_id: string; p_reason?: string }
         Returns: undefined
       }
+      admin_review_place_suggestion: {
+        Args: { p_approve: boolean; p_note?: string; p_suggestion_id: string }
+        Returns: string
+      }
       admin_review_verification: {
         Args: { p_approve: boolean; p_reason?: string; p_request_id: string }
+        Returns: undefined
+      }
+      admin_set_content_hidden: {
+        Args: {
+          p_hidden: boolean
+          p_target_id: string
+          p_type: Database["public"]["Enums"]["report_target_type"]
+        }
+        Returns: undefined
+      }
+      admin_set_user_suspension: {
+        Args: { p_reason?: string; p_suspend: boolean; p_user_id: string }
         Returns: undefined
       }
       apply_to_job: {
@@ -3307,6 +3422,7 @@ export type Database = {
         Args: { p_conversation_id: string }
         Returns: undefined
       }
+      mark_notifications_read: { Args: { p_ids?: string[] }; Returns: number }
       nearby_places: {
         Args: {
           p_lat: number
@@ -3394,6 +3510,10 @@ export type Database = {
         Args: { p_company_id: string; p_note?: string }
         Returns: undefined
       }
+      request_lister_verification: {
+        Args: { p_note?: string }
+        Returns: undefined
+      }
       request_mentor_verification: {
         Args: { p_note?: string }
         Returns: undefined
@@ -3419,6 +3539,7 @@ export type Database = {
         }
         Returns: undefined
       }
+      run_job_alert_digest: { Args: never; Returns: number }
       save_listing_address: {
         Args: {
           p_address_line: string
@@ -3651,6 +3772,7 @@ export type Database = {
         | "cohort"
       listing_status: "active" | "paused" | "rented" | "expired"
       listing_type: "entire_flat" | "private_room" | "shared_room" | "pg_hostel"
+      notification_email_status: "skipped" | "pending" | "sent" | "failed"
       offer_status: "pending" | "accepted" | "declined" | "withdrawn"
       onboarding_intent:
         | "find_job"
@@ -3909,6 +4031,7 @@ export const Constants = {
       ],
       listing_status: ["active", "paused", "rented", "expired"],
       listing_type: ["entire_flat", "private_room", "shared_room", "pg_hostel"],
+      notification_email_status: ["skipped", "pending", "sent", "failed"],
       offer_status: ["pending", "accepted", "declined", "withdrawn"],
       onboarding_intent: [
         "find_job",

@@ -403,7 +403,7 @@ Phases are labelled with the user-facing section they deliver (D-021): **Communi
 3. `src/lib/maps` wrapper (Mapbox). `search_flats`, `places_in_view`, `nearby_places`. `/map` page with layers, workplace pin, the masjid-radius and workplace-radius filters, and a synced list.
 4. Seed sample places (clearly marked SAMPLE, fake coordinates near city centers) and neighbourhood guides. Tests, commit.
 
-**Phase 6: Notifications and admin**
+**Phase 6: Notifications and admin** — done 2026-10-04 (migrations `20261004081634_notifications`, `20261004081743_admin_tools`, `20261004081805_cron_jobs`; Edge Functions `dispatch-notifications`, `job-alert-digest`, `admin-user-action`; see D-038…D-040). LEAP management is left out (D-031). The Edge Functions are in the repo but must be deployed and given their secrets (docs/SETUP.md).
 1. M019 notifications, the `notify()` wiring in all RPCs, realtime bell, preferences page.
 2. Edge Functions `dispatch-notifications` (Resend) and the WhatsApp stub. M020 cron jobs, `job-alert-digest`.
 3. Admin: verification queue, moderation queue with actions, `admin-user-action` function, places/areas/LEAP management, M021 analytics dashboard, audit log viewer. Tests, commit.

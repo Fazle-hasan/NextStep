@@ -1,4 +1,4 @@
--- Removes the sample data added by 01_sample_companies_and_jobs.sql, 02_sample_settle_in.sql and 03_sample_places_and_guides.sql.
+-- Removes the sample data added by 01_sample_companies_and_jobs.sql, 02_sample_settle_in.sql 03_sample_places_and_guides.sql and 04_sample_mentors.sql.
 -- Kept as .txt so it is never run automatically. It DELETES data: run it by hand only when you mean to.
 -- Jobs, salaries, skills links, questions, locations and members go with the companies (cascade).
 -- Applications made to sample jobs are deleted too.
@@ -13,4 +13,7 @@ delete from auth.users where email like 'sample.member%@example.test';
 -- 03_sample_places_and_guides.sql: sample places and guides (the sample tips go with the sample members above).
 delete from public.places where name like 'Sample %' and notes = 'Sample entry for testing. Not a real place.';
 delete from public.area_guides where summary like 'Sample guide. %';
+
+-- 04_sample_mentors.sql: mentor profiles, availability, skills and sessions go with the sample mentors (cascade).
+delete from auth.users where email like 'sample.mentor%@example.test';
 

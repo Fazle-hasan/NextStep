@@ -105,3 +105,32 @@ Open http://localhost:3000
 - The dev project is for development only. No real user data.
 - Never paste the service role key into chats or prompts.
 - Production will be a **separate** Supabase project, deployed from `supabase/migrations/`, and never connected to MCP with write access.
+
+## Edge Functions and scheduled jobs (Phase 6)
+
+In-app notifications work without this. Emails, the daily job-alert digest and blocking a suspended user's
+sign-in need the three Edge Functions in `supabase/functions/`.
+
+1. Log the Supabase CLI in and link the project (once):
+   ```bash
+   pnpm exec supabase login
+   pnpm exec supabase link --project-ref zmvdkzphpjjcwwrnniuu
+   ```
+2. Set the function secrets (pick a long random value for `CRON_SECRET`; never commit these):
+   ```bash
+   pnpm exec supabase secrets set CRON_SECRET=<random-string> SITE_URL=<https://your-site> \
+     RESEND_API_KEY=<resend key> EMAIL_FROM="NextStep <no-reply@your-verified-domain>"
+   ```
+   Without `RESEND_API_KEY` and `EMAIL_FROM`, pending emails are marked as failed and nothing is sent.
+3. Deploy the functions:
+   ```bash
+   pnpm exec supabase functions deploy dispatch-notifications job-alert-digest admin-user-action
+   ```
+4. Tell the database where the functions are. In the dashboard → SQL Editor, run (same `CRON_SECRET` as above):
+   ```sql
+   select vault.create_secret('https://zmvdkzphpjjcwwrnniuu.supabase.co/functions/v1', 'edge_functions_url');
+   select vault.create_secret('<random-string>', 'cron_secret');
+   ```
+   Until both secrets exist, the two cron jobs that call the functions do nothing.
+5. Check: dashboard → Edge Functions → `dispatch-notifications` → Logs should show a call every minute.
+

@@ -3,6 +3,10 @@
     "supabase": {
       "type": "http",
       "url": "https://mcp.supabase.com/mcp?project_ref=zmvdkzphpjjcwwrnniuu"
+    },
+    "atomicviz": {
+      "type": "http",
+      "url": "http://127.0.0.1:3939/mcp"
     }
   }
 }
