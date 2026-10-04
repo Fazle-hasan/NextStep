@@ -173,6 +173,6 @@ export async function requestPasswordReset(input: unknown): Promise<ActionResult
   const { error } = await supabase.auth.resetPasswordForEmail(parsed.data.email, {
     redirectTo: callbackUrl("/reset-password"),
   });
-  if (error && (error.status === 429 || error.code?.startsWith("over_"))) return fail(authStrings.errors.rateLimited);
+  if (error && (error.status === 429 || error.code?.startsWith("over_"))) return fail(authErrorMessage(error));
   return ok({ email: parsed.data.email });
 }
