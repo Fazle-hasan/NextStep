@@ -313,8 +313,22 @@ Format:
 
 ## D-043: Email first, optional password sign-in, and only enabled providers shown
 - Date: 2026-10-04
-- Status: accepted (extends PRODUCT_SPEC §3 sign-in methods)
+- Status: partly superseded by D-044 (provider detection still applies)
 - Context: On the hosted project only the email provider is switched on (Google and phone are off), so the Google button failed and the Phone tab could not work. The project owner also asked for a login with a password.
 - Decision: The sign-in page reads `/auth/v1/settings` (cached 5 minutes) and shows only providers that are switched on; Google and Phone appear by themselves once enabled in the dashboard. The default tab is **Email code**. A **Password** tab signs in with email + password (`signInWithPassword`). Passwords are optional: a member first signs in with an email code, then sets one in **Settings → Password** (`auth.updateUser`, 8–72 characters, both checked in the browser and on the server). There is no sign-up with a password and no password reset by email: a forgotten password is handled by signing in with an email code and setting a new one. A wrong email/password pair gets one message that does not say which part was wrong. Accounts that only have a phone number cannot use passwords. Passwords are never shown, logged or stored outside Supabase Auth.
 - Consequences: Turn on "Leaked password protection" and set the minimum password length to 8 in the Supabase dashboard (Authentication → Policies/Settings) so the server enforces the same rules as the app. Google needs an OAuth client (docs/SETUP.md).
+
+## D-044: Separate Log in and Sign up with email + password; links instead of codes
+- Date: 2026-10-04
+- Status: accepted (supersedes D-043's "no password sign-up, no reset by email"; extends PRODUCT_SPEC §3)
+- Context: The hosted project's emails contain a link, not a 6-digit code, so the code-entry step never worked there. The project owner asked for separate Sign up and Log in buttons and a way for people to set their password.
+- Decision: Two pages switched by two buttons at the top: **Log in** (`/sign-in`: email + password, "Forgot password?", "Email me a sign-in link instead", Phone and Google only when enabled) and **Sign up** (`/sign-up`: email, password, repeat; Supabase emails a confirmation link; the account then goes through onboarding). **Forgot password** (`/forgot-password`) emails a link that signs the user in and opens **Set a new password** (`/reset-password`). Members can also change it in Settings → Password. Every emailed link is finished at `/auth/callback`; a link that lands on the home page with `?code=` or `?token_hash=` (when its redirect is not on the allow list) is forwarded there by the proxy, and recovery links go to `/reset-password`. The 6-digit code box stays only as a fallback for templates that include `{{ .Token }}`. Sign-up and reset answer the same way whether or not the email already has an account. Passwords: 8–72 characters, checked in the browser and on the server; the local stack mirrors the hosted settings (email confirmation on, minimum length 8).
+- Consequences: Hosted dashboard: keep Confirm email on, set minimum password length 8, turn on leaked password protection, and make sure `http://localhost:3000/**` is in the Redirect URLs (docs/SETUP.md §4).
+
+## D-045: Email confirmation off on the hosted dev project
+- Date: 2026-10-04
+- Status: accepted (temporary; changes the hosted setting described in D-044, not the code)
+- Context: Supabase's built-in email sender allows only a few emails per hour for the whole project, so sign-up confirmation emails failed with `over_email_send_rate_limit`. Creating pre-confirmed accounts with the service-role key from the website, or storing passwords in our own table, were both rejected as weakening security.
+- Decision: The project owner switched **Confirm email** off in the hosted dashboard (Authentication → Sign In / Providers → User Signups). Sign-up now creates the account and signs the person in at once; the app already handled that case. Passwords stay only in Supabase Auth (hashed). Signing up with an email that already has an account now says so and points to Log in / Forgot password. "Email me a sign-in link" and "Forgot password" still send emails and remain subject to the hourly limit.
+- Consequences: Email ownership is not verified while this is off; acceptable on the dev project only. Before real users: set up custom SMTP (docs/SETUP.md), raise the email rate limit, and switch Confirm email back on (the code supports both).
 

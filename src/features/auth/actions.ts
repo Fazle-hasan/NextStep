@@ -13,12 +13,14 @@ import {
   emailOtpRequestSchema,
   emailOtpVerifySchema,
   oauthSchema,
+  forgotPasswordSchema,
   passwordSignInSchema,
   phoneOtpRequestSchema,
   phoneOtpVerifySchema,
   setPasswordSchema,
+  signUpSchema,
 } from "./schemas";
-import { passwordStrings } from "./strings";
+import { authStrings, passwordStrings } from "./strings";
 
 function firstIssue(error: { issues: { message: string }[] }): string {
   return error.issues[0]?.message ?? "Invalid input.";
@@ -132,4 +134,46 @@ export async function setPassword(input: unknown): Promise<ActionResult> {
     return fail(passwordStrings.errors.generic);
   }
   return ok();
+}
+
+// Sign up with email + password. Supabase emails a confirmation link (to /auth/callback, then onboarding).
+// An address that already has an account gets the same answer, so sign-up cannot be used to find members.
+export async function signUpWithPassword(
+  input: unknown,
+): Promise<ActionResult<{ status: "check_email"; email: string } | { status: "signed_in"; redirectTo: string }>> {
+  const parsed = signUpSchema.safeParse(input);
+  if (!parsed.success) return fail(firstIssue(parsed.error));
+
+  const supabase = await createClient();
+  const { data, error } = await supabase.auth.signUp({
+    email: parsed.data.email,
+    password: parsed.data.password,
+    // New accounts land on onboarding anyway (postSignInPath); `next` is where they go after it.
+    options: { emailRedirectTo: callbackUrl(parsed.data.next) },
+  });
+  if (error) {
+    if (error.code === "weak_password") return fail(passwordStrings.errors.weak);
+    // Only reached when email confirmation is off (with it on, Supabase answers as if the sign-up worked).
+    if (error.code === "user_already_exists" || error.code === "email_exists") return fail(authStrings.errors.accountExists);
+    return fail(authErrorMessage(error));
+  }
+  // Email confirmation switched off: the user is signed in straight away.
+  if (data.session && data.user) {
+    return ok({ status: "signed_in", redirectTo: await postSignInPath(data.user.id, safeNextPath(parsed.data.next)) });
+  }
+  return ok({ status: "check_email", email: parsed.data.email });
+}
+
+// Forgot password: emails a link that signs the user in and opens /reset-password.
+// Always answers the same way, whether or not the address has an account.
+export async function requestPasswordReset(input: unknown): Promise<ActionResult<{ email: string }>> {
+  const parsed = forgotPasswordSchema.safeParse(input);
+  if (!parsed.success) return fail(firstIssue(parsed.error));
+
+  const supabase = await createClient();
+  const { error } = await supabase.auth.resetPasswordForEmail(parsed.data.email, {
+    redirectTo: callbackUrl("/reset-password"),
+  });
+  if (error && (error.status === 429 || error.code?.startsWith("over_"))) return fail(authErrorMessage(error));
+  return ok({ email: parsed.data.email });
 }

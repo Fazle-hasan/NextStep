@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 
@@ -55,7 +56,12 @@ export function PasswordSignInForm({ next }: { next?: string }) {
         />
       </div>
       <div className="space-y-2">
-        <Label htmlFor="password-input">{authStrings.passwordLabel}</Label>
+        <div className="flex items-center justify-between gap-2">
+          <Label htmlFor="password-input">{authStrings.passwordLabel}</Label>
+          <Link href="/forgot-password" className="text-sm font-medium text-primary hover:underline">
+            {authStrings.forgotPassword}
+          </Link>
+        </div>
         <Input
           id="password-input"
           type="password"

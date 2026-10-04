@@ -48,14 +48,17 @@ Dashboard for the dev project: https://supabase.com/dashboard/project/zmvdkzphpj
 - Redirect URLs: add `http://localhost:3000/**` (and later your preview/production URLs, e.g. `https://*.vercel.app/**`).
 - The app sends users back to `/auth/callback`, which handles Google and magic links.
 
-**b. Email** (Authentication → Sign In / Providers → Email)
-- Enable Email. OTP sign-in confirms the address, so no separate confirmation step is needed.
-- Authentication → Emails → **Magic Link** template: include both the link and the code so users can do either:
+**b. Email** (Authentication → Sign In / Providers → Email) — see D-044
+- Enable Email. **Confirm email** (Authentication → Sign In / Providers → User Signups) is **off on the hosted dev project** (D-045): sign-up creates the account and logs the person in without sending an email, because Supabase's built-in email sender allows only a few emails an hour. Turn it back on once custom SMTP is set up, before real users join.
+- Minimum password length **8** and **Leaked password protection** on (Authentication → Policies / Settings).
+- The default email templates (links only) work: the app finishes every link at `/auth/callback`, and links that land on
+  the home page are forwarded there too. Optionally add the 6-digit code to the **Magic Link** template; the log-in page
+  offers a "Got a 6-digit code instead?" box:
   ```html
-  <p><a href="{{ .SiteURL }}/auth/callback?token_hash={{ .TokenHash }}&type=email">Sign in to NextStep</a></p>
+  <p><a href="{{ .ConfirmationURL }}">Log in to NextStep</a></p>
   <p>Or enter this code: <strong>{{ .Token }}</strong></p>
   ```
-  The `token_hash` link works even if opened on a different device/browser. The same template is in `supabase/templates/magic_link.html` (the local stack uses it via `supabase/config.toml`).
+  The local stack uses `supabase/templates/magic_link.html`.
 - Built-in SMTP is limited to a few emails per hour. For real testing set custom SMTP (Authentication → Emails → SMTP Settings), e.g. Resend's SMTP (`smtp.resend.com`, user `resend`, password = API key).
 - Set the Email OTP length to **6** (Authentication → Sign In / Providers → Email → Email OTP length) — the UI expects 6 digits.
 

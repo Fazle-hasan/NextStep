@@ -30,3 +30,14 @@ export const setPasswordSchema = z
     confirm: z.string(),
   })
   .refine((v) => v.password === v.confirm, { message: passwordStrings.errors.mismatch, path: ["confirm"] });
+
+export const signUpSchema = z
+  .object({
+    email,
+    password: z.string().min(8, passwordStrings.errors.tooShort).max(72, passwordStrings.errors.tooLong),
+    confirm: z.string(),
+    next: z.string().optional(),
+  })
+  .refine((v) => v.password === v.confirm, { message: passwordStrings.errors.mismatch, path: ["confirm"] });
+
+export const forgotPasswordSchema = z.object({ email });

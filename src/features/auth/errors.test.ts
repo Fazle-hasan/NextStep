@@ -9,6 +9,7 @@ describe("authErrorMessage", () => {
   it.each([
     [{ status: 429 }, e.rateLimited],
     [{ code: "over_sms_send_rate_limit" }, e.rateLimited],
+    [{ status: 429, code: "over_email_send_rate_limit" }, e.emailLimit],
     [{ code: "otp_expired" }, e.wrongCode],
     [{ code: "invalid_credentials" }, e.wrongCode],
     [{ code: "phone_provider_disabled" }, e.providerDisabled],

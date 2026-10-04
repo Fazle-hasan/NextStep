@@ -14,6 +14,10 @@ export function passwordSignInErrorMessage(error: AuthErrorLike): string {
 export function authErrorMessage(error: AuthErrorLike): string {
   if (!error) return authStrings.errors.generic;
   const code = error.code ?? "";
+  // Supabase's email sender has an hourly limit for the whole project (D-044); this is not the user's fault.
+  if (code === "over_email_send_rate_limit") {
+    return authStrings.errors.emailLimit;
+  }
   if (error.status === 429 || code.startsWith("over_") || code === "too_many_requests") {
     return authStrings.errors.rateLimited;
   }

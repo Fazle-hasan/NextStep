@@ -1,5 +1,5 @@
 <h2>Sign in to NextStep</h2>
 <p>Enter this code in the app:</p>
 <p style="font-size:24px;font-weight:bold;letter-spacing:4px">{{ .Token }}</p>
-<p>Or tap this link on the same device: <a href="{{ .SiteURL }}/auth/callback?token_hash={{ .TokenHash }}&type=email">Sign in</a></p>
+<p>Or tap this link on the same device: <a href="{{ .RedirectTo }}&token_hash={{ .TokenHash }}&type=email">Sign in</a></p>
 <p>If you didn't ask for this, you can ignore this email.</p>

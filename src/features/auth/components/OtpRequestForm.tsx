@@ -83,7 +83,7 @@ export function OtpRequestForm({ method, next, onSent }: Props) {
         )}
       </div>
       <Button type="submit" className="h-11 w-full text-base" disabled={pending}>
-        {pending ? authStrings.sending : authStrings.sendCode}
+        {pending ? authStrings.sending : isPhone ? authStrings.sendCode : authStrings.sendLink}
       </Button>
     </form>
   );
