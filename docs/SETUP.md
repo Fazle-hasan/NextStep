@@ -49,7 +49,7 @@ Dashboard for the dev project: https://supabase.com/dashboard/project/zmvdkzphpj
 - The app sends users back to `/auth/callback`, which handles Google and magic links.
 
 **b. Email** (Authentication → Sign In / Providers → Email) — see D-044
-- Enable Email and keep **Confirm email** on: people sign up with email + password and confirm by the link Supabase emails them.
+- Enable Email. **Confirm email** (Authentication → Sign In / Providers → User Signups) is **off on the hosted dev project** (D-045): sign-up creates the account and logs the person in without sending an email, because Supabase's built-in email sender allows only a few emails an hour. Turn it back on once custom SMTP is set up, before real users join.
 - Minimum password length **8** and **Leaked password protection** on (Authentication → Policies / Settings).
 - The default email templates (links only) work: the app finishes every link at `/auth/callback`, and links that land on
   the home page are forwarded there too. Optionally add the 6-digit code to the **Magic Link** template; the log-in page
