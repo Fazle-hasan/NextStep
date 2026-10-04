@@ -27,7 +27,7 @@ export type Section = {
 export const SECTIONS: Section[] = [
   {
     id: "community-portal",
-    name: "Community Portal",
+    name: "Community Job Portal",
     tagline: "Earn",
     description: "Find jobs with trusted employers, apply in a few taps, and hire from the community.",
     modules: ["jobs"],
@@ -41,21 +41,8 @@ export const SECTIONS: Section[] = [
     ],
   },
   {
-    id: "career-development",
-    name: "Career Development",
-    tagline: "Learn",
-    description: "Join LEAP programs, earn badges, and book sessions with experienced mentors.",
-    modules: ["leap", "mentorship"],
-    items: [
-      { label: "LEAP programs", href: "/leap", available: true },
-      { label: "Find a mentor", href: "/mentors", available: true },
-      { label: "My sessions", href: "/sessions", available: true },
-      { label: "Mentor dashboard", href: "/mentor", roles: ["mentor"], available: true },
-    ],
-  },
-  {
     id: "location-gathering",
-    name: "Location Gathering",
+    name: "Relocation Support",
     tagline: "Grow",
     description: "Moving for work? Find flats, flatmates, local buddies, and masjids and imambargahs nearby.",
     modules: ["settle-in", "places"],
@@ -68,6 +55,19 @@ export const SECTIONS: Section[] = [
       { label: "Area guides", href: "/areas", available: true },
       { label: "Buddy dashboard", href: "/buddy", roles: ["buddy"], available: true },
       { label: "My listings", href: "/flats/mine", roles: ["flat_lister"], available: true },
+    ],
+  },
+  {
+    id: "career-development",
+    name: "Career Development",
+    tagline: "Learn",
+    description: "Join LEAP programs, earn badges, and book sessions with experienced mentors.",
+    modules: ["leap", "mentorship"],
+    items: [
+      { label: "LEAP programs", href: "/leap", available: true },
+      { label: "Find a mentor", href: "/mentors", available: true },
+      { label: "My sessions", href: "/sessions", available: true },
+      { label: "Mentor dashboard", href: "/mentor", roles: ["mentor"], available: true },
     ],
   },
 ];

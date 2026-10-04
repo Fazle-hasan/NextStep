@@ -12,9 +12,9 @@ The website presents the modules in three user-facing sections. These names appe
 
 | Section | Modules | Covers |
 |---|---|---|
-| **Community Portal** | Module 1 — Jobs (§4) | Job board, employers and company profiles, applications, applicant pipeline, referrals |
+| **Community Job Portal** | Module 1 — Jobs (§4) | Job board, employers and company profiles, applications, applicant pipeline, referrals |
+| **Relocation Support** | Module 4 — Settle In (§7), Module 5 — Places (§8) | Relocation requests, buddies, flats, flatmates, chat, masjid/imambargah map, area guides |
 | **Career Development** | Module 2 — LEAP (§5), Module 3 — Mentorship (§6) | LEAP programs, enrollments and badges; mentor profiles, booking and feedback |
-| **Location Gathering** | Module 4 — Settle In (§7), Module 5 — Places (§8) | Relocation requests, buddies, flats, flatmates, chat, masjid/imambargah map, area guides |
 
 Notifications (§9), account settings and the admin panel (§10) sit outside the three sections.
 

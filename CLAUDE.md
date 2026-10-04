@@ -26,11 +26,11 @@ The site groups modules into three sections. Use these names in navigation, land
 
 | User-facing section | Modules | Feature folders |
 |---|---|---|
-| **Community Portal** | Jobs | `features/jobs` |
+| **Community Job Portal** | Jobs | `features/jobs` |
+| **Relocation Support** | Settle In, Places | `features/settle-in`, `features/places` |
 | **Career Development** | Mentorship, LEAP | `features/mentorship`, `features/leap` |
-| **Location Gathering** | Settle In, Places | `features/settle-in`, `features/places` |
 
-Section names and their nav entries live in one place (`src/lib/sections.ts`) so they can be translated later. See D-021.
+Section names, their order and their nav entries live in one place (`src/lib/sections.ts`) so they can be translated later. See D-021 and D-042 (the ids `community-portal` and `location-gathering` are kept in URLs and code).
 
 ---
 

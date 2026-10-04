@@ -8,9 +8,9 @@ const hrefs = (roles: Parameters<typeof sectionsForRoles>[0]) =>
 describe("sectionsForRoles", () => {
   it("always returns the three sections in order", () => {
     expect(sectionsForRoles([]).map((s) => s.name)).toEqual([
-      "Community Portal",
+      "Community Job Portal",
+      "Relocation Support",
       "Career Development",
-      "Location Gathering",
     ]);
     expect(SECTIONS).toHaveLength(3);
   });

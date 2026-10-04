@@ -46,7 +46,7 @@ export const intentStrings: Record<Intent, { title: string; description: string;
   find_job: {
     title: "Find a job or refer someone",
     description: "Search and apply to jobs from trusted employers, or refer a person to a job in your organisation.",
-    nextStep: "Build your job profile and upload your CV in Community Portal. You can also refer people to open jobs where you work.",
+    nextStep: "Build your job profile and upload your CV in Community Job Portal. You can also refer people to open jobs where you work.",
     needsVerification: false,
   },
   hire: {
@@ -64,7 +64,7 @@ export const intentStrings: Record<Intent, { title: string; description: string;
   relocate: {
     title: "Relocating to a new city",
     description: "Get help with flats, flatmates and finding community.",
-    nextStep: "Create a relocation request in Location Gathering so local buddies can help.",
+    nextStep: "Create a relocation request in Relocation Support so local buddies can help.",
     needsVerification: false,
   },
   help_newcomers: {
