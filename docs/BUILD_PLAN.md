@@ -390,7 +390,7 @@ Phases are labelled with the user-facing section they deliver (D-021): **Communi
 2. M012 mentorship. Mentor onboarding and verification, availability editor (rules and exceptions, timezone), `get_mentor_slots`.
 3. Booking flow, accept/decline with meeting URL, 2-session limit and overlap tests, feedback and ratings, private notes. Seed, tests, commit.
 
-**Phase 4: Location Gathering, part 1 (Settle In)**
+**Phase 4: Location Gathering, part 1 (Settle In)** — done 2026-10-04 (migrations `20261004065051_chat`, `20261004065206_settle_in_relocation`, `20261004065330_flats`, `20261004065417_flatmates`, `20261004070332_flats_renew_requires_address`; see D-033…D-035). Deferred: map pin picker and radius filters (Phase 5), notifications and the moderation queue (Phase 6).
 1. M013 relocation requests, buddy profiles, offers, ratings, and the buddy dashboard.
 2. M016 chat (built before flats so accept-flows can open conversations), the `chat-attachments` bucket, Realtime subscription per conversation, unread counts, report/block in chat.
 3. M014 flats: listing wizard with photos (EXIF stripped), private address, approximate-location trigger, contact requests, address reveal. pg_cron expiry and renew.

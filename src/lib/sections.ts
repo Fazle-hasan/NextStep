@@ -60,19 +60,19 @@ export const SECTIONS: Section[] = [
     description: "Moving for work? Find flats, flatmates, local buddies, and masjids and imambargahs nearby.",
     modules: ["settle-in", "places"],
     items: [
-      { label: "Settle In", href: "/settle-in", available: false },
-      { label: "Flats & rooms", href: "/flats", available: false },
-      { label: "Flatmates", href: "/flatmates", available: false },
+      { label: "Settle In", href: "/settle-in", available: true },
+      { label: "Flats & rooms", href: "/flats", available: true },
+      { label: "Flatmates", href: "/flatmates", available: true },
       { label: "Masjids & places", href: "/places", available: false },
       { label: "Map", href: "/map", available: false },
-      { label: "Buddy dashboard", href: "/buddy", roles: ["buddy"], available: false },
-      { label: "My listings", href: "/flats/mine", roles: ["flat_lister"], available: false },
+      { label: "Buddy dashboard", href: "/buddy", roles: ["buddy"], available: true },
+      { label: "My listings", href: "/flats/mine", roles: ["flat_lister"], available: true },
     ],
   },
 ];
 
 export const ACCOUNT_NAV: NavItem[] = [
-  { label: "Messages", href: "/messages", available: false },
+  { label: "Messages", href: "/messages", available: true },
   { label: "Notifications", href: "/notifications", available: false },
   { label: "Admin", href: "/admin", roles: ["admin"], available: true },
 ];

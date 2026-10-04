@@ -223,6 +223,127 @@ export type Database = {
           },
         ]
       }
+      buddy_profiles: {
+        Row: {
+          bio: string | null
+          city_id: string
+          created_at: string
+          help_types: Database["public"]["Enums"]["relocation_need"][]
+          is_active: boolean
+          languages: string[]
+          neighbourhood_ids: string[]
+          rating_avg: number | null
+          rating_count: number
+          updated_at: string
+          user_id: string
+          verification_status: Database["public"]["Enums"]["verification_status"]
+          verified_at: string | null
+        }
+        Insert: {
+          bio?: string | null
+          city_id: string
+          created_at?: string
+          help_types?: Database["public"]["Enums"]["relocation_need"][]
+          is_active?: boolean
+          languages?: string[]
+          neighbourhood_ids?: string[]
+          rating_avg?: number | null
+          rating_count?: number
+          updated_at?: string
+          user_id: string
+          verification_status?: Database["public"]["Enums"]["verification_status"]
+          verified_at?: string | null
+        }
+        Update: {
+          bio?: string | null
+          city_id?: string
+          created_at?: string
+          help_types?: Database["public"]["Enums"]["relocation_need"][]
+          is_active?: boolean
+          languages?: string[]
+          neighbourhood_ids?: string[]
+          rating_avg?: number | null
+          rating_count?: number
+          updated_at?: string
+          user_id?: string
+          verification_status?: Database["public"]["Enums"]["verification_status"]
+          verified_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "buddy_profiles_city_id_fkey"
+            columns: ["city_id"]
+            isOneToOne: false
+            referencedRelation: "cities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "buddy_profiles_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      buddy_ratings: {
+        Row: {
+          buddy_id: string
+          comment: string | null
+          created_at: string
+          hidden_at: string | null
+          id: string
+          rater_id: string
+          rating: number
+          request_id: string
+          updated_at: string
+        }
+        Insert: {
+          buddy_id: string
+          comment?: string | null
+          created_at?: string
+          hidden_at?: string | null
+          id?: string
+          rater_id: string
+          rating: number
+          request_id: string
+          updated_at?: string
+        }
+        Update: {
+          buddy_id?: string
+          comment?: string | null
+          created_at?: string
+          hidden_at?: string | null
+          id?: string
+          rater_id?: string
+          rating?: number
+          request_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "buddy_ratings_buddy_id_fkey"
+            columns: ["buddy_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "buddy_ratings_rater_id_fkey"
+            columns: ["rater_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "buddy_ratings_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "relocation_requests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       cities: {
         Row: {
           center: unknown
@@ -456,6 +577,75 @@ export type Database = {
           },
         ]
       }
+      conversation_participants: {
+        Row: {
+          conversation_id: string
+          created_at: string
+          id: string
+          last_read_at: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          conversation_id: string
+          created_at?: string
+          id?: string
+          last_read_at?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          conversation_id?: string
+          created_at?: string
+          id?: string
+          last_read_at?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "conversation_participants_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "conversations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "conversation_participants_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      conversations: {
+        Row: {
+          context_id: string
+          context_type: Database["public"]["Enums"]["conversation_context"]
+          created_at: string
+          id: string
+          last_message_at: string | null
+          updated_at: string
+        }
+        Insert: {
+          context_id: string
+          context_type: Database["public"]["Enums"]["conversation_context"]
+          created_at?: string
+          id?: string
+          last_message_at?: string | null
+          updated_at?: string
+        }
+        Update: {
+          context_id?: string
+          context_type?: Database["public"]["Enums"]["conversation_context"]
+          created_at?: string
+          id?: string
+          last_message_at?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       cvs: {
         Row: {
           created_at: string
@@ -583,6 +773,362 @@ export type Database = {
             foreignKeyName: "experiences_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      flat_contact_requests: {
+        Row: {
+          created_at: string
+          decided_at: string | null
+          id: string
+          intro: string
+          listing_id: string
+          requester_id: string
+          status: Database["public"]["Enums"]["offer_status"]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          decided_at?: string | null
+          id?: string
+          intro: string
+          listing_id: string
+          requester_id: string
+          status?: Database["public"]["Enums"]["offer_status"]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          decided_at?: string | null
+          id?: string
+          intro?: string
+          listing_id?: string
+          requester_id?: string
+          status?: Database["public"]["Enums"]["offer_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "flat_contact_requests_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "flat_listings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "flat_contact_requests_requester_id_fkey"
+            columns: ["requester_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      flat_listing_photos: {
+        Row: {
+          created_at: string
+          id: string
+          listing_id: string
+          position: number
+          storage_path: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          listing_id: string
+          position?: number
+          storage_path: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          listing_id?: string
+          position?: number
+          storage_path?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "flat_listing_photos_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "flat_listings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      flat_listing_private: {
+        Row: {
+          address_line: string
+          created_at: string
+          exact_location: unknown
+          landmark: string | null
+          listing_id: string
+          updated_at: string
+        }
+        Insert: {
+          address_line: string
+          created_at?: string
+          exact_location: unknown
+          landmark?: string | null
+          listing_id: string
+          updated_at?: string
+        }
+        Update: {
+          address_line?: string
+          created_at?: string
+          exact_location?: unknown
+          landmark?: string | null
+          listing_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "flat_listing_private_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: true
+            referencedRelation: "flat_listings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      flat_listings: {
+        Row: {
+          amenities: string[]
+          approx_location: unknown
+          available_from: string
+          bathrooms: number | null
+          bedrooms: number | null
+          city_id: string
+          created_at: string
+          currency: string
+          deleted_at: string | null
+          deposit: number | null
+          description: string | null
+          expires_at: string
+          food_pref: Database["public"]["Enums"]["food_pref"] | null
+          furnishing: Database["public"]["Enums"]["furnishing"]
+          hidden_at: string | null
+          id: string
+          lister_id: string
+          listing_type: Database["public"]["Enums"]["listing_type"]
+          min_stay_months: number | null
+          neighbourhood_id: string | null
+          renewed_at: string | null
+          rent: number
+          status: Database["public"]["Enums"]["listing_status"]
+          tenant_gender_pref: Database["public"]["Enums"]["tenant_gender_pref"]
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          amenities?: string[]
+          approx_location?: unknown
+          available_from: string
+          bathrooms?: number | null
+          bedrooms?: number | null
+          city_id: string
+          created_at?: string
+          currency?: string
+          deleted_at?: string | null
+          deposit?: number | null
+          description?: string | null
+          expires_at?: string
+          food_pref?: Database["public"]["Enums"]["food_pref"] | null
+          furnishing?: Database["public"]["Enums"]["furnishing"]
+          hidden_at?: string | null
+          id?: string
+          lister_id: string
+          listing_type: Database["public"]["Enums"]["listing_type"]
+          min_stay_months?: number | null
+          neighbourhood_id?: string | null
+          renewed_at?: string | null
+          rent: number
+          status?: Database["public"]["Enums"]["listing_status"]
+          tenant_gender_pref?: Database["public"]["Enums"]["tenant_gender_pref"]
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          amenities?: string[]
+          approx_location?: unknown
+          available_from?: string
+          bathrooms?: number | null
+          bedrooms?: number | null
+          city_id?: string
+          created_at?: string
+          currency?: string
+          deleted_at?: string | null
+          deposit?: number | null
+          description?: string | null
+          expires_at?: string
+          food_pref?: Database["public"]["Enums"]["food_pref"] | null
+          furnishing?: Database["public"]["Enums"]["furnishing"]
+          hidden_at?: string | null
+          id?: string
+          lister_id?: string
+          listing_type?: Database["public"]["Enums"]["listing_type"]
+          min_stay_months?: number | null
+          neighbourhood_id?: string | null
+          renewed_at?: string | null
+          rent?: number
+          status?: Database["public"]["Enums"]["listing_status"]
+          tenant_gender_pref?: Database["public"]["Enums"]["tenant_gender_pref"]
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "flat_listings_city_id_fkey"
+            columns: ["city_id"]
+            isOneToOne: false
+            referencedRelation: "cities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "flat_listings_lister_id_fkey"
+            columns: ["lister_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "flat_listings_neighbourhood_id_fkey"
+            columns: ["neighbourhood_id"]
+            isOneToOne: false
+            referencedRelation: "neighbourhoods"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      flatmate_connections: {
+        Row: {
+          created_at: string
+          decided_at: string | null
+          id: string
+          message: string | null
+          recipient_id: string
+          requester_id: string
+          status: Database["public"]["Enums"]["offer_status"]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          decided_at?: string | null
+          id?: string
+          message?: string | null
+          recipient_id: string
+          requester_id: string
+          status?: Database["public"]["Enums"]["offer_status"]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          decided_at?: string | null
+          id?: string
+          message?: string | null
+          recipient_id?: string
+          requester_id?: string
+          status?: Database["public"]["Enums"]["offer_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "flatmate_connections_recipient_id_fkey"
+            columns: ["recipient_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "flatmate_connections_requester_id_fkey"
+            columns: ["requester_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      flatmate_profiles: {
+        Row: {
+          bio: string | null
+          budget_max: number
+          budget_min: number
+          city_id: string
+          cleanliness: number
+          created_at: string
+          currency: string
+          food_habit: Database["public"]["Enums"]["food_habit"]
+          guests_policy: Database["public"]["Enums"]["guests_policy"]
+          is_active: boolean
+          move_date: string
+          neighbourhood_ids: string[]
+          ok_with_smoker: boolean
+          preferred_gender: Database["public"]["Enums"]["flatmate_gender_pref"]
+          sleep_schedule: Database["public"]["Enums"]["sleep_schedule"]
+          smokes: boolean
+          updated_at: string
+          user_id: string
+          work_schedule: Database["public"]["Enums"]["work_schedule"]
+        }
+        Insert: {
+          bio?: string | null
+          budget_max: number
+          budget_min: number
+          city_id: string
+          cleanliness?: number
+          created_at?: string
+          currency?: string
+          food_habit: Database["public"]["Enums"]["food_habit"]
+          guests_policy?: Database["public"]["Enums"]["guests_policy"]
+          is_active?: boolean
+          move_date: string
+          neighbourhood_ids?: string[]
+          ok_with_smoker?: boolean
+          preferred_gender?: Database["public"]["Enums"]["flatmate_gender_pref"]
+          sleep_schedule?: Database["public"]["Enums"]["sleep_schedule"]
+          smokes?: boolean
+          updated_at?: string
+          user_id: string
+          work_schedule?: Database["public"]["Enums"]["work_schedule"]
+        }
+        Update: {
+          bio?: string | null
+          budget_max?: number
+          budget_min?: number
+          city_id?: string
+          cleanliness?: number
+          created_at?: string
+          currency?: string
+          food_habit?: Database["public"]["Enums"]["food_habit"]
+          guests_policy?: Database["public"]["Enums"]["guests_policy"]
+          is_active?: boolean
+          move_date?: string
+          neighbourhood_ids?: string[]
+          ok_with_smoker?: boolean
+          preferred_gender?: Database["public"]["Enums"]["flatmate_gender_pref"]
+          sleep_schedule?: Database["public"]["Enums"]["sleep_schedule"]
+          smokes?: boolean
+          updated_at?: string
+          user_id?: string
+          work_schedule?: Database["public"]["Enums"]["work_schedule"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "flatmate_profiles_city_id_fkey"
+            columns: ["city_id"]
+            isOneToOne: false
+            referencedRelation: "cities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "flatmate_profiles_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
@@ -1437,6 +1983,57 @@ export type Database = {
           },
         ]
       }
+      messages: {
+        Row: {
+          attachment_path: string | null
+          body: string | null
+          conversation_id: string
+          created_at: string
+          deleted_at: string | null
+          hidden_at: string | null
+          id: string
+          sender_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          attachment_path?: string | null
+          body?: string | null
+          conversation_id: string
+          created_at?: string
+          deleted_at?: string | null
+          hidden_at?: string | null
+          id?: string
+          sender_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          attachment_path?: string | null
+          body?: string | null
+          conversation_id?: string
+          created_at?: string
+          deleted_at?: string | null
+          hidden_at?: string | null
+          id?: string
+          sender_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "conversations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "messages_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       neighbourhoods: {
         Row: {
           center: unknown
@@ -1664,6 +2261,138 @@ export type Database = {
           {
             foreignKeyName: "referrals_referrer_id_fkey"
             columns: ["referrer_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      relocation_offers: {
+        Row: {
+          buddy_id: string
+          created_at: string
+          decided_at: string | null
+          id: string
+          message: string | null
+          request_id: string
+          status: Database["public"]["Enums"]["offer_status"]
+          updated_at: string
+        }
+        Insert: {
+          buddy_id: string
+          created_at?: string
+          decided_at?: string | null
+          id?: string
+          message?: string | null
+          request_id: string
+          status?: Database["public"]["Enums"]["offer_status"]
+          updated_at?: string
+        }
+        Update: {
+          buddy_id?: string
+          created_at?: string
+          decided_at?: string | null
+          id?: string
+          message?: string | null
+          request_id?: string
+          status?: Database["public"]["Enums"]["offer_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "relocation_offers_buddy_id_fkey"
+            columns: ["buddy_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "relocation_offers_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "relocation_requests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      relocation_requests: {
+        Row: {
+          budget_max: number | null
+          budget_min: number | null
+          city_id: string
+          closed_at: string | null
+          created_at: string
+          currency: string
+          hidden_at: string | null
+          household: Database["public"]["Enums"]["household_type"]
+          id: string
+          move_from: string
+          move_to: string | null
+          needs: Database["public"]["Enums"]["relocation_need"][]
+          neighbourhood_ids: string[]
+          note: string | null
+          same_gender_buddies_only: boolean
+          status: Database["public"]["Enums"]["request_status"]
+          updated_at: string
+          user_id: string
+          workplace_address: string | null
+          workplace_location: unknown
+        }
+        Insert: {
+          budget_max?: number | null
+          budget_min?: number | null
+          city_id: string
+          closed_at?: string | null
+          created_at?: string
+          currency?: string
+          hidden_at?: string | null
+          household: Database["public"]["Enums"]["household_type"]
+          id?: string
+          move_from: string
+          move_to?: string | null
+          needs: Database["public"]["Enums"]["relocation_need"][]
+          neighbourhood_ids?: string[]
+          note?: string | null
+          same_gender_buddies_only?: boolean
+          status?: Database["public"]["Enums"]["request_status"]
+          updated_at?: string
+          user_id: string
+          workplace_address?: string | null
+          workplace_location?: unknown
+        }
+        Update: {
+          budget_max?: number | null
+          budget_min?: number | null
+          city_id?: string
+          closed_at?: string | null
+          created_at?: string
+          currency?: string
+          hidden_at?: string | null
+          household?: Database["public"]["Enums"]["household_type"]
+          id?: string
+          move_from?: string
+          move_to?: string | null
+          needs?: Database["public"]["Enums"]["relocation_need"][]
+          neighbourhood_ids?: string[]
+          note?: string | null
+          same_gender_buddies_only?: boolean
+          status?: Database["public"]["Enums"]["request_status"]
+          updated_at?: string
+          user_id?: string
+          workplace_address?: string | null
+          workplace_location?: unknown
+        }
+        Relationships: [
+          {
+            foreignKeyName: "relocation_requests_city_id_fkey"
+            columns: ["city_id"]
+            isOneToOne: false
+            referencedRelation: "cities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "relocation_requests_user_id_fkey"
+            columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
@@ -2139,6 +2868,10 @@ export type Database = {
         Args: { p_action: string; p_max: number; p_window: string }
         Returns: undefined
       }
+      close_relocation_request: {
+        Args: { p_cancel?: boolean; p_request_id: string }
+        Returns: undefined
+      }
       complete_onboarding: {
         Args: {
           p_city_id: string
@@ -2167,15 +2900,64 @@ export type Database = {
         }
         Returns: string
       }
+      delete_listing: { Args: { p_listing_id: string }; Returns: undefined }
+      delete_message: { Args: { p_message_id: string }; Returns: undefined }
       enroll_in_program: {
         Args: { p_motivation?: string; p_program_id: string }
         Returns: Database["public"]["Enums"]["enrollment_status"]
+      }
+      get_flatmate_matches: {
+        Args: { p_limit?: number; p_offset?: number }
+        Returns: {
+          avatar_path: string
+          bio: string
+          budget_max: number
+          budget_min: number
+          cleanliness: number
+          connection_status: Database["public"]["Enums"]["offer_status"]
+          food_habit: Database["public"]["Enums"]["food_habit"]
+          full_name: string
+          gender: Database["public"]["Enums"]["gender"]
+          guests_policy: Database["public"]["Enums"]["guests_policy"]
+          move_date: string
+          neighbourhood_ids: string[]
+          score: number
+          sleep_schedule: Database["public"]["Enums"]["sleep_schedule"]
+          smokes: boolean
+          user_id: string
+          work_schedule: Database["public"]["Enums"]["work_schedule"]
+        }[]
+      }
+      get_listing_address: {
+        Args: { p_listing_id: string }
+        Returns: {
+          address_line: string
+          landmark: string
+          lat: number
+          lng: number
+        }[]
       }
       get_mentor_slots: {
         Args: { p_from: string; p_mentor_id: string; p_to: string }
         Returns: {
           ends_at: string
           starts_at: string
+        }[]
+      }
+      get_my_conversations: {
+        Args: never
+        Returns: {
+          context_id: string
+          context_type: Database["public"]["Enums"]["conversation_context"]
+          conversation_id: string
+          last_message_at: string
+          last_message_body: string
+          last_message_has_attachment: boolean
+          last_message_sender_id: string
+          other_avatar_path: string
+          other_name: string
+          other_user_id: string
+          unread_count: number
         }[]
       }
       has_role: {
@@ -2194,7 +2976,24 @@ export type Database = {
         }
         Returns: undefined
       }
+      mark_conversation_read: {
+        Args: { p_conversation_id: string }
+        Returns: undefined
+      }
+      offer_help: {
+        Args: { p_message?: string; p_request_id: string }
+        Returns: string
+      }
       pick_interview_slot: { Args: { p_slot_id: string }; Returns: undefined }
+      rate_buddy: {
+        Args: {
+          p_buddy_id: string
+          p_comment?: string
+          p_rating: number
+          p_request_id: string
+        }
+        Returns: undefined
+      }
       recommended_jobs: {
         Args: { p_limit?: number }
         Returns: {
@@ -2220,6 +3019,11 @@ export type Database = {
           work_mode: Database["public"]["Enums"]["work_mode"]
         }[]
       }
+      renew_listing: { Args: { p_listing_id: string }; Returns: undefined }
+      request_buddy_verification: {
+        Args: { p_note?: string }
+        Returns: undefined
+      }
       request_company_verification: {
         Args: { p_company_id: string; p_note?: string }
         Returns: undefined
@@ -2227,6 +3031,18 @@ export type Database = {
       request_mentor_verification: {
         Args: { p_note?: string }
         Returns: undefined
+      }
+      respond_contact_request: {
+        Args: { p_accept: boolean; p_request_id: string }
+        Returns: string
+      }
+      respond_flatmate_connection: {
+        Args: { p_accept: boolean; p_connection_id: string }
+        Returns: string
+      }
+      respond_to_offer: {
+        Args: { p_accept: boolean; p_offer_id: string }
+        Returns: string
       }
       respond_to_session: {
         Args: {
@@ -2236,6 +3052,50 @@ export type Database = {
           p_session_id: string
         }
         Returns: undefined
+      }
+      save_listing_address: {
+        Args: {
+          p_address_line: string
+          p_landmark: string
+          p_lat: number
+          p_listing_id: string
+          p_lng: number
+        }
+        Returns: undefined
+      }
+      search_flats: {
+        Args: {
+          p_city_id?: string
+          p_furnishing?: Database["public"]["Enums"]["furnishing"]
+          p_limit?: number
+          p_listing_types?: Database["public"]["Enums"]["listing_type"][]
+          p_neighbourhood_id?: string
+          p_offset?: number
+          p_rent_max?: number
+          p_rent_min?: number
+        }
+        Returns: {
+          approx_lat: number
+          approx_lng: number
+          available_from: string
+          bathrooms: number
+          bedrooms: number
+          city_id: string
+          cover_photo_path: string
+          created_at: string
+          currency: string
+          deposit: number
+          food_pref: Database["public"]["Enums"]["food_pref"]
+          furnishing: Database["public"]["Enums"]["furnishing"]
+          id: string
+          lister_id: string
+          listing_type: Database["public"]["Enums"]["listing_type"]
+          neighbourhood_id: string
+          rent: number
+          tenant_gender_pref: Database["public"]["Enums"]["tenant_gender_pref"]
+          title: string
+          total_count: number
+        }[]
       }
       search_jobs: {
         Args: {
@@ -2277,11 +3137,26 @@ export type Database = {
           work_mode: Database["public"]["Enums"]["work_mode"]
         }[]
       }
+      send_contact_request: {
+        Args: { p_intro: string; p_listing_id: string }
+        Returns: string
+      }
+      send_flatmate_connection: {
+        Args: { p_message?: string; p_recipient_id: string }
+        Returns: string
+      }
       set_application_status: {
         Args: {
           p_application_id: string
           p_note?: string
           p_status: Database["public"]["Enums"]["application_status"]
+        }
+        Returns: undefined
+      }
+      set_listing_status: {
+        Args: {
+          p_listing_id: string
+          p_status: Database["public"]["Enums"]["listing_status"]
         }
         Returns: undefined
       }
@@ -2298,6 +3173,15 @@ export type Database = {
         Args: { p_application_id: string }
         Returns: undefined
       }
+      withdraw_contact_request: {
+        Args: { p_request_id: string }
+        Returns: undefined
+      }
+      withdraw_flatmate_connection: {
+        Args: { p_connection_id: string }
+        Returns: undefined
+      }
+      withdraw_offer: { Args: { p_offer_id: string }; Returns: undefined }
     }
     Enums: {
       alert_frequency: "none" | "daily"
@@ -2319,6 +3203,10 @@ export type Database = {
       availability_exception_kind: "unavailable" | "extra"
       company_member_role: "owner" | "recruiter"
       company_size: "s1_10" | "s11_50" | "s51_200" | "s201_1000" | "s1000_plus"
+      conversation_context:
+        | "relocation_offer"
+        | "flat_contact"
+        | "flatmate_connection"
       enrollment_status:
         | "pending"
         | "enrolled"
@@ -2327,7 +3215,13 @@ export type Database = {
         | "cancelled"
         | "completed"
       experience_level: "entry" | "mid" | "senior" | "lead"
+      flatmate_gender_pref: "any" | "male" | "female"
+      food_habit: "veg" | "non_veg" | "halal_only"
+      food_pref: "veg_only" | "non_veg_ok" | "halal_only"
+      furnishing: "unfurnished" | "semi" | "full"
       gender: "male" | "female"
+      guests_policy: "no_guests" | "occasionally" | "often"
+      household_type: "alone" | "family" | "with_flatmates"
       interview_slot_status: "proposed" | "selected" | "cancelled"
       job_status:
         | "draft"
@@ -2347,6 +3241,9 @@ export type Database = {
         | "training_course"
         | "internship"
         | "cohort"
+      listing_status: "active" | "paused" | "rented" | "expired"
+      listing_type: "entire_flat" | "private_room" | "shared_room" | "pg_hostel"
+      offer_status: "pending" | "accepted" | "declined" | "withdrawn"
       onboarding_intent:
         | "find_job"
         | "hire"
@@ -2355,6 +3252,15 @@ export type Database = {
         | "help_newcomers"
         | "list_flat"
       program_mode: "online" | "in_person"
+      relocation_need:
+        | "flat"
+        | "flatmate"
+        | "area_guidance"
+        | "nearby_masjid"
+        | "halal_food"
+        | "pickup"
+        | "temporary_stay"
+        | "general_advice"
       report_reason:
         | "spam"
         | "harassment"
@@ -2374,6 +3280,7 @@ export type Database = {
         | "area_tip"
         | "message"
         | "place_suggestion"
+      request_status: "open" | "closed" | "cancelled"
       session_side: "mentee" | "mentor"
       session_status:
         | "requested"
@@ -2387,9 +3294,17 @@ export type Database = {
         | "mock_interview"
         | "skill_roadmap"
         | "industry_qa"
+      sleep_schedule: "early_bird" | "night_owl" | "flexible"
+      tenant_gender_pref: "any" | "male" | "female" | "family"
       verification_kind: "company" | "mentor" | "buddy" | "flat_lister_id"
       verification_status: "pending" | "approved" | "rejected"
       work_mode: "onsite" | "hybrid" | "remote"
+      work_schedule:
+        | "day_shift"
+        | "night_shift"
+        | "work_from_home"
+        | "student"
+        | "flexible"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -2538,6 +3453,11 @@ export const Constants = {
       availability_exception_kind: ["unavailable", "extra"],
       company_member_role: ["owner", "recruiter"],
       company_size: ["s1_10", "s11_50", "s51_200", "s201_1000", "s1000_plus"],
+      conversation_context: [
+        "relocation_offer",
+        "flat_contact",
+        "flatmate_connection",
+      ],
       enrollment_status: [
         "pending",
         "enrolled",
@@ -2547,7 +3467,13 @@ export const Constants = {
         "completed",
       ],
       experience_level: ["entry", "mid", "senior", "lead"],
+      flatmate_gender_pref: ["any", "male", "female"],
+      food_habit: ["veg", "non_veg", "halal_only"],
+      food_pref: ["veg_only", "non_veg_ok", "halal_only"],
+      furnishing: ["unfurnished", "semi", "full"],
       gender: ["male", "female"],
+      guests_policy: ["no_guests", "occasionally", "often"],
+      household_type: ["alone", "family", "with_flatmates"],
       interview_slot_status: ["proposed", "selected", "cancelled"],
       job_status: ["draft", "pending_review", "published", "closed", "expired"],
       job_type: ["full_time", "part_time", "contract", "internship"],
@@ -2564,6 +3490,9 @@ export const Constants = {
         "internship",
         "cohort",
       ],
+      listing_status: ["active", "paused", "rented", "expired"],
+      listing_type: ["entire_flat", "private_room", "shared_room", "pg_hostel"],
+      offer_status: ["pending", "accepted", "declined", "withdrawn"],
       onboarding_intent: [
         "find_job",
         "hire",
@@ -2573,6 +3502,16 @@ export const Constants = {
         "list_flat",
       ],
       program_mode: ["online", "in_person"],
+      relocation_need: [
+        "flat",
+        "flatmate",
+        "area_guidance",
+        "nearby_masjid",
+        "halal_food",
+        "pickup",
+        "temporary_stay",
+        "general_advice",
+      ],
       report_reason: [
         "spam",
         "harassment",
@@ -2594,6 +3533,7 @@ export const Constants = {
         "message",
         "place_suggestion",
       ],
+      request_status: ["open", "closed", "cancelled"],
       session_side: ["mentee", "mentor"],
       session_status: [
         "requested",
@@ -2609,9 +3549,18 @@ export const Constants = {
         "skill_roadmap",
         "industry_qa",
       ],
+      sleep_schedule: ["early_bird", "night_owl", "flexible"],
+      tenant_gender_pref: ["any", "male", "female", "family"],
       verification_kind: ["company", "mentor", "buddy", "flat_lister_id"],
       verification_status: ["pending", "approved", "rejected"],
       work_mode: ["onsite", "hybrid", "remote"],
+      work_schedule: [
+        "day_shift",
+        "night_shift",
+        "work_from_home",
+        "student",
+        "flexible",
+      ],
     },
   },
 } as const

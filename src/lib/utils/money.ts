@@ -26,3 +26,32 @@ export function formatAnnualSalary(min: number | null | undefined, max: number |
   if (max != null) return `Up to ₹${lakhText(max)} lakh a year`;
   return null;
 }
+
+// Rent, deposits and monthly budgets are monthly amounts in paise, entered in whole rupees.
+export function rupeesToPaise(rupees: number): number {
+  return Math.round(rupees * PAISE_PER_RUPEE);
+}
+
+export function paiseToRupees(paise: number): number {
+  return paise / PAISE_PER_RUPEE;
+}
+
+// "₹15,000"
+export function formatRupees(paise: number): string {
+  return `₹${new Intl.NumberFormat("en-IN", { maximumFractionDigits: 0 }).format(paiseToRupees(paise))}`;
+}
+
+// "₹15,000 a month"
+export function formatMonthlyRent(paise: number): string {
+  return `${formatRupees(paise)} a month`;
+}
+
+// "₹8,000–₹15,000 a month", "From ₹8,000 a month", "Up to ₹15,000 a month" or null when nothing is set.
+export function formatMonthlyBudget(min: number | null | undefined, max: number | null | undefined): string | null {
+  if (min != null && max != null) {
+    return min === max ? formatMonthlyRent(min) : `${formatRupees(min)}–${formatRupees(max)} a month`;
+  }
+  if (min != null) return `From ${formatRupees(min)} a month`;
+  if (max != null) return `Up to ${formatRupees(max)} a month`;
+  return null;
+}

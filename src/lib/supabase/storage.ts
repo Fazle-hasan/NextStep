@@ -1,4 +1,9 @@
-export const BUCKETS = { cvs: "cvs", companyLogos: "company-logos" } as const;
+export const BUCKETS = {
+  cvs: "cvs",
+  companyLogos: "company-logos",
+  listingPhotos: "listing-photos",
+  chatAttachments: "chat-attachments",
+} as const;
 
 export const CV_MAX_BYTES = 5 * 1024 * 1024;
 export const LOGO_MAX_BYTES = 2 * 1024 * 1024;
@@ -14,4 +19,15 @@ export function publicFileUrl(bucket: string, path: string): string {
 
 export function companyLogoUrl(logoPath: string | null | undefined): string | null {
   return logoPath ? publicFileUrl(BUCKETS.companyLogos, logoPath) : null;
+}
+
+// Flat listing photos (public bucket, D-019) and chat images (private bucket, signed URLs only).
+export const PHOTO_MAX_BYTES = 5 * 1024 * 1024;
+export const PHOTO_MIME_TYPES = ["image/jpeg", "image/png", "image/webp"] as const;
+export const LISTING_MAX_PHOTOS = 10;
+// Chat images are shown through links that stop working after 10 minutes.
+export const CHAT_SIGNED_URL_SECONDS = 600;
+
+export function listingPhotoUrl(storagePath: string | null | undefined): string | null {
+  return storagePath ? publicFileUrl(BUCKETS.listingPhotos, storagePath) : null;
 }

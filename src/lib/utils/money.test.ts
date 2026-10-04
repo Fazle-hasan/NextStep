@@ -1,6 +1,15 @@
 import { describe, expect, it } from "vitest";
 
-import { formatAnnualSalary, lakhToPaise, paiseToLakh } from "./money";
+import {
+  formatAnnualSalary,
+  formatMonthlyBudget,
+  formatMonthlyRent,
+  formatRupees,
+  lakhToPaise,
+  paiseToLakh,
+  paiseToRupees,
+  rupeesToPaise,
+} from "./money";
 
 describe("money", () => {
   it("converts lakh to paise and back", () => {
@@ -21,5 +30,26 @@ describe("money", () => {
 
   it("returns null when no salary is set", () => {
     expect(formatAnnualSalary(null, undefined)).toBeNull();
+  });
+});
+
+describe("monthly amounts", () => {
+  it("converts rupees to paise and back", () => {
+    expect(rupeesToPaise(15000)).toBe(1_500_000);
+    expect(paiseToRupees(1_500_000)).toBe(15000);
+  });
+
+  it("formats rent with Indian digit grouping", () => {
+    expect(formatRupees(1_500_000)).toBe("₹15,000");
+    expect(formatRupees(12_500_000)).toBe("₹1,25,000");
+    expect(formatMonthlyRent(900_000)).toBe("₹9,000 a month");
+  });
+
+  it("formats a budget range", () => {
+    expect(formatMonthlyBudget(800_000, 1_500_000)).toBe("₹8,000–₹15,000 a month");
+    expect(formatMonthlyBudget(800_000, 800_000)).toBe("₹8,000 a month");
+    expect(formatMonthlyBudget(800_000, null)).toBe("From ₹8,000 a month");
+    expect(formatMonthlyBudget(null, 1_500_000)).toBe("Up to ₹15,000 a month");
+    expect(formatMonthlyBudget(null, null)).toBeNull();
   });
 });

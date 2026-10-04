@@ -1,7 +1,11 @@
--- Removes the sample data added by 01_sample_companies_and_jobs.sql.
+-- Removes the sample data added by 01_sample_companies_and_jobs.sql and 02_sample_settle_in.sql.
 -- Kept as .txt so it is never run automatically. It DELETES data: run it by hand only when you mean to.
 -- Jobs, salaries, skills links, questions, locations and members go with the companies (cascade).
 -- Applications made to sample jobs are deleted too.
 
 delete from public.companies where slug like '%-sample';
 delete from auth.users where email like 'sample.employer%@example.test';
+
+-- 02_sample_settle_in.sql: listings, addresses, buddy and flatmate profiles, offers, requests and chats
+-- go with the sample members (cascade).
+delete from auth.users where email like 'sample.member%@example.test';
