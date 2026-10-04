@@ -8,6 +8,7 @@ import { accountNavForRoles, sectionsForRoles, type AppRole } from "@/lib/sectio
 import { cn } from "@/lib/utils";
 
 import { NavItemLink } from "./NavItemLink";
+import { SECTION_ACCENTS } from "./sectionStyles";
 import { SectionIcon } from "./SectionIcon";
 import { shellStrings } from "./strings";
 
@@ -27,35 +28,40 @@ export function SideNav({ roles }: { roles: AppRole[] }) {
         aria-current={pathname === "/home" ? "page" : undefined}
         className={cn(
           "flex min-h-11 items-center gap-2 rounded-lg px-3 text-sm font-medium",
-          pathname === "/home" ? "bg-primary/10 text-primary" : "hover:bg-muted",
+          pathname === "/home" ? "bg-brand-soft text-foreground" : "hover:bg-muted",
         )}
       >
         <Home className="size-4" aria-hidden="true" />
         {shellStrings.home}
       </Link>
 
-      {sections.map((section) => (
-        <div key={section.id} className="space-y-1">
-          <Link
-            href={`/${section.id}`}
-            aria-current={pathname === `/${section.id}` ? "page" : undefined}
-            className={cn(
-              "flex min-h-11 items-center gap-2 rounded-lg px-3 text-sm font-semibold",
-              pathname === `/${section.id}` ? "bg-primary/10 text-primary" : "hover:bg-muted",
-            )}
-          >
-            <SectionIcon id={section.id} className="size-4" />
-            {section.name}
-          </Link>
-          <ul className="space-y-0.5 pl-6">
-            {section.items.map((item) => (
-              <li key={item.href}>
-                <NavItemLink item={item} active={isActive(pathname, item.href)} />
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
+      {sections.map((section) => {
+        const accent = SECTION_ACCENTS[section.id];
+        return (
+          <div key={section.id} className="space-y-1">
+            <Link
+              href={`/${section.id}`}
+              aria-current={pathname === `/${section.id}` ? "page" : undefined}
+              className={cn(
+                "flex min-h-11 items-center gap-2.5 rounded-lg px-3 text-sm font-semibold",
+                pathname === `/${section.id}` ? accent.soft : "hover:bg-muted",
+              )}
+            >
+              <span className={cn("flex size-7 items-center justify-center rounded-md", accent.soft, accent.text)}>
+                <SectionIcon id={section.id} className="size-4" />
+              </span>
+              {section.name}
+            </Link>
+            <ul className="space-y-0.5 pl-6">
+              {section.items.map((item) => (
+                <li key={item.href}>
+                  <NavItemLink item={item} active={isActive(pathname, item.href)} accentBar={accent.bar} />
+                </li>
+              ))}
+            </ul>
+          </div>
+        );
+      })}
 
       <div className="space-y-1 border-t pt-4">
         <p className="px-3 text-xs font-medium uppercase text-muted-foreground">{shellStrings.accountNav}</p>

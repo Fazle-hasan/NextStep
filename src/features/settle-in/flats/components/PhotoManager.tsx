@@ -124,7 +124,7 @@ export function PhotoManager({ listingId, initialPhotos }: Props) {
                   loading="lazy"
                   className="size-full object-cover"
                 />
-                {index === 0 && <Badge className="absolute top-1.5 left-1.5">{s.cover}</Badge>}
+                {index === 0 && <Badge variant="secondary" className="absolute top-1.5 left-1.5">{s.cover}</Badge>}
               </div>
               <div className="flex justify-between">
                 <div className="flex">

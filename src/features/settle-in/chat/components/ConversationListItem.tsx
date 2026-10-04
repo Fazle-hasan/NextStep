@@ -33,7 +33,7 @@ export function ConversationListItem({ conversation }: { conversation: Conversat
             <span className="text-xs text-muted-foreground">{timeAgo(conversation.lastMessageAt)}</span>
           )}
           {unread && (
-            <Badge aria-label={s.unread(conversation.unreadCount)}>{conversation.unreadCount > 99 ? "99+" : conversation.unreadCount}</Badge>
+            <Badge aria-label={s.unread(conversation.unreadCount)} className="bg-destructive text-destructive-foreground">{conversation.unreadCount > 99 ? "99+" : conversation.unreadCount}</Badge>
           )}
         </div>
       </div>

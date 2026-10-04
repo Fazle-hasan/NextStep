@@ -102,7 +102,11 @@ export default async function FlatmatesPage({ searchParams }: PageProps<"/flatma
             <Button asChild variant="outline" className="h-11">
               <Link href="/flatmates/requests">
                 {s.mine.requests}
-                {pendingIncoming > 0 && <Badge className="ml-2">{pendingIncoming}</Badge>}
+                {pendingIncoming > 0 && (
+                  <Badge variant="warning" className="ml-2">
+                    {pendingIncoming}
+                  </Badge>
+                )}
               </Link>
             </Button>
           </div>

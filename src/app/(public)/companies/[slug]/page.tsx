@@ -1,7 +1,8 @@
-import { BadgeCheck, Building2, ExternalLink, MapPin } from "lucide-react";
+import { Building2, ExternalLink, MapPin } from "lucide-react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import { StatusBadge } from "@/components/shared/StatusBadge";
 import { Badge } from "@/components/ui/badge";
 import { JobCard } from "@/features/jobs/components/JobCard";
 import { COMPANY_SIZE_LABELS } from "@/features/jobs/labels";
@@ -57,10 +58,7 @@ export default async function CompanyPage({ params }: PageProps<"/companies/[slu
           {facts && <p className="text-sm text-muted-foreground">{facts}</p>}
           <div className="flex flex-wrap gap-1.5">
             {company.verification_status === "approved" && (
-              <Badge>
-                <BadgeCheck aria-hidden="true" />
-                {s.company.verified}
-              </Badge>
+              <StatusBadge tone="success" label={s.company.verified} />
             )}
             {company.is_community_owned && <Badge variant="outline">{s.company.community}</Badge>}
             {company.leap_friendly && <Badge variant="outline">{s.company.leap}</Badge>}

@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/shared/StatusBadge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BlockButton } from "@/features/safety/components/BlockButton";
@@ -25,7 +25,7 @@ export function RequestCard({ request, direction }: Props) {
       <CardHeader>
         <CardTitle className="flex flex-wrap items-center justify-between gap-2 text-base">
           <h3 className="min-w-0 break-words">{direction === "incoming" ? r.from(name) : r.to(name)}</h3>
-          <Badge variant={request.status === "pending" ? "default" : "secondary"}>{r.status[request.status]}</Badge>
+          <StatusBadge status={request.status} label={r.status[request.status]} />
         </CardTitle>
         <p className="text-sm text-muted-foreground">{timeAgo(request.createdAt)}</p>
       </CardHeader>

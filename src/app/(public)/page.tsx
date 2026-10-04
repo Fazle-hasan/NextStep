@@ -1,13 +1,19 @@
+import { ArrowRight, MapPin } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { Suspense } from "react";
 
-import { SectionIcon } from "@/components/shared/SectionIcon";
+import { HeroIllustration } from "@/components/shared/landing/HeroIllustration";
+import { LandingFooter } from "@/components/shared/landing/LandingFooter";
+import { LatestJobs } from "@/components/shared/landing/LatestJobs";
+import { SectionEntryCard } from "@/components/shared/landing/SectionEntryCard";
+import { TrustSection } from "@/components/shared/landing/TrustSection";
 import { shellStrings } from "@/components/shared/strings";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { getViewer } from "@/features/auth/queries";
 import { SECTIONS } from "@/lib/sections";
+
+const s = shellStrings.landing;
 
 export default async function LandingPage() {
   const viewer = await getViewer();
@@ -16,59 +22,107 @@ export default async function LandingPage() {
   const signedIn = viewer !== null;
 
   return (
-    <main className="flex-1">
-      <section className="bg-gradient-to-b from-primary/10 to-background px-4 py-14 md:py-20">
-        <div className="mx-auto max-w-3xl space-y-5 text-center">
-          <h1 className="text-3xl font-bold tracking-tight text-balance md:text-5xl">{shellStrings.tagline}</h1>
-          <p className="text-base text-pretty text-muted-foreground md:text-lg">{shellStrings.landing.intro}</p>
-          <div className="flex flex-wrap justify-center gap-3">
-            <Button asChild size="lg" className="h-11 px-6 text-base">
-              <Link href={signedIn ? "/home" : "/sign-in"}>
-                {signedIn ? shellStrings.goToDashboard : shellStrings.getStarted}
-              </Link>
-            </Button>
-            <Button asChild size="lg" variant="outline" className="h-11 px-6 text-base">
-              <Link href="/jobs">{shellStrings.landing.browseJobs}</Link>
-            </Button>
+    <>
+      <main className="flex-1">
+        <section className="bg-brand-soft px-4 pt-10 pb-12 md:pt-16 md:pb-20">
+          <div className="mx-auto grid max-w-5xl items-center gap-8 md:grid-cols-[1.15fr_1fr]">
+            <div className="space-y-5">
+              <p className="inline-flex rounded-full bg-card px-3 py-1 text-sm font-medium text-primary shadow-xs">
+                {s.eyebrow}
+              </p>
+              <h1 className="text-4xl font-bold tracking-tight md:text-6xl">{s.heroTitle}</h1>
+              <p className="max-w-xl text-base text-pretty text-muted-foreground md:text-lg">{s.intro}</p>
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <Button asChild size="lg" className="h-12 px-6 text-base">
+                  <Link href={signedIn ? "/home" : "/sign-in"}>
+                    {signedIn ? shellStrings.goToDashboard : shellStrings.getStarted}
+                  </Link>
+                </Button>
+                <Button asChild size="lg" variant="outline" className="h-12 bg-card px-6 text-base">
+                  <Link href="/jobs">{s.browseJobs}</Link>
+                </Button>
+              </div>
+              <p className="text-sm text-muted-foreground">{s.heroNote}</p>
+            </div>
+            <HeroIllustration className="mx-auto max-w-[15rem] sm:max-w-sm md:max-w-none" />
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section aria-labelledby="sections-heading" className="mx-auto max-w-5xl px-4 py-12">
-        <h2 id="sections-heading" className="mb-6 text-xl font-semibold md:text-2xl">
-          {shellStrings.landing.sectionsHeading}
-        </h2>
-        <div className="grid gap-4 md:grid-cols-3">
-          {SECTIONS.map((section) => (
-            <Card key={section.id}>
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <span className="flex size-10 items-center justify-center rounded-full bg-primary/10 text-primary">
-                    <SectionIcon id={section.id} className="size-5" />
+        <div className="mx-auto max-w-5xl space-y-14 px-4 py-12 md:py-16">
+          <section aria-labelledby="how-heading" className="space-y-5">
+            <h2 id="how-heading" className="text-xl font-semibold md:text-2xl">
+              {s.howHeading}
+            </h2>
+            <ol className="grid gap-4 md:grid-cols-3">
+              {s.howSteps.map((step, index) => (
+                <li key={step.title} className="flex gap-4 rounded-2xl border bg-card p-5">
+                  <span
+                    aria-hidden="true"
+                    className="flex size-9 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground"
+                  >
+                    {index + 1}
                   </span>
-                  {section.items.some((item) => item.available) ? (
-                    <Badge>{shellStrings.landing.live}</Badge>
-                  ) : (
-                    <Badge variant="outline">{shellStrings.comingSoon}</Badge>
-                  )}
-                </div>
-                <p className="pt-2 text-sm font-medium text-primary">{section.tagline}</p>
-                <CardTitle className="text-lg">{section.name}</CardTitle>
-                <CardDescription>{section.description}</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="list-inside list-disc space-y-1 text-sm text-muted-foreground">
-                  {section.items
-                    .filter((item) => !item.roles)
-                    .map((item) => (
-                      <li key={item.href}>{item.label}</li>
-                    ))}
-                </ul>
-              </CardContent>
-            </Card>
-          ))}
+                  <div>
+                    <h3 className="font-semibold">{step.title}</h3>
+                    <p className="text-sm text-muted-foreground">{step.body}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </section>
+
+          <section aria-labelledby="sections-heading" className="space-y-5">
+            <h2 id="sections-heading" className="text-xl font-semibold md:text-2xl">
+              {s.sectionsHeading}
+            </h2>
+            <ul className="grid gap-4 md:grid-cols-3">
+              {SECTIONS.map((section) => {
+                const card = s.sectionCards[section.id];
+                return (
+                  <li key={section.id}>
+                    <SectionEntryCard section={section} benefit={card.benefit} action={card.action} href={card.href} />
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
+
+          <Suspense fallback={null}>
+            <LatestJobs />
+          </Suspense>
+
+          <section
+            aria-labelledby="places-heading"
+            className="flex flex-col gap-4 rounded-2xl border bg-card p-5 md:flex-row md:items-center md:justify-between md:p-6"
+          >
+            <div className="flex gap-4">
+              <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-grow-soft text-grow">
+                <MapPin className="size-5" aria-hidden="true" />
+              </span>
+              <div>
+                <h2 id="places-heading" className="text-lg font-semibold">
+                  {s.placesTitle}
+                </h2>
+                <p className="text-sm text-muted-foreground">{s.placesBody}</p>
+              </div>
+            </div>
+            <div className="flex flex-col gap-2 sm:flex-row md:shrink-0">
+              <Button asChild variant="outline" className="h-11">
+                <Link href="/places">
+                  {s.placesAction}
+                  <ArrowRight aria-hidden="true" />
+                </Link>
+              </Button>
+              <Button asChild variant="ghost" className="h-11">
+                <Link href="/areas">{s.guidesAction}</Link>
+              </Button>
+            </div>
+          </section>
+
+          <TrustSection />
         </div>
-      </section>
-    </main>
+      </main>
+      <LandingFooter />
+    </>
   );
 }

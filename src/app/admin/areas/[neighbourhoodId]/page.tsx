@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { z } from "zod";
 
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/shared/StatusBadge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { DeleteGuideButton } from "@/features/places/admin/components/DeleteGuideButton";
@@ -93,8 +93,8 @@ export default async function AdminAreaGuidePage({ params }: PageProps<"/admin/a
                       <span className="font-medium text-foreground">{tip.authorName ?? s.tips.unknownAuthor}</span>
                       <span>{formatDate(tip.createdAt)}</span>
                       <span>{s.tips.upvotes(tip.upvoteCount)}</span>
-                      {tip.isHidden && <Badge variant="destructive">{s.tips.hiddenBadge}</Badge>}
-                      {tip.isDeleted && <Badge variant="outline">{s.tips.deletedBadge}</Badge>}
+                      {tip.isHidden && <StatusBadge tone="danger" label={s.tips.hiddenBadge} />}
+                      {tip.isDeleted && <StatusBadge tone="inactive" label={s.tips.deletedBadge} />}
                     </div>
                     <p className="whitespace-pre-line">{tip.body}</p>
                     {!tip.isDeleted && <TipHideButton id={tip.id} neighbourhoodId={area.id} isHidden={tip.isHidden} />}

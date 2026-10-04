@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/shared/StatusBadge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { adminStrings } from "@/features/admin/strings";
@@ -106,11 +106,11 @@ async function PlacesList({ params }: { params: Record<string, string | string[]
                         {place.name}
                       </Link>
                       {place.isVerified ? (
-                        <Badge>{s.places.verified}</Badge>
+                        <StatusBadge tone="success" label={s.places.verified} />
                       ) : (
-                        <Badge variant="outline">{s.places.unverified}</Badge>
+                        <StatusBadge tone="attention" label={s.places.unverified} />
                       )}
-                      {place.isHidden && <Badge variant="destructive">{s.places.hidden}</Badge>}
+                      {place.isHidden && <StatusBadge tone="danger" label={s.places.hidden} />}
                     </div>
                     <p className="text-sm text-muted-foreground">
                       {[PLACE_TYPE_LABELS[place.placeType], place.areaName, place.cityName].filter(Boolean).join(" · ")}

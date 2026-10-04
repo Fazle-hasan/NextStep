@@ -27,6 +27,24 @@
   --color-input: var(--input);
   --color-border: var(--border);
   --color-destructive: var(--destructive);
+  --color-brand-soft: var(--brand-soft);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-destructive-soft: var(--destructive-soft);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-warning-soft: var(--warning-soft);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+  --color-info-soft: var(--info-soft);
+  --color-earn: var(--earn);
+  --color-earn-soft: var(--earn-soft);
+  --color-learn: var(--learn);
+  --color-learn-soft: var(--learn-soft);
+  --color-grow: var(--grow);
+  --color-grow-soft: var(--grow-soft);
   --color-accent-foreground: var(--accent-foreground);
   --color-accent: var(--accent);
   --color-muted-foreground: var(--muted-foreground);
@@ -48,73 +66,112 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
+/* NextStep design tokens (D-041). Every text pair is AA-checked (4.5:1); input borders and the focus ring 3:1.
+   Status colours (success, warning, info, destructive) mean the same thing everywhere and are never replaced by
+   section colours. Section accents (earn, learn, grow) only mark where you are: icons, nav indicators, highlights. */
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.45 0.1 165);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.6 0.1 165);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.45 0.1 165);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --background: #fafaf7;
+  --foreground: #17211d;
+  --card: #ffffff;
+  --card-foreground: #17211d;
+  --popover: #ffffff;
+  --popover-foreground: #17211d;
+  --primary: #1f6b57;
+  --primary-foreground: #ffffff;
+  --brand-soft: #eaf3ee;
+  --secondary: #eef2ee;
+  --secondary-foreground: #17211d;
+  --muted: #f1f4f0;
+  --muted-foreground: #5d6a63;
+  --accent: #eaf3ee;
+  --accent-foreground: #17211d;
+  --destructive: #b42318;
+  --destructive-foreground: #ffffff;
+  --destructive-soft: #fdecea;
+  --success: #18794e;
+  --success-foreground: #ffffff;
+  --success-soft: #e7f4ec;
+  --warning: #9a5b00;
+  --warning-foreground: #ffffff;
+  --warning-soft: #fdf3e1;
+  --info: #2457a7;
+  --info-foreground: #ffffff;
+  --info-soft: #e8effa;
+  --earn: #1f6b57;
+  --earn-soft: #eaf3ee;
+  --learn: #4338ca;
+  --learn-soft: #eef0fd;
+  --grow: #9a4508;
+  --grow-soft: #fcefe3;
+  --border: #e2e7e1;
+  --input: #8a968f;
+  --ring: #2e8b6f;
+  --chart-1: #1f6b57;
+  --chart-2: #4338ca;
+  --chart-3: #b45309;
+  --chart-4: #2457a7;
+  --chart-5: #be185d;
+  --radius: 0.75rem;
+  --sidebar: #f4f6f2;
+  --sidebar-foreground: #17211d;
+  --sidebar-primary: #1f6b57;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #eaf3ee;
+  --sidebar-accent-foreground: #17211d;
+  --sidebar-border: #e2e7e1;
+  --sidebar-ring: #2e8b6f;
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.78 0.12 165);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.78 0.12 165);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --background: #101714;
+  --foreground: #f4f7f4;
+  --card: #17211d;
+  --card-foreground: #f4f7f4;
+  --popover: #17211d;
+  --popover-foreground: #f4f7f4;
+  --primary: #5cc9a7;
+  --primary-foreground: #0b1411;
+  --brand-soft: #15302a;
+  --secondary: #1f2b26;
+  --secondary-foreground: #f4f7f4;
+  --muted: #1f2b26;
+  --muted-foreground: #a3b1a9;
+  --accent: #1e3a31;
+  --accent-foreground: #f4f7f4;
+  --destructive: #f87171;
+  --destructive-foreground: #1a0b0a;
+  --destructive-soft: #2d1715;
+  --success: #4ade80;
+  --success-foreground: #0b1411;
+  --success-soft: #14261d;
+  --warning: #fbbf24;
+  --warning-foreground: #1a1206;
+  --warning-soft: #2a2110;
+  --info: #93b4f5;
+  --info-foreground: #0b1220;
+  --info-soft: #162036;
+  --earn: #5cc9a7;
+  --earn-soft: #15302a;
+  --learn: #a5b4fc;
+  --learn-soft: #1e2140;
+  --grow: #f4a261;
+  --grow-soft: #2e1f12;
+  --border: rgb(255 255 255 / 10%);
+  --input: #66746c;
+  --ring: #5cc9a7;
+  --chart-1: #5cc9a7;
+  --chart-2: #a5b4fc;
+  --chart-3: #f4a261;
+  --chart-4: #93b4f5;
+  --chart-5: #f9a8d4;
+  --sidebar: #131c18;
+  --sidebar-foreground: #f4f7f4;
+  --sidebar-primary: #5cc9a7;
+  --sidebar-primary-foreground: #0b1411;
+  --sidebar-accent: #1e3a31;
+  --sidebar-accent-foreground: #f4f7f4;
+  --sidebar-border: rgb(255 255 255 / 10%);
+  --sidebar-ring: #5cc9a7;
 }
 
 @layer base {
@@ -123,6 +180,11 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+  h1,
+  h2,
+  h3 {
+    @apply text-balance;
   }
   html {
     @apply font-sans;

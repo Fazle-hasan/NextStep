@@ -38,7 +38,7 @@ export default async function AdminPage() {
                   <CardTitle className="flex items-center justify-between gap-2 text-lg">
                     {card.title}
                     {card.count !== undefined && (
-                      <Badge variant={card.count > 0 ? "default" : "secondary"}>{s.waiting(card.count)}</Badge>
+                      <Badge variant={card.count > 0 ? "warning" : "neutral"}>{s.waiting(card.count)}</Badge>
                     )}
                   </CardTitle>
                   <CardDescription>{card.description}</CardDescription>

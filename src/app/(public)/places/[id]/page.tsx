@@ -44,7 +44,7 @@ export default async function PlacePage({ params }: PageProps<"/places/[id]">) {
         <div className="flex flex-wrap items-center gap-2">
           <PlaceTypeBadge type={place.placeType} />
           {place.isVerified && (
-            <span className="inline-flex items-center gap-1 text-sm font-medium text-emerald-700 dark:text-emerald-400">
+            <span className="inline-flex items-center gap-1 text-sm font-medium text-success">
               <BadgeCheck className="size-4" aria-hidden="true" />
               {placesStrings.verified}
             </span>

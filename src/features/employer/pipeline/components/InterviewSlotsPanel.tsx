@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
 
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/shared/StatusBadge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -133,7 +133,7 @@ export function InterviewSlotsPanel({ applicationId, slots, closed }: Props) {
               <div className="min-w-0 space-y-1">
                 <p className="text-sm font-medium">{formatDateTime(slot.starts_at)}</p>
                 {slot.location_or_link && <p className="text-sm break-all text-muted-foreground">{slot.location_or_link}</p>}
-                <Badge variant={slot.status === "selected" ? "default" : "secondary"}>{s.slotStatus[slot.status]}</Badge>
+                <StatusBadge status={slot.status} label={s.slotStatus[slot.status]} />
               </div>
               {slot.status !== "cancelled" && (
                 <Button type="button" variant="outline" className="h-11" disabled={pending} onClick={() => onCancel(slot.id)}>

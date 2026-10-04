@@ -3,9 +3,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { z } from "zod";
 
-import { Badge } from "@/components/ui/badge";
 import { requireViewer } from "@/features/auth/queries";
-import { SESSION_TYPE_LABELS, sessionStatusLabel } from "@/features/mentorship/labels";
+import { SessionStatusBadge } from "@/features/mentorship/booking/components/SessionStatusBadge";
+import { SESSION_TYPE_LABELS } from "@/features/mentorship/labels";
 import { CancelSessionButton } from "@/features/mentorship/mentor/components/CancelSessionButton";
 import { MentorFeedbackForm } from "@/features/mentorship/mentor/components/MentorFeedbackForm";
 import { PrivateNotes } from "@/features/mentorship/mentor/components/PrivateNotes";
@@ -62,7 +62,7 @@ export default async function MentorSessionPage({ params }: PageProps<"/mentor/s
         </Link>
         <div className="flex flex-wrap items-center gap-2">
           <h1 className="text-2xl font-semibold tracking-tight">{s.sessions.with(session.menteeName)}</h1>
-          <Badge variant="secondary">{sessionStatusLabel({ status: session.status, starts_at: session.startsAt })}</Badge>
+          <SessionStatusBadge status={session.status} startsAt={session.startsAt} />
         </div>
       </div>
 

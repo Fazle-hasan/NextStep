@@ -50,8 +50,8 @@ export function ListerBadgeCard({ status }: { status: ListerBadgeStatus }) {
       <CardContent className="flex flex-wrap items-center justify-between gap-3">
         <div className="min-w-0 space-y-1">
           <p className="flex items-center gap-2 font-medium">
-            {status === "verified" && <BadgeCheck className="size-5 text-primary" aria-hidden="true" />}
-            {status === "pending" && <Clock className="size-5 text-muted-foreground" aria-hidden="true" />}
+            {status === "verified" && <BadgeCheck className="size-5 text-success" aria-hidden="true" />}
+            {status === "pending" && <Clock className="size-5 text-warning" aria-hidden="true" />}
             {status === "verified" ? s.verified : status === "pending" ? s.pending : s.title}
           </p>
           <p className="text-sm text-muted-foreground">

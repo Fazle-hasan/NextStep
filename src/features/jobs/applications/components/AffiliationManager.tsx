@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/shared/StatusBadge";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -44,7 +44,7 @@ export function AffiliationManager({ affiliations, companies }: Props) {
             <li key={item.id} className="flex flex-wrap items-center justify-between gap-2 rounded-lg border p-3">
               <div className="min-w-0 space-y-1">
                 <p className="font-medium break-words">{item.companyName}</p>
-                <Badge variant={item.confirmed ? "default" : "outline"}>{item.confirmed ? s.confirmed : s.unconfirmed}</Badge>
+                <StatusBadge tone={item.confirmed ? "success" : "attention"} label={item.confirmed ? s.confirmed : s.unconfirmed} />
               </div>
               <Button
                 type="button"

@@ -1,6 +1,6 @@
 "use client";
 
-import { LogOut, Plus, Shield } from "lucide-react";
+import { Bell, LogOut, Plus, Settings, Shield } from "lucide-react";
 import Link from "next/link";
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -18,6 +18,7 @@ import { signOut } from "@/features/auth/actions";
 import { ROLE_LABELS, type AppRole } from "@/lib/sections";
 
 import { shellStrings } from "./strings";
+import { ThemeMenuItems } from "./ThemeMenuItems";
 
 type Props = { name: string; roles: AppRole[] };
 
@@ -62,6 +63,18 @@ export function UserMenu({ name, roles }: Props) {
             {shellStrings.addRole}
           </Link>
         </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href="/notifications">
+            <Bell aria-hidden="true" />
+            {shellStrings.notifications}
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href="/settings">
+            <Settings aria-hidden="true" />
+            {shellStrings.settings}
+          </Link>
+        </DropdownMenuItem>
         {roles.includes("admin") && (
           <DropdownMenuItem asChild>
             <Link href="/admin">
@@ -70,6 +83,8 @@ export function UserMenu({ name, roles }: Props) {
             </Link>
           </DropdownMenuItem>
         )}
+        <DropdownMenuSeparator />
+        <ThemeMenuItems />
         <DropdownMenuSeparator />
         <form action={signOut}>
           <DropdownMenuItem asChild variant="destructive">

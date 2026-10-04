@@ -1,3 +1,4 @@
+import { StatusBadge } from "@/components/shared/StatusBadge";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { reportReasonLabels } from "@/features/safety/strings";
@@ -17,7 +18,7 @@ export function ReportCard({ report }: { report: ModerationReport }) {
         <CardTitle className="flex flex-wrap items-center gap-2 text-lg">
           {reportReasonLabels[report.reason]}
           <Badge variant="secondary">{TARGET_TYPE_LABELS[report.targetType]}</Badge>
-          {report.status !== "open" && <Badge variant="outline">{REPORT_STATUS_LABELS[report.status]}</Badge>}
+          {report.status !== "open" && <StatusBadge status={report.status} label={REPORT_STATUS_LABELS[report.status]} />}
         </CardTitle>
         <CardDescription>
           {s.reportedBy} {report.reporterName ?? s.reporterGone} · {formatDate(report.createdAt)}

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { z } from "zod";
 
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/shared/StatusBadge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { requireViewer } from "@/features/auth/queries";
@@ -43,7 +43,7 @@ export default async function EditFlatPage({ params }: PageProps<"/flats/[id]/ed
       <header className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex flex-wrap items-center gap-2">
           <h1 className="text-2xl font-bold tracking-tight">{s.form.editTitle}</h1>
-          <Badge variant={shownStatus === "active" ? "default" : "secondary"}>{LISTING_STATUS_LABELS[shownStatus]}</Badge>
+          <StatusBadge status={shownStatus} label={LISTING_STATUS_LABELS[shownStatus]} />
         </div>
         <Button asChild variant="outline" className="h-11">
           <Link href={`/flats/${listing.id}`}>{s.manage.view}</Link>

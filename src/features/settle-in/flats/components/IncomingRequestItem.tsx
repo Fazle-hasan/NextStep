@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
 
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/shared/StatusBadge";
 import { Button } from "@/components/ui/button";
 import { timeAgo } from "@/lib/utils/dates";
 
@@ -41,9 +41,7 @@ export function IncomingRequestItem({ request }: { request: IncomingRequest }) {
       <div className="flex flex-wrap items-center justify-between gap-2">
         <p className="font-medium">{request.requesterName ?? s.someone}</p>
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <Badge variant={request.status === "accepted" ? "default" : "secondary"}>
-            {flatsStrings.requestStatus[request.status]}
-          </Badge>
+          <StatusBadge status={request.status} label={flatsStrings.requestStatus[request.status]} />
           <span>{timeAgo(request.createdAt)}</span>
         </div>
       </div>

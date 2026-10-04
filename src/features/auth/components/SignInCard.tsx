@@ -25,7 +25,9 @@ export function SignInCard({ next, errorMessage }: Props) {
   return (
     <Card className="w-full max-w-md">
       <CardHeader>
-        <CardTitle className="text-xl">{authStrings.title}</CardTitle>
+        <CardTitle className="text-xl">
+          <h1>{authStrings.title}</h1>
+        </CardTitle>
         <CardDescription>{authStrings.subtitle}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">

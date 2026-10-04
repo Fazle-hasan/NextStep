@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { z } from "zod";
 
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/shared/StatusBadge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { requireViewer } from "@/features/auth/queries";
 import { BackToEmployer } from "@/features/employer/components/BackToEmployer";
@@ -38,7 +38,7 @@ export default async function EditJobPage({ params }: PageProps<"/employer/jobs/
           </CardTitle>
           <CardDescription className="flex flex-wrap items-center gap-2">
             <span>{s.forCompany(company.name)}</span>
-            <Badge variant="secondary">{JOB_STATUS_LABELS[job.status]}</Badge>
+            <StatusBadge status={job.status} label={JOB_STATUS_LABELS[job.status]} />
           </CardDescription>
         </CardHeader>
         <CardContent>

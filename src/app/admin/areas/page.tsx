@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/shared/StatusBadge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { adminStrings } from "@/features/admin/strings";
 import { getAdminAreas } from "@/features/places/admin/queries";
@@ -10,10 +10,10 @@ import type { GuideStatus } from "@/features/places/admin/types";
 
 export const metadata: Metadata = { title: s.areas.title };
 
-function StatusBadge({ status }: { status: GuideStatus }) {
-  if (status === "published") return <Badge>{s.areas.published}</Badge>;
-  if (status === "draft") return <Badge variant="secondary">{s.areas.draft}</Badge>;
-  return <Badge variant="outline">{s.areas.none}</Badge>;
+function GuideStatusBadge({ status }: { status: GuideStatus }) {
+  if (status === "published") return <StatusBadge tone="success" label={s.areas.published} />;
+  if (status === "draft") return <StatusBadge tone="attention" label={s.areas.draft} />;
+  return <StatusBadge tone="inactive" label={s.areas.none} />;
 }
 
 export default async function AdminAreasPage() {
@@ -54,7 +54,7 @@ export default async function AdminAreasPage() {
                           <span className="font-medium">{area.name}</span>
                           <span className="flex shrink-0 items-center gap-2">
                             <span className="text-sm text-muted-foreground">{s.areas.tips(area.tipCount)}</span>
-                            <StatusBadge status={area.status} />
+                            <GuideStatusBadge status={area.status} />
                           </span>
                         </Link>
                       </li>

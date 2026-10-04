@@ -2,7 +2,7 @@
 
 import { useFormContext, useWatch } from "react-hook-form";
 
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/shared/StatusBadge";
 import { Textarea } from "@/components/ui/textarea";
 
 import type { OnboardingInput } from "../schemas";
@@ -26,7 +26,7 @@ export function NextStepsStep() {
           <li key={intent} className="rounded-lg border p-4">
             <div className="flex flex-wrap items-center gap-2">
               <span className="font-medium">{intentStrings[intent].title}</span>
-              {intentStrings[intent].needsVerification && <Badge variant="secondary">{s.pendingVerification}</Badge>}
+              {intentStrings[intent].needsVerification && <StatusBadge tone="attention" label={s.pendingVerification} />}
             </div>
             <p className="mt-1 text-sm text-muted-foreground">{intentStrings[intent].nextStep}</p>
           </li>

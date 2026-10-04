@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/shared/StatusBadge";
 import { Button } from "@/components/ui/button";
 import { requireViewer } from "@/features/auth/queries";
 import { PipelineBoard } from "@/features/employer/pipeline/components/PipelineBoard";
@@ -34,7 +34,7 @@ export default async function EmployerJobPipelinePage({ params }: PageProps<"/em
           <div className="min-w-0 space-y-2">
             <h1 className="text-2xl font-semibold tracking-tight break-words">{job.title}</h1>
             <div className="flex flex-wrap items-center gap-2">
-              <Badge variant={job.status === "published" ? "default" : "secondary"}>{JOB_STATUS_LABELS[job.status]}</Badge>
+              <StatusBadge status={job.status} label={JOB_STATUS_LABELS[job.status]} />
               <span className="text-sm text-muted-foreground">
                 {s.applicantsTitle}: {job.applicants.length}
               </span>

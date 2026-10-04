@@ -5,7 +5,9 @@ import type { Viewer } from "@/features/auth/queries";
 import { NotificationBellSlot } from "@/features/notifications/components/NotificationBellSlot";
 
 import { BottomNav } from "./BottomNav";
+import { InboxCount } from "./InboxCount";
 import { SideNav } from "./SideNav";
+import { BrandMark } from "./BrandMark";
 import { shellStrings } from "./strings";
 import { UserMenu } from "./UserMenu";
 
@@ -16,7 +18,8 @@ export function AppShell({ viewer, children }: { viewer: Viewer; children: React
   return (
     <div className="flex min-h-full flex-1 flex-col">
       <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b bg-background/95 px-4 backdrop-blur">
-        <Link href="/home" className="text-lg font-semibold tracking-tight text-primary">
+        <Link href="/home" className="flex items-center gap-2 text-lg font-semibold tracking-tight text-foreground">
+          <BrandMark />
           {shellStrings.brand}
         </Link>
         <div className="flex items-center gap-1">
@@ -27,14 +30,20 @@ export function AppShell({ viewer, children }: { viewer: Viewer; children: React
         </div>
       </header>
       <div className="flex flex-1">
-        <aside className="hidden w-64 shrink-0 border-r md:block">
+        <aside className="hidden w-64 shrink-0 border-r bg-sidebar md:block">
           <div className="sticky top-14 max-h-[calc(100vh-3.5rem)] overflow-y-auto">
             <SideNav roles={viewer.roles} />
           </div>
         </aside>
-        <main className="min-w-0 flex-1 px-4 pt-6 pb-24 md:px-8 md:pb-10">{children}</main>
+        <main className="min-w-0 flex-1 px-4 pt-6 pb-[calc(5rem+env(safe-area-inset-bottom))] md:px-8 md:pb-10">{children}</main>
       </div>
-      <BottomNav />
+      <BottomNav
+        inboxBadge={
+          <Suspense fallback={null}>
+            <InboxCount />
+          </Suspense>
+        }
+      />
     </div>
   );
 }

@@ -11,11 +11,12 @@ const ITEMS: { kind: MapMarkerKind; label: string }[] = [
   { kind: "workplace", label: s.workplace },
 ];
 
-// What each marker colour and shape on the map means.
-export function MapLegend() {
+// What each marker colour and shape on the map means. `kinds` limits the key to the markers a map shows.
+export function MapLegend({ kinds }: { kinds?: MapMarkerKind[] }) {
+  const items = kinds ? ITEMS.filter((item) => kinds.includes(item.kind)) : ITEMS;
   return (
     <ul aria-label={s.title} className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
-      {ITEMS.map((item) => (
+      {items.map((item) => (
         <li key={item.kind} className="flex items-center gap-1.5">
           <span
             aria-hidden="true"

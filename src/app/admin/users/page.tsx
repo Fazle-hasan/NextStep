@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { StatusBadge } from "@/components/shared/StatusBadge";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -63,7 +64,7 @@ export default async function AdminUsersPage({ searchParams }: PageProps<"/admin
                     <div className="min-w-0 space-y-1">
                       <p className="flex flex-wrap items-center gap-2 font-medium">
                         <span className="break-words">{name}</span>
-                        {user.suspendedAt && <Badge variant="destructive">{s.suspended}</Badge>}
+                        {user.suspendedAt && <StatusBadge tone="danger" label={s.suspended} />}
                       </p>
                       <p className="text-sm text-muted-foreground">
                         {user.cityName ?? s.noCity} · {s.joined(formatDate(user.joinedAt))}

@@ -1,4 +1,4 @@
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/shared/StatusBadge";
 import { formatDate } from "@/lib/utils/dates";
 
 import { placesStrings } from "../strings";
@@ -26,9 +26,7 @@ export function MySuggestions({ suggestions }: { suggestions: MySuggestion[] }) 
             <li key={suggestion.id} className="space-y-1 px-4 py-3">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <p className="min-w-0 font-medium break-words">{title(suggestion)}</p>
-                <Badge variant={suggestion.status === "approved" ? "default" : suggestion.status === "rejected" ? "outline" : "secondary"}>
-                  {s.status[suggestion.status]}
-                </Badge>
+                <StatusBadge status={suggestion.status} label={s.status[suggestion.status]} />
               </div>
               <p className="text-sm text-muted-foreground">{formatDate(suggestion.createdAt)}</p>
               {suggestion.note && <p className="text-sm break-words whitespace-pre-line">{suggestion.note}</p>}

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { z } from "zod";
 
+import { StatusBadge } from "@/components/shared/StatusBadge";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -55,7 +56,12 @@ export default async function FlatPage({ params }: PageProps<"/flats/[id]">) {
       <header className="space-y-2">
         <div className="flex flex-wrap gap-1.5">
           <Badge variant="secondary">{LISTING_TYPE_LABELS[listing.listing_type]}</Badge>
-          {!isLive && <Badge variant="outline">{LISTING_STATUS_LABELS[listing.status === "active" ? "expired" : listing.status]}</Badge>}
+          {!isLive && (
+            <StatusBadge
+              tone="inactive"
+              label={LISTING_STATUS_LABELS[listing.status === "active" ? "expired" : listing.status]}
+            />
+          )}
         </div>
         <h1 className="text-2xl font-bold tracking-tight">{listing.title}</h1>
         <p className="text-xl font-semibold">{formatMonthlyRent(listing.rent)}</p>
@@ -147,9 +153,7 @@ export default async function FlatPage({ params }: PageProps<"/flats/[id]">) {
             <p className="text-sm text-muted-foreground">
               {s.listedBy} <span className="font-medium text-foreground">{detail.listerName ?? flatsStrings.manage.someone}</span>
               {detail.listerVerified && (
-                <Badge variant="secondary" className="ml-2">
-                  {flatsStrings.listerBadge.verified}
-                </Badge>
+                <StatusBadge tone="success" label={flatsStrings.listerBadge.verified} className="ml-2" />
               )}
             </p>
             <div className="flex flex-wrap gap-1">

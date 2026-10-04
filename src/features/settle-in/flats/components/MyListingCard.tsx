@@ -1,7 +1,7 @@
 import { Home } from "lucide-react";
 import Link from "next/link";
 
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/shared/StatusBadge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { listingPhotoUrl } from "@/lib/supabase/storage";
@@ -47,7 +47,7 @@ export function MyListingCard({ item }: { item: MyListing }) {
               {[LISTING_TYPE_LABELS[listing.listing_type], place, formatMonthlyRent(listing.rent)].filter(Boolean).join(" · ")}
             </p>
             <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-              <Badge variant={shownStatus === "active" ? "default" : "secondary"}>{LISTING_STATUS_LABELS[shownStatus]}</Badge>
+              <StatusBadge status={shownStatus} label={LISTING_STATUS_LABELS[shownStatus]} />
               {listing.status !== "rented" && (
                 <span>{expired ? s.expiredOn(formatDate(listing.expires_at)) : s.expiresIn(item.daysLeft)}</span>
               )}

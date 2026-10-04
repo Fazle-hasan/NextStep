@@ -1,10 +1,10 @@
 import Link from "next/link";
 
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { SessionStatusBadge } from "@/features/mentorship/booking/components/SessionStatusBadge";
 
-import { SESSION_TYPE_LABELS, sessionStatusLabel } from "../../labels";
+import { SESSION_TYPE_LABELS } from "../../labels";
 import { mentorStrings } from "../strings";
 import type { MentorSession } from "../types";
 
@@ -30,9 +30,9 @@ export function SessionListItem({ session, variant }: Props) {
             <p className="text-sm text-muted-foreground">{SESSION_TYPE_LABELS[session.sessionType]}</p>
           </div>
           {variant !== "request" && (
-            <Badge variant="secondary" className="shrink-0">
-              {sessionStatusLabel({ status: session.status, starts_at: session.startsAt })}
-            </Badge>
+            <span className="shrink-0">
+              <SessionStatusBadge status={session.status} startsAt={session.startsAt} />
+            </span>
           )}
         </div>
         <SessionTime startsAt={session.startsAt} endsAt={session.endsAt} className="block min-h-5 text-sm" />

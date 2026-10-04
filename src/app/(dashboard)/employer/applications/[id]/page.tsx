@@ -14,7 +14,7 @@ import { NotesPanel } from "@/features/employer/pipeline/components/NotesPanel";
 import { ViewCvButton } from "@/features/employer/pipeline/components/ViewCvButton";
 import { getApplicantDetail } from "@/features/employer/pipeline/queries";
 import { pipelineStrings as s } from "@/features/employer/pipeline/strings";
-import { APPLICATION_STATUS_LABELS } from "@/features/jobs/labels";
+import { ApplicationStatusBadge } from "@/features/jobs/applications/components/ApplicationStatusBadge";
 import { timeAgo } from "@/lib/utils/dates";
 
 export const metadata: Metadata = { title: s.viewApplicant };
@@ -47,7 +47,7 @@ export default async function EmployerApplicationPage({ params }: PageProps<"/em
           <h1 className="text-2xl font-semibold tracking-tight break-words">{detail.name ?? s.unnamedApplicant}</h1>
           {detail.seekerProfile?.headline && <p className="break-words text-muted-foreground">{detail.seekerProfile.headline}</p>}
           <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-            <Badge>{APPLICATION_STATUS_LABELS[application.status]}</Badge>
+            <ApplicationStatusBadge status={application.status} />
             {detail.referral && <Badge variant="outline">{s.referred}</Badge>}
             <span className="break-words">
               {job.title} · {s.applied(timeAgo(application.created_at))}

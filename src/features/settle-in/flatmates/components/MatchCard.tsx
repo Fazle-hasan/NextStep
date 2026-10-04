@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { StatusBadge } from "@/components/shared/StatusBadge";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -24,7 +25,9 @@ export function MatchCard({ match, areaNames }: Props) {
       <CardHeader>
         <CardTitle className="flex flex-wrap items-center justify-between gap-2 text-lg">
           <h3 className="min-w-0 break-words">{name}</h3>
-          <Badge>{s.matches.score(match.score)}</Badge>
+          <Badge variant="secondary" className="bg-brand-soft text-primary">
+            {s.matches.score(match.score)}
+          </Badge>
         </CardTitle>
         {match.gender && <p className="text-sm text-muted-foreground">{GENDER_LABELS[match.gender]}</p>}
       </CardHeader>
@@ -46,7 +49,7 @@ export function MatchCard({ match, areaNames }: Props) {
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           {match.connectionStatus === "accepted" ? (
             <div className="flex flex-wrap items-center gap-3">
-              <Badge variant="secondary">{s.connect.connected}</Badge>
+              <StatusBadge tone="success" label={s.connect.connected} />
               {match.conversationId && (
                 <Button asChild variant="outline" className="h-11">
                   <Link href={`/messages/${match.conversationId}`}>{s.connect.openChat}</Link>
@@ -55,7 +58,7 @@ export function MatchCard({ match, areaNames }: Props) {
             </div>
           ) : match.connectionStatus === "pending" ? (
             <Link href="/flatmates/requests" className="inline-flex min-h-11 items-center">
-              <Badge variant="secondary">{s.connect.pending}</Badge>
+              <StatusBadge tone="attention" label={s.connect.pending} />
             </Link>
           ) : (
             <ConnectButton recipientId={match.userId} recipientName={name} />

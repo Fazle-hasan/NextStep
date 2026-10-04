@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { toast } from "sonner";
 
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/shared/StatusBadge";
 import { Button } from "@/components/ui/button";
 
 import { confirmAffiliation } from "../actions";
@@ -42,7 +42,7 @@ export function AffiliationList({ affiliations }: { affiliations: CompanyAffilia
           <li key={person.id} className="flex flex-wrap items-center justify-between gap-2 px-3 py-2">
             <span className="flex min-w-0 flex-wrap items-center gap-2 text-sm">
               <span className="font-medium break-words">{person.name ?? s.unknownPerson}</span>
-              <Badge variant={confirmed ? "secondary" : "outline"}>{confirmed ? s.confirmed : s.unconfirmed}</Badge>
+              <StatusBadge tone={confirmed ? "success" : "attention"} label={confirmed ? s.confirmed : s.unconfirmed} />
             </span>
             <Button
               variant="outline"

@@ -1,8 +1,8 @@
 import { Building2 } from "lucide-react";
 import Link from "next/link";
 
+import { StatusBadge } from "@/components/shared/StatusBadge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { JOB_STATUS_LABELS, VERIFICATION_STATUS_LABELS } from "@/features/jobs/labels";
@@ -41,9 +41,7 @@ export function CompanyCard({ company, jobs, affiliations, rejectionReason }: Em
             <CardTitle className="text-lg break-words">
               <h2>{company.name}</h2>
             </CardTitle>
-            <Badge variant={status === "approved" ? "default" : status === "rejected" ? "destructive" : "secondary"}>
-              {VERIFICATION_STATUS_LABELS[status]}
-            </Badge>
+            <StatusBadge status={status} label={VERIFICATION_STATUS_LABELS[status]} />
           </div>
         </div>
         <p className="text-sm text-muted-foreground">{HELP[status]}</p>
@@ -78,9 +76,7 @@ export function CompanyCard({ company, jobs, affiliations, rejectionReason }: Em
                   <div className="space-y-1">
                     <p className="font-medium break-words">{job.title}</p>
                     <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground">
-                      <Badge variant={job.status === "published" ? "default" : "secondary"}>
-                        {JOB_STATUS_LABELS[job.status]}
-                      </Badge>
+                      <StatusBadge status={job.status} label={JOB_STATUS_LABELS[job.status]} />
                       <span>{s.applicants(job.applicantCount)}</span>
                       <span>
                         {job.application_deadline ? s.deadline(formatDate(job.application_deadline)) : s.noDeadline}
