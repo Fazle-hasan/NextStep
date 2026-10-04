@@ -134,3 +134,19 @@ sign-in need the three Edge Functions in `supabase/functions/`.
    Until both secrets exist, the two cron jobs that call the functions do nothing.
 5. Check: dashboard → Edge Functions → `dispatch-notifications` → Logs should show a call every minute.
 
+## Making someone an admin
+
+There is no screen for this on purpose: the admin role can never be self-assigned (D-014), and NextStep has no
+passwords (sign-in is a one-time code by phone or email, or Google). To make someone an admin:
+
+1. They sign in once and finish onboarding, so their account exists.
+2. In the Supabase dashboard → SQL Editor, run (replace the email):
+   ```sql
+   insert into public.user_roles (user_id, role)
+   select id, 'admin' from auth.users where lower(email) = lower('person@example.com')
+   on conflict (user_id, role) do nothing;
+   ```
+3. They sign out and in again (or reload); "Admin panel" appears in their account menu and `/admin` opens.
+
+Hosted dev project: the account `fazlehasan110@gmail.com` was made admin on 2026-10-04 at the project owner's request.
+
