@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { dbErrorMessage } from "@/lib/errors";
 import { fail, ok, type ActionResult } from "@/lib/result";
 import { createClient } from "@/lib/supabase/server";
+import type { TablesInsert } from "@/types/database";
 
 import {
   addAffiliationSchema,
@@ -73,16 +74,21 @@ export async function withdrawApplication(input: unknown): Promise<ActionResult>
 
 export async function addAffiliation(input: unknown): Promise<ActionResult> {
   const parsed = addAffiliationSchema.safeParse(input);
-  if (!parsed.success) return fail(referralsStrings.errors.companyUnavailable);
+  if (!parsed.success) return fail(parsed.error.issues[0]?.message ?? referralsStrings.errors.companyUnavailable);
 
   const { supabase, userId } = await getSession();
   if (!userId) return fail(referralsStrings.errors.generic);
 
-  const { error } = await supabase
-    .from("company_affiliations")
-    .insert({ user_id: userId, company_id: parsed.data.companyId });
+  const row: TablesInsert<"company_affiliations"> =
+    "companyId" in parsed.data
+      ? { user_id: userId, company_id: parsed.data.companyId }
+      : { user_id: userId, organisation_name: parsed.data.organisationName };
+  const { error } = await supabase.from("company_affiliations").insert(row);
   if (error) {
     if (error.code === UNIQUE_VIOLATION) return fail(referralsStrings.errors.duplicateAffiliation);
+    if (error.message === "affiliation_limit_reached") return fail(referralsStrings.errors.affiliationLimit);
+    if (error.message === "organisation_name_required") return fail(referralsStrings.errors.organisationName);
+    if (error.message === "rate_limit_exceeded") return fail(dbErrorMessage(error, {}, referralsStrings.errors.generic));
     // RLS rejects companies that are not verified and visible.
     return fail(referralsStrings.errors.companyUnavailable);
   }

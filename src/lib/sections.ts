@@ -105,3 +105,18 @@ export const ROLE_LABELS: Record<AppRole, string> = {
   flat_lister: "Flat lister",
   admin: "Admin",
 };
+
+function matchesHref(pathname: string, href: string): boolean {
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
+// The one nav entry to highlight: the longest href that matches the current path, so "/flats/mine"
+// highlights "My listings" and not also "Flats & rooms".
+export function activeNavHref(pathname: string, hrefs: readonly string[]): string | null {
+  let best: string | null = null;
+  for (const href of hrefs) {
+    if (matchesHref(pathname, href) && (best === null || href.length > best.length)) best = href;
+  }
+  return best;
+}
+

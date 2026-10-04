@@ -32,7 +32,8 @@ export default async function ReferralsPage() {
         </CardContent>
       </Card>
 
-      {affiliations.map((affiliation) => {
+      {/* Referral links are for jobs posted on NextStep, so only companies on NextStep get a jobs card. */}
+      {affiliations.filter((affiliation) => affiliation.companyId).map((affiliation) => {
         const companyJobs = jobs.filter((job) => job.companyId === affiliation.companyId);
         return (
           <Card key={affiliation.id}>

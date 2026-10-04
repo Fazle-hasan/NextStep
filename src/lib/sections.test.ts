@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { SECTIONS, accountNavForRoles, sectionsForRoles } from "./sections";
+import { SECTIONS, accountNavForRoles, activeNavHref, sectionsForRoles } from "./sections";
 
 const hrefs = (roles: Parameters<typeof sectionsForRoles>[0]) =>
   sectionsForRoles(roles).flatMap((s) => s.items.map((i) => i.href));
@@ -45,3 +45,19 @@ describe("accountNavForRoles", () => {
     expect(accountNavForRoles(["admin"]).map((i) => i.href)).toContain("/admin");
   });
 });
+
+describe("activeNavHref", () => {
+  const hrefs = ["/flats", "/flats/mine", "/flatmates", "/jobs"];
+
+  it("highlights only the most specific entry", () => {
+    expect(activeNavHref("/flats/mine", hrefs)).toBe("/flats/mine");
+    expect(activeNavHref("/flats", hrefs)).toBe("/flats");
+    expect(activeNavHref("/flats/123", hrefs)).toBe("/flats");
+  });
+
+  it("does not confuse paths that only share a prefix", () => {
+    expect(activeNavHref("/flatmates/requests", hrefs)).toBe("/flatmates");
+    expect(activeNavHref("/home", hrefs)).toBeNull();
+  });
+});
+

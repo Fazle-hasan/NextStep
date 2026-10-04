@@ -4,7 +4,7 @@ import { Home } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { accountNavForRoles, sectionsForRoles, type AppRole } from "@/lib/sections";
+import { accountNavForRoles, activeNavHref, sectionsForRoles, type AppRole } from "@/lib/sections";
 import { cn } from "@/lib/utils";
 
 import { NavItemLink } from "./NavItemLink";
@@ -12,14 +12,15 @@ import { SECTION_ACCENTS } from "./sectionStyles";
 import { SectionIcon } from "./SectionIcon";
 import { shellStrings } from "./strings";
 
-function isActive(pathname: string, href: string) {
-  return pathname === href || pathname.startsWith(`${href}/`);
-}
 
 export function SideNav({ roles }: { roles: AppRole[] }) {
   const pathname = usePathname();
   const sections = sectionsForRoles(roles);
   const account = accountNavForRoles(roles);
+  const activeHref = activeNavHref(pathname, [
+    ...sections.flatMap((section) => section.items.filter((item) => item.available).map((item) => item.href)),
+    ...account.filter((item) => item.available).map((item) => item.href),
+  ]);
 
   return (
     <nav aria-label={shellStrings.mainNav} className="space-y-6 p-4">
@@ -55,7 +56,7 @@ export function SideNav({ roles }: { roles: AppRole[] }) {
             <ul className="space-y-0.5 pl-6">
               {section.items.map((item) => (
                 <li key={item.href}>
-                  <NavItemLink item={item} active={isActive(pathname, item.href)} accentBar={accent.bar} />
+                  <NavItemLink item={item} active={item.href === activeHref} accentBar={accent.bar} />
                 </li>
               ))}
             </ul>
@@ -68,7 +69,7 @@ export function SideNav({ roles }: { roles: AppRole[] }) {
         <ul className="space-y-0.5">
           {account.map((item) => (
             <li key={item.href}>
-              <NavItemLink item={item} active={isActive(pathname, item.href)} />
+              <NavItemLink item={item} active={item.href === activeHref} />
             </li>
           ))}
         </ul>

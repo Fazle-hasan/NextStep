@@ -63,6 +63,12 @@ describe("other schemas", () => {
     expect(addAffiliationSchema.safeParse({ companyId: "" }).success).toBe(false);
   });
 
+  it("accepts a typed organisation name of 2 to 120 characters", () => {
+    expect(addAffiliationSchema.safeParse({ organisationName: "  Noor Logistics " }).data).toEqual({ organisationName: "Noor Logistics" });
+    expect(addAffiliationSchema.safeParse({ organisationName: "x" }).success).toBe(false);
+    expect(addAffiliationSchema.safeParse({ organisationName: "x".repeat(121) }).success).toBe(false);
+  });
+
   it("limits the referral note", () => {
     expect(createReferralSchema.parse({ jobId: JOB, note: " Good colleague " }).note).toBe("Good colleague");
     expect(createReferralSchema.parse({ jobId: JOB, note: "" }).note).toBeUndefined();

@@ -30,7 +30,17 @@ export type ApplyValues = z.output<typeof applySchema>;
 export const slotSchema = z.object({ slotId: z.uuid() });
 export const applicationIdSchema = z.object({ applicationId: z.uuid() });
 
-export const addAffiliationSchema = z.object({ companyId: z.uuid({ error: referralsStrings.errors.companyUnavailable }) });
+// Either a verified company from the list or the name of an organisation that is not on NextStep yet (D-046).
+export const addAffiliationSchema = z.union([
+  z.object({ companyId: z.uuid({ error: referralsStrings.errors.companyUnavailable }) }),
+  z.object({
+    organisationName: z
+      .string()
+      .trim()
+      .min(2, referralsStrings.errors.organisationName)
+      .max(120, referralsStrings.errors.organisationName),
+  }),
+]);
 export const affiliationIdSchema = z.object({ affiliationId: z.uuid() });
 
 export const createReferralSchema = z.object({

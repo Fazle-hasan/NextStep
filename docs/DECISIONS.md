@@ -332,3 +332,10 @@ Format:
 - Decision: The project owner switched **Confirm email** off in the hosted dashboard (Authentication → Sign In / Providers → User Signups). Sign-up now creates the account and signs the person in at once; the app already handled that case. Passwords stay only in Supabase Auth (hashed). Signing up with an email that already has an account now says so and points to Log in / Forgot password. "Email me a sign-in link" and "Forgot password" still send emails and remain subject to the hourly limit.
 - Consequences: Email ownership is not verified while this is off; acceptable on the dev project only. Before real users: set up custom SMTP (docs/SETUP.md), raise the email rate limit, and switch Confirm email back on (the code supports both).
 
+## D-046: "Where I work" accepts organisations that are not on NextStep yet
+- Date: 2026-10-04
+- Status: accepted (extends D-026)
+- Context: Referrers could only pick a verified company from the list; most members' employers are not on NextStep yet.
+- Decision: `company_affiliations` takes either a verified `company_id` or a typed `organisation_name` (2–120 characters, tidied; one entry per name per person, case-insensitive; at most 10 entries; 20 additions a day). Typing the name of an already-verified company links to it at once. A typed entry is shown as "Not on NextStep yet" with a link asking the member's HR to register the company. Named entries are linked to a company only when an admin **verifies** a company with the same name (`private.link_affiliations_to_company`, called from `admin_review_verification`, count kept in the audit log), never at registration, so nobody can register a name just to see who claims to work there. Linked entries stay unconfirmed until the company confirms them. Referral links still need a linked company, because they point at jobs posted on NextStep.
+- Consequences: Name matching is exact apart from case and spacing ("Infosys" and "Infosys Ltd" do not match); admins can fix mismatches later. Migration `20261004113945_affiliation_organisations`, tests `010_affiliations.sql`.
+

@@ -165,7 +165,8 @@ export async function getMyApplication(applicationId: string, userId: string): P
 
 // Referrals ----------------------------------------------------------------------
 
-export type Affiliation = { id: string; companyId: string; companyName: string; confirmed: boolean };
+// companyId is null for an organisation the member typed that is not on NextStep yet (D-046).
+export type Affiliation = { id: string; companyId: string | null; companyName: string; confirmed: boolean; onNextStep: boolean };
 export type CompanyOption = { id: string; name: string };
 export type ReferableJob = { id: string; title: string; companyId: string; referral: { id: string; note: string | null } | null };
 
@@ -180,7 +181,7 @@ export async function getReferralsData(userId: string): Promise<ReferralsData> {
   const [affiliations, companies, referrals] = await Promise.all([
     supabase
       .from("company_affiliations")
-      .select("id, company_id, confirmed_by_company_at, companies(name)")
+      .select("id, company_id, organisation_name, confirmed_by_company_at, companies(name)")
       .eq("user_id", userId)
       .order("created_at"),
     supabase
@@ -193,7 +194,7 @@ export async function getReferralsData(userId: string): Promise<ReferralsData> {
   ]);
   if (affiliations.error || companies.error || referrals.error) throw new Error("Could not load referrals");
 
-  const companyIds = affiliations.data.map((row) => row.company_id);
+  const companyIds = affiliations.data.flatMap((row) => (row.company_id ? [row.company_id] : []));
   const jobs = companyIds.length
     ? await supabase
         .from("jobs")
@@ -212,8 +213,9 @@ export async function getReferralsData(userId: string): Promise<ReferralsData> {
     affiliations: affiliations.data.map((row) => ({
       id: row.id,
       companyId: row.company_id,
-      companyName: row.companies?.name ?? "",
+      companyName: row.companies?.name ?? row.organisation_name ?? "",
       confirmed: row.confirmed_by_company_at !== null,
+      onNextStep: row.company_id !== null,
     })),
     companies: companies.data.filter((company) => !affiliated.has(company.id)),
     jobs: jobs.data.map((job) => ({
