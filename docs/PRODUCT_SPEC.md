@@ -65,6 +65,8 @@ A user signs up once and can hold **multiple roles**. Role-specific features unl
 
 ## 5. Module 2 — LEAP integration
 
+> **Status (2026-10-04, D-031): future scope.** LEAP will be integrated with the LEAP team's own platform later. Nothing in this section is built in the UI yet.
+
 LEAP is an existing community career initiative. For now, LEAP content is **admin-managed** inside NextStep. Wrap all LEAP access in a service layer (`features/leap/service.ts`) so it can later be swapped for an external LEAP API.
 
 **What LEAP is (from the LEAP team, 2026-10-04):** a four-stage journey, **L**earn → **E**ngage → **A**pply → **P**rogress. Example: the portal directs a member to a 4-week "LEAP Python Sprint" (**Learn**), pairs them with a senior engineer from a partner company for weekly advice (**Engage**), has them build a live API project (**Apply**), and guarantees an interview with hiring partners on completion (**Progress**). Phase 3 must model a program as these four stages: learning content/sprint, mentor pairing (ties into Module 3), a project submission, and a guaranteed interview with partner employers (ties into Module 1; "LEAP-friendly" companies are the hiring partners).
@@ -178,7 +180,7 @@ A user creates a request:
 1. Auth (phone OTP, email, Google), onboarding, multi-role profiles
 2. Jobs: company profiles, posting, search & filters, applications, pipeline, saved jobs
 3. Mentorship: mentor profiles, availability, booking, feedback
-4. LEAP: programs, enrollment, completion badges
+4. ~~LEAP: programs, enrollment, completion badges~~ — moved to post-MVP (D-031)
 5. Settle In: relocation requests, buddy offers, flat listings, contact requests, flatmate profiles & matching, real-time chat
 6. Places directory + map + "near masjid and workplace" geo filter
 7. Admin: verification, moderation, places management, basic analytics
@@ -190,7 +192,7 @@ A user creates a request:
 - Employer team accounts
 - Auto-generated video links
 - Urdu/Hindi translations
-- External LEAP API integration
+- LEAP (programs, enrollment, badges, the four-stage journey) through integration with the LEAP team's platform (D-031)
 - Mobile app (PWA first)
 
 ## 13. Non-goals (for now)

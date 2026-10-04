@@ -385,7 +385,7 @@ Phases are labelled with the user-facing section they deliver (D-021): **Communi
 7. Affiliations and referrals. M010 saved jobs and searches. `recommended_jobs`.
 8. Seed fake companies and jobs across the 5 cities. Tests, advisors, commit.
 
-**Phase 3: Career Development (LEAP and mentorship)**
+**Phase 3: Career Development (LEAP and mentorship)** — database only, 2026-10-04 (migrations `20261004063042_leap`, `20261004063219_mentorship`; see D-031, D-032). LEAP is now future scope (D-031): its tables exist but no screens are built. Mentorship screens (steps 2–3 UI) are still to do.
 1. M011 LEAP plus `leap-assets`, `features/leap/service.ts`, public program pages, enroll/waitlist, admin LEAP screens, badges on profiles, and the LEAP filter in `get_applicants`.
 2. M012 mentorship. Mentor onboarding and verification, availability editor (rules and exceptions, timezone), `get_mentor_slots`.
 3. Booking flow, accept/decline with meeting URL, 2-session limit and overlap tests, feedback and ratings, private notes. Seed, tests, commit.

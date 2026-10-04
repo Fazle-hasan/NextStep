@@ -92,6 +92,8 @@ as $$
 begin
   delete from public.companies;
   delete from auth.users;
+  -- Enrollments and badges go with the users; programs are restricted until then.
+  delete from public.leap_programs;
 end;
 $$;
 

@@ -926,6 +926,517 @@ export type Database = {
           },
         ]
       }
+      leap_badges: {
+        Row: {
+          awarded_at: string
+          awarded_by: string | null
+          created_at: string
+          id: string
+          program_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          awarded_at?: string
+          awarded_by?: string | null
+          created_at?: string
+          id?: string
+          program_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          awarded_at?: string
+          awarded_by?: string | null
+          created_at?: string
+          id?: string
+          program_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "leap_badges_awarded_by_fkey"
+            columns: ["awarded_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "leap_badges_program_id_fkey"
+            columns: ["program_id"]
+            isOneToOne: false
+            referencedRelation: "leap_programs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "leap_badges_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      leap_enrollments: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          decided_at: string | null
+          decided_by: string | null
+          decision_reason: string | null
+          id: string
+          motivation: string | null
+          program_id: string
+          status: Database["public"]["Enums"]["enrollment_status"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          decided_at?: string | null
+          decided_by?: string | null
+          decision_reason?: string | null
+          id?: string
+          motivation?: string | null
+          program_id: string
+          status?: Database["public"]["Enums"]["enrollment_status"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          decided_at?: string | null
+          decided_by?: string | null
+          decision_reason?: string | null
+          id?: string
+          motivation?: string | null
+          program_id?: string
+          status?: Database["public"]["Enums"]["enrollment_status"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "leap_enrollments_decided_by_fkey"
+            columns: ["decided_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "leap_enrollments_program_id_fkey"
+            columns: ["program_id"]
+            isOneToOne: false
+            referencedRelation: "leap_programs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "leap_enrollments_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      leap_programs: {
+        Row: {
+          badge_name: string
+          capacity: number | null
+          city_id: string | null
+          created_at: string
+          created_by: string | null
+          description: string
+          eligibility: string | null
+          end_date: string
+          id: string
+          image_path: string | null
+          mode: Database["public"]["Enums"]["program_mode"]
+          program_type: Database["public"]["Enums"]["leap_program_type"]
+          requires_approval: boolean
+          seats_taken: number
+          slug: string
+          start_date: string
+          status: Database["public"]["Enums"]["leap_program_status"]
+          title: string
+          updated_at: string
+          venue: string | null
+        }
+        Insert: {
+          badge_name: string
+          capacity?: number | null
+          city_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          description: string
+          eligibility?: string | null
+          end_date: string
+          id?: string
+          image_path?: string | null
+          mode: Database["public"]["Enums"]["program_mode"]
+          program_type: Database["public"]["Enums"]["leap_program_type"]
+          requires_approval?: boolean
+          seats_taken?: number
+          slug: string
+          start_date: string
+          status?: Database["public"]["Enums"]["leap_program_status"]
+          title: string
+          updated_at?: string
+          venue?: string | null
+        }
+        Update: {
+          badge_name?: string
+          capacity?: number | null
+          city_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string
+          eligibility?: string | null
+          end_date?: string
+          id?: string
+          image_path?: string | null
+          mode?: Database["public"]["Enums"]["program_mode"]
+          program_type?: Database["public"]["Enums"]["leap_program_type"]
+          requires_approval?: boolean
+          seats_taken?: number
+          slug?: string
+          start_date?: string
+          status?: Database["public"]["Enums"]["leap_program_status"]
+          title?: string
+          updated_at?: string
+          venue?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "leap_programs_city_id_fkey"
+            columns: ["city_id"]
+            isOneToOne: false
+            referencedRelation: "cities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "leap_programs_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mentor_availability_exceptions: {
+        Row: {
+          created_at: string
+          end_time: string | null
+          id: string
+          kind: Database["public"]["Enums"]["availability_exception_kind"]
+          mentor_id: string
+          on_date: string
+          start_time: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          end_time?: string | null
+          id?: string
+          kind: Database["public"]["Enums"]["availability_exception_kind"]
+          mentor_id: string
+          on_date: string
+          start_time?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          end_time?: string | null
+          id?: string
+          kind?: Database["public"]["Enums"]["availability_exception_kind"]
+          mentor_id?: string
+          on_date?: string
+          start_time?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mentor_availability_exceptions_mentor_id_fkey"
+            columns: ["mentor_id"]
+            isOneToOne: false
+            referencedRelation: "mentor_profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      mentor_availability_rules: {
+        Row: {
+          created_at: string
+          end_time: string
+          id: string
+          mentor_id: string
+          start_time: string
+          updated_at: string
+          weekday: number
+        }
+        Insert: {
+          created_at?: string
+          end_time: string
+          id?: string
+          mentor_id: string
+          start_time: string
+          updated_at?: string
+          weekday: number
+        }
+        Update: {
+          created_at?: string
+          end_time?: string
+          id?: string
+          mentor_id?: string
+          start_time?: string
+          updated_at?: string
+          weekday?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mentor_availability_rules_mentor_id_fkey"
+            columns: ["mentor_id"]
+            isOneToOne: false
+            referencedRelation: "mentor_profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      mentor_private_notes: {
+        Row: {
+          body: string
+          created_at: string
+          id: string
+          mentor_id: string
+          session_id: string
+          updated_at: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          id?: string
+          mentor_id: string
+          session_id: string
+          updated_at?: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          id?: string
+          mentor_id?: string
+          session_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mentor_private_notes_mentor_id_fkey"
+            columns: ["mentor_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "mentor_private_notes_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "mentorship_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mentor_profiles: {
+        Row: {
+          bio: string | null
+          city_id: string | null
+          created_at: string
+          default_duration_min: number
+          headline: string
+          industries: string[]
+          is_accepting: boolean
+          languages: string[]
+          rating_avg: number | null
+          rating_count: number
+          session_types: Database["public"]["Enums"]["session_type"][]
+          timezone: string
+          updated_at: string
+          user_id: string
+          verification_status: Database["public"]["Enums"]["verification_status"]
+          verified_at: string | null
+          years_experience: number
+        }
+        Insert: {
+          bio?: string | null
+          city_id?: string | null
+          created_at?: string
+          default_duration_min?: number
+          headline: string
+          industries?: string[]
+          is_accepting?: boolean
+          languages?: string[]
+          rating_avg?: number | null
+          rating_count?: number
+          session_types?: Database["public"]["Enums"]["session_type"][]
+          timezone?: string
+          updated_at?: string
+          user_id: string
+          verification_status?: Database["public"]["Enums"]["verification_status"]
+          verified_at?: string | null
+          years_experience: number
+        }
+        Update: {
+          bio?: string | null
+          city_id?: string | null
+          created_at?: string
+          default_duration_min?: number
+          headline?: string
+          industries?: string[]
+          is_accepting?: boolean
+          languages?: string[]
+          rating_avg?: number | null
+          rating_count?: number
+          session_types?: Database["public"]["Enums"]["session_type"][]
+          timezone?: string
+          updated_at?: string
+          user_id?: string
+          verification_status?: Database["public"]["Enums"]["verification_status"]
+          verified_at?: string | null
+          years_experience?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mentor_profiles_city_id_fkey"
+            columns: ["city_id"]
+            isOneToOne: false
+            referencedRelation: "cities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "mentor_profiles_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mentor_skills: {
+        Row: {
+          created_at: string
+          id: string
+          mentor_id: string
+          skill_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          mentor_id: string
+          skill_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          mentor_id?: string
+          skill_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mentor_skills_mentor_id_fkey"
+            columns: ["mentor_id"]
+            isOneToOne: false
+            referencedRelation: "mentor_profiles"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "mentor_skills_skill_id_fkey"
+            columns: ["skill_id"]
+            isOneToOne: false
+            referencedRelation: "skills"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mentorship_sessions: {
+        Row: {
+          cancel_reason: string | null
+          cancelled_by: string | null
+          created_at: string
+          decline_reason: string | null
+          ends_at: string
+          goal_note: string | null
+          id: string
+          meeting_url: string | null
+          mentee_id: string
+          mentor_id: string
+          responded_at: string | null
+          session_type: Database["public"]["Enums"]["session_type"]
+          starts_at: string
+          status: Database["public"]["Enums"]["session_status"]
+          updated_at: string
+        }
+        Insert: {
+          cancel_reason?: string | null
+          cancelled_by?: string | null
+          created_at?: string
+          decline_reason?: string | null
+          ends_at: string
+          goal_note?: string | null
+          id?: string
+          meeting_url?: string | null
+          mentee_id: string
+          mentor_id: string
+          responded_at?: string | null
+          session_type: Database["public"]["Enums"]["session_type"]
+          starts_at: string
+          status?: Database["public"]["Enums"]["session_status"]
+          updated_at?: string
+        }
+        Update: {
+          cancel_reason?: string | null
+          cancelled_by?: string | null
+          created_at?: string
+          decline_reason?: string | null
+          ends_at?: string
+          goal_note?: string | null
+          id?: string
+          meeting_url?: string | null
+          mentee_id?: string
+          mentor_id?: string
+          responded_at?: string | null
+          session_type?: Database["public"]["Enums"]["session_type"]
+          starts_at?: string
+          status?: Database["public"]["Enums"]["session_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mentorship_sessions_cancelled_by_fkey"
+            columns: ["cancelled_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "mentorship_sessions_mentee_id_fkey"
+            columns: ["mentee_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "mentorship_sessions_mentor_id_fkey"
+            columns: ["mentor_id"]
+            isOneToOne: false
+            referencedRelation: "mentor_profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
       neighbourhoods: {
         Row: {
           center: unknown
@@ -1396,6 +1907,57 @@ export type Database = {
           },
         ]
       }
+      session_feedback: {
+        Row: {
+          author_id: string
+          author_side: Database["public"]["Enums"]["session_side"]
+          comment: string | null
+          created_at: string
+          id: string
+          next_steps: string | null
+          rating: number | null
+          session_id: string
+          updated_at: string
+        }
+        Insert: {
+          author_id: string
+          author_side: Database["public"]["Enums"]["session_side"]
+          comment?: string | null
+          created_at?: string
+          id?: string
+          next_steps?: string | null
+          rating?: number | null
+          session_id: string
+          updated_at?: string
+        }
+        Update: {
+          author_id?: string
+          author_side?: Database["public"]["Enums"]["session_side"]
+          comment?: string | null
+          created_at?: string
+          id?: string
+          next_steps?: string | null
+          rating?: number | null
+          session_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "session_feedback_author_id_fkey"
+            columns: ["author_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "session_feedback_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "mentorship_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       skills: {
         Row: {
           created_at: string
@@ -1529,6 +2091,14 @@ export type Database = {
     }
     Functions: {
       add_skill: { Args: { p_name: string }; Returns: string }
+      admin_complete_enrollment: {
+        Args: { p_enrollment_id: string }
+        Returns: undefined
+      }
+      admin_decide_enrollment: {
+        Args: { p_approve: boolean; p_enrollment_id: string; p_reason?: string }
+        Returns: Database["public"]["Enums"]["enrollment_status"]
+      }
       admin_review_job: {
         Args: { p_approve: boolean; p_job_id: string; p_reason?: string }
         Returns: undefined
@@ -1547,7 +2117,24 @@ export type Database = {
         }
         Returns: string
       }
+      book_session: {
+        Args: {
+          p_goal_note?: string
+          p_mentor_id: string
+          p_session_type: Database["public"]["Enums"]["session_type"]
+          p_starts_at: string
+        }
+        Returns: string
+      }
+      cancel_enrollment: {
+        Args: { p_enrollment_id: string }
+        Returns: undefined
+      }
       cancel_interview_slot: { Args: { p_slot_id: string }; Returns: undefined }
+      cancel_session: {
+        Args: { p_reason?: string; p_session_id: string }
+        Returns: undefined
+      }
       check_rate_limit: {
         Args: { p_action: string; p_max: number; p_window: string }
         Returns: undefined
@@ -1579,6 +2166,17 @@ export type Database = {
           p_website?: string
         }
         Returns: string
+      }
+      enroll_in_program: {
+        Args: { p_motivation?: string; p_program_id: string }
+        Returns: Database["public"]["Enums"]["enrollment_status"]
+      }
+      get_mentor_slots: {
+        Args: { p_from: string; p_mentor_id: string; p_to: string }
+        Returns: {
+          ends_at: string
+          starts_at: string
+        }[]
       }
       has_role: {
         Args: { role: Database["public"]["Enums"]["app_role"] }
@@ -1624,6 +2222,19 @@ export type Database = {
       }
       request_company_verification: {
         Args: { p_company_id: string; p_note?: string }
+        Returns: undefined
+      }
+      request_mentor_verification: {
+        Args: { p_note?: string }
+        Returns: undefined
+      }
+      respond_to_session: {
+        Args: {
+          p_accept: boolean
+          p_meeting_url?: string
+          p_reason?: string
+          p_session_id: string
+        }
         Returns: undefined
       }
       search_jobs: {
@@ -1674,6 +2285,15 @@ export type Database = {
         }
         Returns: undefined
       }
+      submit_session_feedback: {
+        Args: {
+          p_comment?: string
+          p_next_steps?: string
+          p_rating?: number
+          p_session_id: string
+        }
+        Returns: undefined
+      }
       withdraw_application: {
         Args: { p_application_id: string }
         Returns: undefined
@@ -1696,8 +2316,16 @@ export type Database = {
         | "hired"
         | "rejected"
         | "withdrawn"
+      availability_exception_kind: "unavailable" | "extra"
       company_member_role: "owner" | "recruiter"
       company_size: "s1_10" | "s11_50" | "s51_200" | "s201_1000" | "s1000_plus"
+      enrollment_status:
+        | "pending"
+        | "enrolled"
+        | "waitlisted"
+        | "rejected"
+        | "cancelled"
+        | "completed"
       experience_level: "entry" | "mid" | "senior" | "lead"
       gender: "male" | "female"
       interview_slot_status: "proposed" | "selected" | "cancelled"
@@ -1708,6 +2336,17 @@ export type Database = {
         | "closed"
         | "expired"
       job_type: "full_time" | "part_time" | "contract" | "internship"
+      leap_program_status:
+        | "draft"
+        | "open"
+        | "closed"
+        | "completed"
+        | "cancelled"
+      leap_program_type:
+        | "workshop"
+        | "training_course"
+        | "internship"
+        | "cohort"
       onboarding_intent:
         | "find_job"
         | "hire"
@@ -1715,6 +2354,7 @@ export type Database = {
         | "relocate"
         | "help_newcomers"
         | "list_flat"
+      program_mode: "online" | "in_person"
       report_reason:
         | "spam"
         | "harassment"
@@ -1734,6 +2374,19 @@ export type Database = {
         | "area_tip"
         | "message"
         | "place_suggestion"
+      session_side: "mentee" | "mentor"
+      session_status:
+        | "requested"
+        | "confirmed"
+        | "declined"
+        | "cancelled"
+        | "completed"
+      session_type:
+        | "career_guidance"
+        | "cv_review"
+        | "mock_interview"
+        | "skill_roadmap"
+        | "industry_qa"
       verification_kind: "company" | "mentor" | "buddy" | "flat_lister_id"
       verification_status: "pending" | "approved" | "rejected"
       work_mode: "onsite" | "hybrid" | "remote"
@@ -1882,13 +2535,35 @@ export const Constants = {
         "rejected",
         "withdrawn",
       ],
+      availability_exception_kind: ["unavailable", "extra"],
       company_member_role: ["owner", "recruiter"],
       company_size: ["s1_10", "s11_50", "s51_200", "s201_1000", "s1000_plus"],
+      enrollment_status: [
+        "pending",
+        "enrolled",
+        "waitlisted",
+        "rejected",
+        "cancelled",
+        "completed",
+      ],
       experience_level: ["entry", "mid", "senior", "lead"],
       gender: ["male", "female"],
       interview_slot_status: ["proposed", "selected", "cancelled"],
       job_status: ["draft", "pending_review", "published", "closed", "expired"],
       job_type: ["full_time", "part_time", "contract", "internship"],
+      leap_program_status: [
+        "draft",
+        "open",
+        "closed",
+        "completed",
+        "cancelled",
+      ],
+      leap_program_type: [
+        "workshop",
+        "training_course",
+        "internship",
+        "cohort",
+      ],
       onboarding_intent: [
         "find_job",
         "hire",
@@ -1897,6 +2572,7 @@ export const Constants = {
         "help_newcomers",
         "list_flat",
       ],
+      program_mode: ["online", "in_person"],
       report_reason: [
         "spam",
         "harassment",
@@ -1917,6 +2593,21 @@ export const Constants = {
         "area_tip",
         "message",
         "place_suggestion",
+      ],
+      session_side: ["mentee", "mentor"],
+      session_status: [
+        "requested",
+        "confirmed",
+        "declined",
+        "cancelled",
+        "completed",
+      ],
+      session_type: [
+        "career_guidance",
+        "cv_review",
+        "mock_interview",
+        "skill_roadmap",
+        "industry_qa",
       ],
       verification_kind: ["company", "mentor", "buddy", "flat_lister_id"],
       verification_status: ["pending", "approved", "rejected"],
