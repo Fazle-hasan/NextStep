@@ -14,7 +14,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
-    "test:db": "supabase test db"
+    "test:db": "supabase test db",
+    "hadith:sync": "node --experimental-strip-types --disable-warning=ExperimentalWarning scripts/sync-hadith.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.9.1",

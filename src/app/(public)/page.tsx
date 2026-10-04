@@ -3,7 +3,6 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 
-import { HeroIllustration } from "@/components/shared/landing/HeroIllustration";
 import { LandingFooter } from "@/components/shared/landing/LandingFooter";
 import { LatestJobs } from "@/components/shared/landing/LatestJobs";
 import { SectionEntryCard } from "@/components/shared/landing/SectionEntryCard";
@@ -11,6 +10,8 @@ import { TrustSection } from "@/components/shared/landing/TrustSection";
 import { shellStrings } from "@/components/shared/strings";
 import { Button } from "@/components/ui/button";
 import { getViewer } from "@/features/auth/queries";
+import { HadithCard } from "@/features/hadith/components/HadithCard";
+import { hadithOfTheDay } from "@/features/hadith/data";
 import { SECTIONS } from "@/lib/sections";
 
 const s = shellStrings.landing;
@@ -44,7 +45,7 @@ export default async function LandingPage() {
               </div>
               <p className="text-sm text-muted-foreground">{s.heroNote}</p>
             </div>
-            <HeroIllustration className="mx-auto max-w-[15rem] sm:max-w-sm md:max-w-none" />
+            <HadithCard initial={hadithOfTheDay()} />
           </div>
         </section>
 
