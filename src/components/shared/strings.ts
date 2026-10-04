@@ -1,0 +1,65 @@
+// User-facing strings for the app shell and generic pages (kept in one place for later translation).
+export const shellStrings = {
+  brand: "NextStep",
+  tagline: "NextStep: Learn. Earn. Grow.",
+  home: "Home",
+  soon: "Soon",
+  comingSoon: "Coming soon",
+  mainNav: "Main navigation",
+  accountNav: "Account",
+  openMenu: "Open account menu",
+  addRole: "Add a role",
+  adminLink: "Admin panel",
+  signOut: "Sign out",
+  signIn: "Sign in",
+  goToDashboard: "Go to dashboard",
+  getStarted: "Get started",
+  bottomNav: {
+    home: "Home",
+    "community-portal": "Portal",
+    "career-development": "Career",
+    "location-gathering": "Location",
+  },
+  landing: {
+    live: "Open now",
+    browseJobs: "Browse jobs",
+    intro:
+      "Jobs, mentorship, LEAP programs and help settling into a new city — built for the Shia Muslim community.",
+    sectionsHeading: "Everything in one place",
+  },
+  home_: {
+    greeting: (name: string) => `Assalamu alaikum, ${name}`,
+    yourRoles: "Your roles",
+    noRoles: "You haven't chosen what you're here for yet.",
+    verificationHeading: "Verification",
+    verificationKinds: {
+      company: "Company",
+      mentor: "Mentor",
+      buddy: "Settle-In Buddy",
+      flat_lister_id: "Flat lister ID badge",
+    } as Record<string, string>,
+    verificationStatus: {
+      pending: "Pending review — an admin will check your details soon.",
+      approved: "Approved — you're verified.",
+      rejected: "Not approved. Contact support for details.",
+    } as Record<string, string>,
+    statusBadge: { pending: "Pending", approved: "Approved", rejected: "Rejected" } as Record<string, string>,
+    openSection: "Open",
+  },
+  suspended: {
+    title: "Your account is suspended",
+    body: "You can't use NextStep while your account is suspended. Please contact support.",
+  },
+  admin: {
+    title: "Admin panel",
+    body: "Verification, moderation, places, LEAP and analytics tools arrive in Phase 6.",
+  },
+  errors: {
+    title: "Something went wrong",
+    body: "We couldn't load this page. Please try again.",
+    retry: "Try again",
+    notFoundTitle: "Page not found",
+    notFoundBody: "The page you're looking for doesn't exist or has moved.",
+    backHome: "Back to home",
+  },
+} as const;

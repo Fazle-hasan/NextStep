@@ -1,0 +1,33 @@
+# env / secrets
+.env
+.env.local
+.env.*.local
+.claude/settings.local.json
+
+# deps & build
+node_modules/
+.next/
+out/
+build/
+dist/
+*.tsbuildinfo
+next-env.d.ts
+
+# testing
+coverage/
+playwright-report/
+test-results/
+
+# supabase local
+supabase/.temp/
+supabase/.branches/
+supabase/functions/.env
+
+# misc
+.DS_Store
+Thumbs.db
+*.log
+.vercel
+.pnp
+.pnp.*
+*.pem
