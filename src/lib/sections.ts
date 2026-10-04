@@ -74,7 +74,7 @@ export const SECTIONS: Section[] = [
 
 export const ACCOUNT_NAV: NavItem[] = [
   { label: "Messages", href: "/messages", available: true },
-  { label: "Notifications", href: "/notifications", available: false },
+  { label: "Notifications", href: "/notifications", available: true },
   { label: "Admin", href: "/admin", roles: ["admin"], available: true },
 ];
 

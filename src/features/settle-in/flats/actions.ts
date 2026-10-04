@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { z } from "zod";
 
 import { getViewer } from "@/features/auth/queries";
 import { dbErrorMessage } from "@/lib/errors";
@@ -299,3 +300,21 @@ export async function withdrawContactRequest(input: unknown): Promise<ActionResu
   revalidatePath(`/flats/${parsed.data.listingId}`);
   return ok();
 }
+
+const listerVerificationSchema = z.object({
+  note: z.string().trim().max(1000, flatsStrings.listerBadge.noteTooLong).optional(),
+});
+
+// The lister asks an admin for the ID-verified badge.
+export async function requestListerVerification(input: unknown): Promise<ActionResult> {
+  const parsed = listerVerificationSchema.safeParse(input);
+  if (!parsed.success) return fail(firstIssue(parsed.error));
+
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("request_lister_verification", { p_note: parsed.data.note || undefined });
+  if (error) return fail(dbErrorMessage(error, flatsStrings.listerBadge.errors, errors.generic));
+
+  revalidatePath("/flats/mine");
+  return ok();
+}
+

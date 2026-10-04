@@ -142,6 +142,17 @@ export const placesAdminStrings = {
     upvotes: (n: number) => (n === 1 ? "1 upvote" : `${n} upvotes`),
     unknownAuthor: "A member",
   },
+  pages: {
+    tabs: { places: "Places", suggestions: "Suggestions" },
+    backToPlaces: "Places",
+    backToAreas: "Area guides",
+    placeNotFoundTitle: "Place not found",
+    placeNotFoundBody: "This place does not exist any more.",
+    areaNotFoundTitle: "Area not found",
+    areaNotFoundBody: "This neighbourhood does not exist.",
+    hiddenNotice: "This place is hidden from the public directory.",
+    unverifiedNotice: "This place is not verified, so it does not appear in the public directory yet.",
+  },
   listingTypes: {
     entire_flat: "Entire flat",
     private_room: "Private room",

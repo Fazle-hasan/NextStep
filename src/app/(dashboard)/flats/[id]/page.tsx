@@ -146,6 +146,11 @@ export default async function FlatPage({ params }: PageProps<"/flats/[id]">) {
           <footer className="flex flex-wrap items-center justify-between gap-2 border-t pt-4">
             <p className="text-sm text-muted-foreground">
               {s.listedBy} <span className="font-medium text-foreground">{detail.listerName ?? flatsStrings.manage.someone}</span>
+              {detail.listerVerified && (
+                <Badge variant="secondary" className="ml-2">
+                  {flatsStrings.listerBadge.verified}
+                </Badge>
+              )}
             </p>
             <div className="flex flex-wrap gap-1">
               <ReportDialog targetType="flat_listing" targetId={listing.id} />

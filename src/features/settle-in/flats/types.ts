@@ -31,6 +31,8 @@ export type FlatDetail = {
   cityName: string | null;
   neighbourhoodName: string | null;
   listerName: string | null;
+  // The lister holds the admin-approved ID badge.
+  listerVerified: boolean;
   isOwner: boolean;
   // The viewer's most recent contact request for this listing, if any.
   myRequest: MyContactRequest | null;

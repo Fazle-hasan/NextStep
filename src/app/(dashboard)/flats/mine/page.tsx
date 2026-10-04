@@ -5,8 +5,9 @@ import { Button } from "@/components/ui/button";
 import { requireViewer } from "@/features/auth/queries";
 import { EmptyState } from "@/features/jobs/search/components/EmptyState";
 import { BackLink } from "@/features/settle-in/flats/components/BackLink";
+import { ListerBadgeCard } from "@/features/settle-in/flats/components/ListerBadgeCard";
 import { MyListingCard } from "@/features/settle-in/flats/components/MyListingCard";
-import { getMyListings } from "@/features/settle-in/flats/queries";
+import { getListerBadgeStatus, getMyListings } from "@/features/settle-in/flats/queries";
 import { flatsStrings } from "@/features/settle-in/flats/strings";
 
 const s = flatsStrings.manage;
@@ -15,7 +16,7 @@ export const metadata: Metadata = { title: s.title };
 
 export default async function MyListingsPage() {
   const viewer = await requireViewer("/flats/mine");
-  const listings = await getMyListings(viewer.id);
+  const [listings, badge] = await Promise.all([getMyListings(viewer.id), getListerBadgeStatus(viewer.id)]);
 
   return (
     <div className="mx-auto w-full max-w-2xl space-y-4">
@@ -29,6 +30,9 @@ export default async function MyListingsPage() {
           <Link href="/flats/new">{flatsStrings.search.listYours}</Link>
         </Button>
       </header>
+
+      {/* Only listers can ask for the badge (the database checks the role too). */}
+      {(listings.length > 0 || badge !== "none") && <ListerBadgeCard status={badge} />}
 
       {listings.length === 0 ? (
         <EmptyState title={s.emptyTitle} body={s.emptyBody} />

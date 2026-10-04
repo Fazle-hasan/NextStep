@@ -78,7 +78,7 @@ export async function getFlatDetail(viewerId: string, listingId: string): Promis
   const [photos, names, { data: lister }, { data: requests }] = await Promise.all([
     listingPhotos(supabase, listingId),
     placeNames(supabase, listing.city_id, listing.neighbourhood_id),
-    supabase.from("profiles").select("full_name").eq("id", listing.lister_id).maybeSingle(),
+    supabase.from("profiles").select("full_name, lister_verified_at").eq("id", listing.lister_id).maybeSingle(),
     isOwner
       ? Promise.resolve({ data: [] })
       : supabase
@@ -100,7 +100,9 @@ export async function getFlatDetail(viewerId: string, listingId: string): Promis
   // Never ask for the address on behalf of anyone else (RLS would refuse anyway).
   const address = isOwner || myRequest?.status === "accepted" ? await listingAddress(supabase, listingId) : null;
 
-  return { listing, photos, ...names, listerName: lister?.full_name ?? null, isOwner, myRequest, address };
+  return { listing, photos, ...names, listerName: lister?.full_name ?? null,
+    listerVerified: Boolean(lister?.lister_verified_at),
+    isOwner, myRequest, address };
 }
 
 export async function getMyListings(viewerId: string): Promise<MyListing[]> {
@@ -189,3 +191,23 @@ export async function getListingForEdit(viewerId: string, listingId: string): Pr
   const [photos, address] = await Promise.all([listingPhotos(supabase, listingId), listingAddress(supabase, listingId)]);
   return { listing, photos, address };
 }
+
+export type ListerBadgeStatus = "verified" | "pending" | "none";
+
+// The viewer's ID-badge state for the "My listings" page.
+export async function getListerBadgeStatus(viewerId: string): Promise<ListerBadgeStatus> {
+  const supabase = await createClient();
+  const [{ data: profile }, { data: pending }] = await Promise.all([
+    supabase.from("profiles").select("lister_verified_at").eq("id", viewerId).maybeSingle(),
+    supabase
+      .from("verification_requests")
+      .select("id")
+      .eq("user_id", viewerId)
+      .eq("kind", "flat_lister_id")
+      .eq("status", "pending")
+      .limit(1),
+  ]);
+  if (profile?.lister_verified_at) return "verified";
+  return (pending ?? []).length > 0 ? "pending" : "none";
+}
+
