@@ -11,7 +11,8 @@ export const shellStrings = {
   addRole: "Add a role",
   adminLink: "Admin panel",
   signOut: "Sign out",
-  signIn: "Sign in",
+  signIn: "Log in",
+  signUp: "Sign up",
   goToDashboard: "Go to dashboard",
   getStarted: "Get started",
   bottomNav: {
@@ -31,7 +32,7 @@ export const shellStrings = {
     intro:
       "Find work with trusted employers, learn from experienced mentors, and settle into a new city close to masjids, imambargahs and people who can help.",
     browseJobs: "Browse jobs",
-    heroNote: "Free to join. Sign in with your phone, email or Google.",
+    heroNote: "Free to join. Sign up with your email and a password.",
     howHeading: "How it works",
     howSteps: [
       { title: "Create your profile", body: "Sign up in a minute and tell us your city." },
@@ -74,7 +75,8 @@ export const shellStrings = {
       { label: "Places", href: "/places" },
       { label: "Area guides", href: "/areas" },
       { label: "LEAP", href: "/leap" },
-      { label: "Sign in", href: "/sign-in" },
+      { label: "Log in", href: "/sign-in" },
+      { label: "Sign up", href: "/sign-up" },
     ],
     footerNav: "Footer",
     footerNote: "Built for the community · India",

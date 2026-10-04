@@ -34,7 +34,7 @@ export default async function LandingPage() {
               <p className="max-w-xl text-base text-pretty text-muted-foreground md:text-lg">{s.intro}</p>
               <div className="flex flex-col gap-3 sm:flex-row">
                 <Button asChild size="lg" className="h-12 px-6 text-base">
-                  <Link href={signedIn ? "/home" : "/sign-in"}>
+                  <Link href={signedIn ? "/home" : "/sign-up"}>
                     {signedIn ? shellStrings.goToDashboard : shellStrings.getStarted}
                   </Link>
                 </Button>

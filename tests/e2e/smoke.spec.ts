@@ -6,11 +6,13 @@ test("landing page shows the brand and tagline", async ({ page }) => {
   await expect(page.getByText(/Learn\. Earn\. Grow\./).first()).toBeVisible();
 });
 
-test("sign-in page opens on email and offers a password sign-in", async ({ page }) => {
+test("log-in and sign-up pages switch with two buttons", async ({ page }) => {
   await page.goto("/sign-in");
-  await expect(page.getByRole("tab", { name: "Email code" })).toHaveAttribute("aria-selected", "true");
-  await page.getByRole("tab", { name: "Password" }).click();
+  await expect(page.getByRole("heading", { level: 1, name: "Log in to NextStep" })).toBeVisible();
   await expect(page.locator("input#password-input")).toBeVisible();
+  await expect(page.getByRole("link", { name: "Log in" }).last()).toHaveAttribute("aria-current", "page");
+  await page.getByRole("navigation", { name: "Log in or sign up" }).getByRole("link", { name: "Sign up" }).click();
+  await expect(page.getByRole("heading", { level: 1, name: "Create your NextStep account" })).toBeVisible();
 });
 
 test("private pages redirect signed-out visitors to sign-in", async ({ page }) => {

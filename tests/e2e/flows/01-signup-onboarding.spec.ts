@@ -1,23 +1,32 @@
 import { expect, test } from "@playwright/test";
 
-import { latestEmailCode, uniqueEmail, uniquePhoneDigits } from "../support/api";
+import { latestEmailLink, uniqueEmail, uniquePhoneDigits } from "../support/api";
 import { chooseOption } from "../support/app";
 
 test.describe("flow 1: sign up and onboarding", () => {
-  test("a new member signs up with an email code and completes onboarding", async ({ page }) => {
+  test("a new member signs up with email and password, confirms the email and completes onboarding", async ({ page }) => {
     const email = uniqueEmail("signup");
+    // Typed only into the test browser; never logged.
+    const password = `Pw-${crypto.randomUUID()}`;
 
-    await page.goto("/sign-in");
-    // The card title is not a heading element, so match its text.
-    await expect(page.getByText("Sign in to NextStep", { exact: true })).toBeVisible();
-    await page.getByRole("tab", { name: "Email" }).click();
+    await page.goto("/");
+    await page.getByRole("link", { name: "Sign up" }).first().click();
+    await expect(page).toHaveURL(/\/sign-up/);
+    await expect(page.getByRole("heading", { level: 1, name: "Create your NextStep account" })).toBeVisible();
+    await expect(page.getByRole("link", { name: "Sign up" }).last()).toHaveAttribute("aria-current", "page");
+
     await page.getByLabel("Email address").fill(email);
-    await page.getByRole("button", { name: "Send code" }).click();
-    await expect(page.getByText(`Code sent to ${email}`)).toBeVisible();
+    await page.locator("input#signup-password").fill(password);
+    await page.getByLabel("Repeat the password").fill(`${password}x`);
+    await page.getByRole("button", { name: "Create account" }).click();
+    await expect(page.locator("#signup-confirm-error")).toContainText("don't match");
 
-    const code = await latestEmailCode(email);
-    // The code field submits on its own once all six digits are in.
-    await page.getByLabel("Enter the 6-digit code").fill(code);
+    await page.getByLabel("Repeat the password").fill(password);
+    await page.getByRole("button", { name: "Create account" }).click();
+    await expect(page.getByRole("status")).toContainText("We sent a confirmation link");
+
+    // The confirmation link logs the new member in.
+    await page.goto(await latestEmailLink(email));
 
     // A new account is sent to onboarding.
     await expect(page).toHaveURL(/\/onboarding/);

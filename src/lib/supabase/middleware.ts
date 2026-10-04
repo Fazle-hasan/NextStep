@@ -2,7 +2,7 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
 import { publicEnv } from "@/lib/env";
-import { HOME_PATH, SIGN_IN_PATH, isPublicPath, isSignedOutOnlyPath } from "@/lib/routes";
+import { HOME_PATH, SIGN_IN_PATH, authCallbackRedirect, isPublicPath, isSignedOutOnlyPath } from "@/lib/routes";
 import type { Database } from "@/types/database";
 
 // Refreshes the Supabase session cookie on every request and protects private routes.
@@ -28,6 +28,11 @@ export async function updateSession(request: NextRequest) {
   const { data } = await supabase.auth.getClaims();
   const signedIn = Boolean(data?.claims?.sub);
   const { pathname, search } = request.nextUrl;
+
+  const callback = authCallbackRedirect(pathname, request.nextUrl.searchParams);
+  if (callback) {
+    return redirectWithCookies(new URL(callback, request.nextUrl.origin), response);
+  }
 
   if (!signedIn && !isPublicPath(pathname)) {
     const url = request.nextUrl.clone();

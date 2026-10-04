@@ -1,25 +1,22 @@
 import { expect, test } from "@playwright/test";
 
-import { createMember } from "../support/api";
+import { createMember, latestEmailLink } from "../support/api";
 import { signIn } from "../support/app";
 
-test.describe("flow 7: password sign-in", () => {
-  test("a member sets a password in Settings and signs in with email and password", async ({ page }) => {
+// Passwords below are typed only into the test browser and never logged.
+test.describe("flow 7: log in, email link and forgotten password", () => {
+  test("a member sets a password in Settings and logs in with it", async ({ page }) => {
     const member = await createMember({ prefix: "password", name: "E2E Hasan" });
-    // Typed only into the test browser; never logged.
     const password = `Pw-${crypto.randomUUID()}`;
 
-    // A wrong password is refused before one is set.
+    // Before a password is set, the pair is refused without saying which part is wrong.
     await page.goto("/sign-in");
-    await expect(page.getByRole("heading", { level: 1, name: "Sign in to NextStep" })).toBeVisible();
-    await expect(page.getByRole("tab", { name: "Email code" })).toHaveAttribute("aria-selected", "true");
-    await page.getByRole("tab", { name: "Password" }).click();
+    await expect(page.getByRole("heading", { level: 1, name: "Log in to NextStep" })).toBeVisible();
     await page.getByLabel("Email address").fill(member.email);
     await page.locator("input#password-input").fill(password);
-    await page.getByRole("button", { name: "Sign in", exact: true }).click();
+    await page.getByRole("button", { name: "Log in", exact: true }).click();
     await expect(page.locator("#password-error")).toContainText("don't match");
 
-    // Set the password.
     await signIn(page, member, "/settings/password");
     await page.getByLabel("New password").fill("short");
     await page.getByLabel("Repeat the password").fill("short");
@@ -30,14 +27,50 @@ test.describe("flow 7: password sign-in", () => {
     await page.getByRole("button", { name: "Save password" }).click();
     await expect(page.getByText("Password saved")).toBeVisible();
 
-    // Sign out, then sign in with email and password.
     await page.context().clearCookies();
     await page.goto("/sign-in?next=%2Fhome");
-    await page.getByRole("tab", { name: "Password" }).click();
     await page.getByLabel("Email address").fill(member.email);
     await page.locator("input#password-input").fill(password);
-    await page.getByRole("button", { name: "Sign in", exact: true }).click();
+    await page.getByRole("button", { name: "Log in", exact: true }).click();
     await expect(page).toHaveURL(/\/home$/);
-    await expect(page.getByRole("heading", { level: 1 })).toContainText("E2E");
+  });
+
+  test("a member logs in with a link emailed to them", async ({ page }) => {
+    const member = await createMember({ prefix: "emaillink", name: "E2E Zainab", gender: "female" });
+
+    await page.goto("/sign-in");
+    await page.getByRole("button", { name: "Email me a sign-in link instead" }).click();
+    await page.getByLabel("Email address").fill(member.email);
+    await page.getByRole("button", { name: "Email me a link" }).click();
+    await expect(page.getByRole("status")).toContainText(`We sent a sign-in link to ${member.email}`);
+
+    await page.goto(await latestEmailLink(member.email));
+    await expect(page).toHaveURL(/\/home$/);
+  });
+
+  test("a member who forgot their password sets a new one from the emailed link", async ({ page }) => {
+    const member = await createMember({ prefix: "forgot", name: "E2E Abbas" });
+    const password = `Pw-${crypto.randomUUID()}`;
+
+    await page.goto("/sign-in");
+    await page.getByRole("link", { name: "Forgot password?" }).click();
+    await expect(page.getByRole("heading", { level: 1, name: "Reset your password" })).toBeVisible();
+    await page.getByLabel("Email address").fill(member.email);
+    await page.getByRole("button", { name: "Send reset link" }).click();
+    await expect(page.getByRole("status")).toContainText("we sent a link to set a new password");
+
+    await page.goto(await latestEmailLink(member.email));
+    await expect(page).toHaveURL(/\/reset-password$/);
+    await page.getByLabel("New password").fill(password);
+    await page.getByLabel("Repeat the password").fill(password);
+    await page.getByRole("button", { name: "Save password" }).click();
+    await expect(page).toHaveURL(/\/home$/);
+
+    await page.context().clearCookies();
+    await page.goto("/sign-in");
+    await page.getByLabel("Email address").fill(member.email);
+    await page.locator("input#password-input").fill(password);
+    await page.getByRole("button", { name: "Log in", exact: true }).click();
+    await expect(page).toHaveURL(/\/home$/);
   });
 });

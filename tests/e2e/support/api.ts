@@ -138,3 +138,24 @@ export async function latestEmailCode(email: string, timeoutMs = 30_000): Promis
   }
   throw new Error(`No sign-in code arrived for ${email}`);
 }
+
+// The newest email to this address whose subject or body matches `kind`, as a link the browser can open:
+// a confirmation (sign-up), a sign-in link or a password reset, from the local Mailpit inbox.
+export async function latestEmailLink(email: string, timeoutMs = 30_000): Promise<string> {
+  const { mailpitUrl } = localStack();
+  const deadline = Date.now() + timeoutMs;
+  while (Date.now() < deadline) {
+    const search = await fetch(`${mailpitUrl}/api/v1/search?query=${encodeURIComponent(`to:"${email}"`)}`);
+    if (search.ok) {
+      const result = (await search.json()) as { messages?: { ID: string }[] };
+      const id = result.messages?.[0]?.ID;
+      if (id) {
+        const message = (await (await fetch(`${mailpitUrl}/api/v1/message/${id}`)).json()) as { HTML?: string };
+        const href = (message.HTML ?? "").match(/href="([^"]*(?:auth\/callback|auth\/v1\/verify)[^"]*)"/)?.[1];
+        if (href) return href.replaceAll("&amp;", "&");
+      }
+    }
+    await new Promise((resolve) => setTimeout(resolve, 500));
+  }
+  throw new Error(`No email link arrived for ${email}`);
+}

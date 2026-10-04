@@ -13,9 +13,20 @@ export function SiteHeader({ signedIn }: { signedIn: boolean }) {
         <BrandMark />
         {shellStrings.brand}
       </Link>
-      <Button asChild size="lg" variant={signedIn ? "default" : "outline"} className="h-10">
-        <Link href={signedIn ? "/home" : "/sign-in"}>{signedIn ? shellStrings.goToDashboard : shellStrings.signIn}</Link>
-      </Button>
+      {signedIn ? (
+        <Button asChild size="lg" className="h-10">
+          <Link href="/home">{shellStrings.goToDashboard}</Link>
+        </Button>
+      ) : (
+        <div className="flex items-center gap-2">
+          <Button asChild size="lg" variant="ghost" className="h-10">
+            <Link href="/sign-in">{shellStrings.signIn}</Link>
+          </Button>
+          <Button asChild size="lg" className="h-10">
+            <Link href="/sign-up">{shellStrings.signUp}</Link>
+          </Button>
+        </div>
+      )}
     </header>
   );
 }

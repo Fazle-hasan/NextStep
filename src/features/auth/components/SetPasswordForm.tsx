@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
 
@@ -12,7 +13,9 @@ import { setPasswordSchema } from "../schemas";
 import { passwordStrings as s } from "../strings";
 
 // Settings → Password. The new password is never shown back or stored outside Supabase Auth.
-export function SetPasswordForm() {
+// `doneHref`: where to go after saving (the reset-password page sends the user home).
+export function SetPasswordForm({ doneHref, doneMessage }: { doneHref?: string; doneMessage?: string } = {}) {
+  const router = useRouter();
   const [password, setValue] = useState("");
   const [confirm, setConfirm] = useState("");
   const [error, setError] = useState<{ field: "password" | "confirm" | "form"; message: string } | null>(null);
@@ -35,7 +38,11 @@ export function SetPasswordForm() {
       }
       setValue("");
       setConfirm("");
-      toast.success(s.saved);
+      toast.success(doneMessage ?? s.saved);
+      if (doneHref) {
+        router.replace(doneHref);
+        router.refresh();
+      }
     });
   }
 
