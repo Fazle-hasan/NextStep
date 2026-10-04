@@ -59,6 +59,7 @@ export const authStrings = {
     invalidCode: "Enter the 6-digit code.",
     wrongCode: "That code is wrong or has expired. Try again or resend.",
     rateLimited: "Too many attempts. Please wait a minute and try again.",
+    accountExists: "An account with this email already exists. Log in instead, or use “Forgot password?” if you don't know the password.",
     emailLimit:
       "We can't send more emails right now because the hourly email limit was reached. Please try again in about an hour. If you already have a password, you can log in with it now.",
     providerDisabled: "This sign-in method isn't set up yet. Try another option.",

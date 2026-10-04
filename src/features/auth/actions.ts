@@ -20,7 +20,7 @@ import {
   setPasswordSchema,
   signUpSchema,
 } from "./schemas";
-import { passwordStrings } from "./strings";
+import { authStrings, passwordStrings } from "./strings";
 
 function firstIssue(error: { issues: { message: string }[] }): string {
   return error.issues[0]?.message ?? "Invalid input.";
@@ -153,7 +153,8 @@ export async function signUpWithPassword(
   });
   if (error) {
     if (error.code === "weak_password") return fail(passwordStrings.errors.weak);
-    if (error.code === "user_already_exists") return ok({ status: "check_email", email: parsed.data.email });
+    // Only reached when email confirmation is off (with it on, Supabase answers as if the sign-up worked).
+    if (error.code === "user_already_exists" || error.code === "email_exists") return fail(authStrings.errors.accountExists);
     return fail(authErrorMessage(error));
   }
   // Email confirmation switched off: the user is signed in straight away.
